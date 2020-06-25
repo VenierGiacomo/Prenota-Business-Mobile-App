@@ -1,28 +1,298 @@
-ion-menu-button {
-  color: var(--ion-color-primary);
+
+ion-title{
+  font-size: 21px;
+  color: #0061d5;
+  font-weight: 400;
+}
+ion-content, ion-header{
+  width:100vw
+}
+$base_width: calc(100vw/7);
+$margin_date: calc(calc(100vw -210px) /28);
+.dates{
+  height: 80px;
+  position: fixed;
+  background: #0061d5;
+  overflow-x: scroll;
+  white-space: nowrap;
+  z-index: 11;
+  .date-today{
+    display: block;
+    width: 100vw;
+    height: 30px;;
+    text-align: center;
+    padding-top: 5px;
+    .d-month{
+      width: max-content;
+      font-size: 15px;
+      color:#ffffff ;
+    }
+    .d-day{
+      width: max-content;
+      font-size: 15px;
+      color:#ffffff ;
+    }
+    .d-year{
+      width: max-content;
+      font-size: 15px;
+      color:#ffffff ;
+    }
+  }
+  div{
+    height: 50px;
+    display: inline-block;
+    color: #ffffff;
+    width: $base_width;
+    text-align: center;
+    span{
+      display: block;
+      padding-top: 5px;
+      height: 20px;
+      height: auto;
+    
+    }
+    .datenumber{
+      line-height: 16px;
+      font-size: 16px;
+      padding-top:7px;
+      margin: 0 auto;
+      height: 30px;
+      width: 30px;
+      display: block;
+    }
+  }
+  .active{
+    background: #ffffff;
+    border-radius: 50%;
+    color: #0061d5;
+  }
+}
+.dates::-webkit-scrollbar {
+  display: none;
+}
+.dates{
+  -ms-overflow-style: none;
+}
+// .appoinment-cont{
+//   overflow: scroll;
+//   // border-radius: 15px;
+//   background: var(--ion-color-dark-contrast);
+//   margin-top: 0px;
+//   display: block;
+//   bottom: 0;
+//   height: calc(100% - 50px);
+// }
+// .appoinment-cont:nth-child(odd){
+//   border-left: #019aff 5px solid; ;
+// }
+// ion-card{
+//   // border: var(--ion-color-primary) 1px solid;
+//   color: #002d8e;
+//   box-shadow: 0  0 10px 2px rgba(#4786ff, 0.4);
+ 
+// }
+// ion-card:nth-child(odd){
+//   color: #019aff;
+//   border-left: #019aff 5px solid; ;
+//   ion-card-title{
+//     font-size: 21px;
+//     color: #002d8e;
+//   }
+//   ion-card-subtitle{
+//     color: #019aff;
+//   }
+// }
+// ion-card-header{
+//   padding: 5px 20px 20px  20px; 
+// }
+// ion-card-content{
+//   text-transform: capitalize;
+// }
+// ion-card:nth-child(even){
+//   color: #002d8e;
+//   border-left: #002d8e 5px solid; ;
+//   ion-card-title{
+//     font-size: 21px;
+//     color: #019aff;
+//   }
+//   ion-card-subtitle{
+//     color: #002d8e;
+//   }
+// }
+
+// ion-card-content{
+//   position: absolute;
+//   bottom: 5px;
+//   padding: 0px;
+//   right: 10px;
+//   .image{
+//     border: var(--ion-color-primary) 1px solid;
+//     height: 50px;
+//     overflow: hidden;
+//     width: 50px;
+//     border-radius: 50%;
+//     img{
+//       height: 100%;
+//     }
+//   }
+// }
+
+.calendar{
+  margin-top: 80px;
+  overflow: auto;
+  width: 100vw;
+  .slot:nth-child(even){
+    height: 30px;
+    display: grid;
+    grid-template-columns: 1fr 9fr;
+      .time{
+        color: #002d8e;
+        padding: 0px 5px;
+        line-height: 12px;
+        margin-top: -6px;
+        font-size: 12px;
+      }
+      .cell{
+        height: 30px !important;
+        display: block;
+        border-bottom: #d7e1f5 1px solid;
+      }
+    }
+  .slot:nth-child(odd){
+    height: 30px;
+    display: grid;
+    grid-template-columns: 1fr 9fr;
+      .time{
+        color: #ffffff;
+
+        line-height: 12px;
+        margin-top: -6px;
+        font-size: 12px;
+      }
+      .cell{
+        height: 30px !important;
+        display: block;
+        border-bottom: #a9bbe2 1px solid;
+      }
+  }
 }
 
-#container {
-  text-align: center;
+
+:host ::ng-deep .task {
+  font-size: 14px;
+  width: 94%;
+  margin: 0px 3%;
+  border-radius: 5px;
+  padding-left: 10px;
+  display: block;
+  position: relative;
+  z-index: 10;
+  .task-details{
+      font-weight: 400;
+      font-size: 13px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin:  0px ;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  }
+  .task-names{
+    font-weight: 400;
+    font-size: 11px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: absolute;
+    right:5px;
+    bottom: 2px;
+    margin:  0px ;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+}
+:host ::ng-deep .c{
+  &0{
+      color: #85040a !important;
+      background: #f2b3b3 !important;
+    }
+    &1{
+      color: #b63a00;
+      background: #fccbbc;
+    }
+    &2{
+      color: #9c6b00;
+      background: #fcecbe;
+    }
+    &3{
+      color: #047a10;
+      background: #c2e9d7;
+    }
+    &4{
+      color: #0954cc;
+      background: #b3e1f7;
+    }
+    &5{
+      color: #4c21a3;
+      background: #c5cbe9;
+    }
+    &6{
+      color: rgb(68, 78, 126);
+      background: #d7dbef;  
+    }
+    &7{
+      color: rgb(95, 17, 131);
+      background: #ddbde6;
+    }
+    &10000{
+      color: rgb(68, 78, 126);
+      background: #d7dbef; 
+    }
+}
+
+///margin top calendar, http , splash screen
+
+ion-menu-button{
+  color:#0061d5;
+}
+
+
+ion-footer{
   position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
+  display: block;
+  z-index: 500;
+  bottom: 0px;
+  ion-toolbar{
+    --background: #0061d5;
+    padding: 10px 0px 30px 0px;
+    text-align: center;
+    p{
+      color: #fff;
+      font-size: 18px;
+      font-weight: 400;
+      margin: 0px;
+    } 
+  }
 }
 
-#container strong {
-  font-size: 20px;
-  line-height: 26px;
+
+ion-header{
+  ion-buttons{
+    color:  #0061d5;
+  }
 }
 
-#container p {
-  font-size: 16px;
-  line-height: 22px;
-  color: #8c8c8c;
-  margin: 0;
-}
 
-#container a {
-  text-decoration: none;
+// ion-footer{
+//   ion-toolbar{
+//     padding: 15px 0px 25px 0px;
+//   }
+// }
+.add-appointment{
+  position: absolute;
+  top: 0;
+  color: white;
+  border-radius: 10px;
+  padding: 10px 0px ;
+  width: 70vw;
+  left: 15vw;
+  font-size: 3vh;
+  background: #0061d5;
+  box-shadow: 0 5px 7px rgba(#4786ff, 0.2);
 }

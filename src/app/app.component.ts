@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 
-import { Platform } from '@ionic/angular';
+import { Platform, MenuController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -13,42 +14,29 @@ export class AppComponent implements OnInit {
   public selectedIndex = 0;
   public appPages = [
     {
-      title: 'Inbox',
+      title: 'Appuntamenti',
       url: '/folder/Inbox',
-      icon: 'mail'
+      icon: 'calendar'
     },
     {
-      title: 'Outbox',
+      title: 'Notifiche',
       url: '/folder/Outbox',
-      icon: 'paper-plane'
+      icon: 'notifications'
     },
     {
       title: 'Favorites',
       url: '/folder/Favorites',
       icon: 'heart'
     },
-    {
-      title: 'Archived',
-      url: '/folder/Archived',
-      icon: 'archive'
-    },
-    {
-      title: 'Trash',
-      url: '/folder/Trash',
-      icon: 'trash'
-    },
-    {
-      title: 'Spam',
-      url: '/folder/Spam',
-      icon: 'warning'
-    }
   ];
-  public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
+  // public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
 
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
-    private statusBar: StatusBar
+    private statusBar: StatusBar,
+    public menuCtrl: MenuController,
+    private router: Router
   ) {
     this.initializeApp();
   }
@@ -65,5 +53,11 @@ export class AppComponent implements OnInit {
     if (path !== undefined) {
       this.selectedIndex = this.appPages.findIndex(page => page.title.toLowerCase() === path.toLowerCase());
     }
+  }
+  navigateLogin(){
+    this.router.navigateByUrl('/login')
+  }
+  close(){
+    this.menuCtrl.close();
   }
 }

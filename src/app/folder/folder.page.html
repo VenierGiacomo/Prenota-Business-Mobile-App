@@ -1,21 +1,63 @@
+<body class='noti-lod'>
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
+    <ion-buttons slot="start" (click)='logout()'>
+      Esci
+      <!-- <ion-menu-button></ion-menu-button> -->
     </ion-buttons>
-    <ion-title>{{ folder }}</ion-title>
-  </ion-toolbar>
+    <ion-title  (click)='infoApp($event, -1)'>{{employee.name}}</ion-title>   
+    <ion-buttons slot="end" (click)='presentMonth()'>
+     {{month_name}}
+    </ion-buttons>
+  </ion-toolbar> 
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">{{ folder }}</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content >
+<div class="dates"  (swipeleft)='nextWeek()' (swiperight)='pastWeek()'>
+  <div (click)='todayAppointments(week[0])'><span>Lun</span><span [class.active]='day==week[0]' class="datenumber">{{week[0]}}</span></div>
+  <div (click)='todayAppointments(week[1])'><span>Mar</span><span [class.active]='day==week[1]' class="datenumber">{{week[1]}}</span></div>
+  <div (click)='todayAppointments(week[2])'><span>Mer</span><span [class.active]='day==week[2]' class="datenumber">{{week[2]}}</span></div>
+  <div (click)='todayAppointments(week[3])'><span>Gio</span><span [class.active]='day==week[3]' class="datenumber">{{week[3]}}</span></div>
+  <div (click)='todayAppointments(week[4])'><span>Ven</span><span [class.active]='day==week[4]' class="datenumber">{{week[4]}}</span></div>
+  <div (click)='todayAppointments(week[5])'><span>Sab</span><span [class.active]='day==week[5]' class="datenumber">{{week[5]}}</span></div>
+  <div (click)='todayAppointments(week[6])'><span>Dom</span><span [class.active]='day==week[6]' class="datenumber">{{week[6]}}</span></div>
+  <span class="date-today"><div class="d-day">{{day}}&nbsp;</div><div class="d-month"> &nbsp;{{month_name}}&nbsp;</div><div class="d-year">{{year}}</div></span>
+</div>
+<div class="calendar" (swipeleft)='nextWeek()' (swiperight)='pastWeek()'>
+<div *ngFor='let time_slot of hours; let i = index' class="slot"><div class="time">{{time_slot}}</div> <div  (press)='presentModal(i)' class="cell" id='{{i}}' ></div></div>
+<!-- <div><div class="time">8:15</div> <div class="cell"></div></div> -->
+</div>
+<!-- <div class="appoinment-cont"  (swipeleft)='nextWeek()' (swiperight)='pastWeek()'>
+  <div class="block"></div> 
+  <a href="tel:3345761261">Call</a>
+ <ion-card *ngFor='let appointment of appointments' (press)='infoApp($event)'>
+    <ion-card-header>
+      <ion-card-subtitle>{{times[(appointment.start*3)]}}-{{times[appointment.end+(appointment.start*2)]}}</ion-card-subtitle>
+      <ion-card-title>{{appointment.details}}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+        {{appointment.client_name}}
+    </ion-card-content>
+  </ion-card>
 
-  <div id="container">
-    <strong class="capitalize">{{ folder }}</strong>
-    <p>Explore <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-  </div>
+  <ion-card [style.display]='no_appointments'>
+      <ion-card-header>
+        <ion-card-subtitle></ion-card-subtitle>
+        <ion-card-title> Al momento non ci sono appuntamenti</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+          Buona giornata
+      </ion-card-content>
+    </ion-card>
+    <ion-progress-bar  *ngIf='loading' type="indeterminate"></ion-progress-bar>
+</div> -->
 </ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <!-- <button  class='add-appointment' expand="block" (click)='presentModal()'> -->
+     <p (click)='presentModal(15)'>Aggiungi appuntamento</p>
+    <!-- </button> -->
+  </ion-toolbar>
+</ion-footer>
+</body>

@@ -1,0 +1,39 @@
+
+ion-title{
+    position: absolute;
+    // top: 15vh;
+    width: 80vw;
+    left: 10vw;
+    padding: 0px;;
+    font-size: 36px;
+    height: 100px;
+    color: #0061d5;  
+     font-family: 'Comfortaa Bold'
+}
+.input-cont{
+    position: absolute;
+    // top: 30vh;
+    ion-item{
+        color:#0061d5;
+        width: 80vw;
+        left:10vw;
+    }
+}
+.login-btn{
+    width: 100vw;
+    padding:0vw 10vw;
+    margin: 30px 0px;
+    color: #0061d5;
+    border: #0061d5
+
+}
+ion-content{
+    p{
+        position: absolute;
+        width: 80vw;
+        margin: 30px 10vw;
+        text-align: center;
+        color: rgb(146, 17, 17)
+    }
+   
+}

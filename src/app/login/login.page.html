@@ -1,0 +1,20 @@
+
+
+<ion-content>
+  <ion-title [style.top.px]="sizeElement">prenota</ion-title> 
+ <div class="input-cont" [style.top.px]="sizeElement1">
+  <ion-item >
+    <ion-label position="stacked">Email</ion-label>
+    <ion-input [(ngModel)]='email'></ion-input>
+  </ion-item>
+  <ion-item >
+    <ion-label position="stacked">Password</ion-label>
+    <ion-input [(ngModel)]='password'  type="password"></ion-input>
+  </ion-item>
+  <div class="login-btn">
+    <ion-button expand="block" fill="outline" type="submit" (click)='login()'>Login</ion-button>
+  </div>
+  <p *ngIf='error!=""' >{{error}}</p>  
+ </div>
+ 
+</ion-content>

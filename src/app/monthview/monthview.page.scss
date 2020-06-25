@@ -1,0 +1,38 @@
+.m-calendar{
+    width: 100vw;
+    display: block;
+    background: #0061d5;
+    color: #ffffff;
+    .m-day-name{
+        text-align: center;
+        display: inline-block;
+        width: calc(100% / 7) ;
+    }
+    .month_section{
+        width: 100vw;
+        display: block;
+        h2{
+            text-align: center;
+        }
+        .m-day{
+            text-align: center;
+            display: inline-block;
+            padding: 10px 0px;
+            width: calc(100% / 7) ;
+        }
+    }
+    
+}
+ion-title{
+    font-family: 'Comfortaa Bold' ;
+    color: #0061d5;
+    font-size:8vw;
+}
+
+.select-modal{
+    background: transparent;
+    .modal-wrapper { border-top-left-radius: 15px; border-top-right-radius: 15px;}
+    padding-top: 200px   !important;
+    padding-left: 5px   !important;
+    padding-right: 5px   !important;
+}

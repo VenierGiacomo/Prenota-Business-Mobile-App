@@ -1,0 +1,9 @@
+<ion-list *ngIf="n==-1">
+    <ion-list-header>Seleziona</ion-list-header>
+    <ion-item button *ngFor='let employee of employees' (click)='set(employee)'>{{employee.name}}</ion-item>
+    <ion-item lines="none" detail="false" style='color: #8f3434' (click)="dismissPopover()">Chiudi</ion-item>
+</ion-list>
+<ion-list *ngIf="n!=-1">
+    <a href="tel:+39{{n}}" target="_blank"><ion-item button>Chiama</ion-item></a>
+    <ion-item button (click)='deleteAppointment()' style='color: #8f3434' >Elimina</ion-item>
+</ion-list>

@@ -1,15 +1,16 @@
-<ion-header translucent>
+<ion-header >
     <ion-toolbar>
         <ion-title>prenota</ion-title>
       <ion-buttons slot="end">
         <ion-button (click)="closeModal()" class="close">Chiudi</ion-button>
       </ion-buttons>
     </ion-toolbar>
+    <div class="m-calendar"><span class="m-day-name">Lun</span><span class="m-day-name">Mar</span><span class="m-day-name">Mer</span><span class="m-day-name">Gio</span><span class="m-day-name">Ven</span><span class="m-day-name">Sab</span><span class="m-day-name">Dom</span></div>
   </ion-header>
   
 
 <ion-content>
-  <div class="m-calendar"><span class="m-day-name">Lun</span><span class="m-day-name">Mar</span><span class="m-day-name">Mer</span><span class="m-day-name">Gio</span><span class="m-day-name">Ven</span><span class="m-day-name">Sab</span><span class="m-day-name">Dom</span>
+  <div class="m-calendar">
     <div *ngFor='let cr_month of month_per_month, let i = index' class="month_section">
         <h2>{{months_names[(month+i)%12]}}</h2>
       <div *ngFor='let day of cr_month[0]' class="m-day m-day--disabled"></div>

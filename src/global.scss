@@ -51,9 +51,16 @@ ion-app{
 ion-header{
     background: white;
     margin-top:10px;
-    // padding: 0px 0px 0px 0px;
+    padding: 0px 0px 0px 0px;
     ion-toolbar{
         padding: 0px 10px;
     }
 
+  }
+ion-title {
+    width: 100vw !important;
+    position: absolute !important;
+    left:0px !important;
+    bottom:15px;
+    text-align:center !important;
   }

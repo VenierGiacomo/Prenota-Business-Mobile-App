@@ -79,9 +79,9 @@ getEmployees(): Observable<any>{
   throw throwError("error");  
 
 }
-getEmployeesfromshop(shop): Observable<any>{
-  return this.http.get(BASE_URL+'employees/store/?shop='+shop,{headers: this.httpheader })
-}
+// getEmployeesfromshop(shop): Observable<any>{
+//   return this.http.get(BASE_URL+'employees/store/?shop='+shop,{headers: this.httpheader })
+// }
 getopenHours(): Observable<any>{
         return this.http.get(BASE_URL+'closedhours/',{headers: this.httpheader})
 }
@@ -104,18 +104,32 @@ getAppointments(week):Observable<any>{
   return this.http.get(BASE_URL+'bookings/week/'+week+'/?owner=2', {headers: this.httpheader})
 }
 
-
-updateAppointment(id, start, end, day, month, year,name, details, employee):Observable<any>{
+getAppointmentsExternal(week):Observable<any>{
+  const token = this.getToken()
+  var l 
+  if (token) {
+     l = this.parseJwt(token) 
+     return this.http.get(BASE_URL+'bookings/week/'+week+'/external/?owner='+l.user_id, {headers: this.httpheader})
+  }
+  throw throwError("error");    
+}
+updateAppointment(id, start, end, day, month, year,name, phone, details, employee, service):Observable<any>{
   var week = this.getWeekNumber(new Date(year, month, day))
-  var data = {'start': start , 'end': end, 'day': day, 'week':week, 'month':month, 'year' : year, 'employee': employee,  'client_name' :name, 'details': details}
+  var data = {'start': start , 'end': end, 'day': day, 'week':week, 'month':month, 'year' : year, 'employee': employee,  'client_name' :name, 'details': details, 'service_n': service, 'phone':phone}
   return this.http.put(BASE_URL+'bookings/'+id+'/', data, {headers: this.newheader()})
 }
 
 deleteAppointment(id):Observable<any>{
   return this.http.delete(BASE_URL+'bookings/'+id+'/',  {headers: this.newheader()})
 }
-getStoreservice(id){
-  return this.http.get(BASE_URL+'services/',{headers: this.httpheader, params: {owner: id }})
+getStoreservice(){
+  const token = this.getToken()
+  var l 
+  if (token) {
+     l = this.parseJwt(token) 
+  return this.http.get(BASE_URL+'services/',{headers: this.httpheader, params: {owner: l.user_id }})
+}
+  throw throwError("error");  
 }
 getWeekNumber(d) {
   // Copy date so don't modify original

@@ -39,7 +39,7 @@ httpheader = new HttpHeaders({'Content-type':'application/json'}) //'Access-Cont
   .then((response:HTTPResponse) => {
     var res = JSON.parse(response.data)
     this.nativeApi.storeToken(res.token)
-    this.nav.navigateForward('folder/Inbox')
+    this.nav.navigateForward('calendar')
   })
   .catch((error:any) => {
     this.error = 'La password o la email che hai inserito non sono valide'
@@ -49,7 +49,7 @@ httpheader = new HttpHeaders({'Content-type':'application/json'}) //'Access-Cont
       this.api.login(this.email, this.password).subscribe(
         data =>{
           this.api.storeToken(data.token)
-          this.nav.navigateForward('folder/Inbox')
+          this.nav.navigateForward('calendar')
         },err =>{
           this.error = 'La password o la email che hai inserito non sono valide'
         })

@@ -1,0 +1,45 @@
+<ion-header translucent>
+  <ion-toolbar>
+    <ion-title>Modifica</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="closeModal()" class="close">Chiudi</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+      <ion-item (click)='selectService()'> 
+          <ion-label>Tipo di servizio</ion-label>
+          <div [innerHTML]="service.name" class="align-right"></div>
+        </ion-item>
+        <ion-item *ngIf='service.name=="Personalizza"'>
+          <ion-label>Nome servizio</ion-label>
+        <ion-input class="align-right" [(ngModel)]="desc"placeholder="Visita spec."></ion-input>
+      </ion-item >
+    <ion-item >
+        <ion-label>Nome cliente</ion-label>
+      <ion-input class="align-right" [(ngModel)]="client_name" placeholder="Mario"></ion-input>
+    </ion-item >
+    <ion-item >
+      <ion-label>Cellulare</ion-label> 
+      <ion-chip style="z-index: 100;" color="primary" (click)='presentAlert()'>
+          <ion-label >i</ion-label>
+        </ion-chip>
+    <ion-input class="align-right" inputmode="tel" [(ngModel)]="phone" placeholder="3312233645"></ion-input>
+  </ion-item >
+    <ion-item (click)='showDatePicker()'> 
+      <ion-label>Data</ion-label>
+      <div  [innerHTML]="today" class="align-right"></div>
+    </ion-item>
+    <ion-item (click)='showTimePicker()'> 
+      <ion-label>Ora</ion-label>
+      <div  [innerHTML]="time" class="align-right"></div>
+    </ion-item>
+    <ion-item (click)='showPicker()' *ngIf='service.name=="Personalizza"'> 
+      <ion-label>Durata</ion-label>
+      <div [innerHTML]="duration" [(ngModel)]="duration" class="align-right"></div>
+    </ion-item>
+  </ion-list>
+  <ion-button class='add' (click)="updateAppointment()">Aggiungi</ion-button>
+</ion-content>

@@ -1,19 +1,26 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { AuthguardService } from './services/authguard.service';
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'folder/Inbox',
+    redirectTo: 'calendar',
     pathMatch: 'full'
   },
   {
-    path: 'folder/:id',
-    loadChildren: () => import('./folder/folder.module').then( m => m.FolderPageModule)
+    path: 'calendar',
+    loadChildren: () => import('./folder/folder.module').then( m => m.FolderPageModule), 
+     canActivate: [AuthguardService]
+  },
+  {
+    path: 'notifications',
+    loadChildren: () => import('./notifications/notifications.module').then( m => m.NotificationsPageModule), 
+     canActivate: [AuthguardService]
   },
   {
     path: 'new-appointment',
-    loadChildren: () => import('./new-appointment/new-appointment.module').then( m => m.NewAppointmentPageModule)
+    loadChildren: () => import('./new-appointment/new-appointment.module').then( m => m.NewAppointmentPageModule),
   },
   {
     path: 'login',
@@ -21,7 +28,15 @@ const routes: Routes = [
   },
   {
     path: 'monthview',
-    loadChildren: () => import('./monthview/monthview.module').then( m => m.MonthviewPageModule)
+    loadChildren: () => import('./monthview/monthview.module').then( m => m.MonthviewPageModule),
+  },
+  {
+    path: 'update-booking',
+    loadChildren: () => import('./update-booking/update-booking.module').then( m => m.UpdateBookingPageModule)
+  },
+  {
+    path: 'notifications',
+    loadChildren: () => import('./notifications/notifications.module').then( m => m.NotificationsPageModule)
   }
 ];
 

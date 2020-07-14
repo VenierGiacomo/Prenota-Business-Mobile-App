@@ -33,9 +33,11 @@ export class NewAppointmentPage implements OnInit {
   time_duration: string[] = ["5 min","10 min","15 min","20 min","25 min", "30 min","35 min", "40 min", "45 min", "50 min", "55 min", "1 ora","1 ora e 5 min", "1 ora e 10 min", "1 ora e 15 min","1 ora e 20 min", "1 ora e 25 min","1 ora e 30 min","1 ora e 35 min","1 ora e 40 min","1 ora e 45 min","1 ora e 50 min","1 ora e 55 min","2 ore"];
   constructor(public alertController: AlertController, private plt: Platform, private apiNative: NativeApiService, public modalController: ModalController,private pickerController: PickerController, private storage: StorageService, private api: ApiService) {}
 
-  async ngOnInit() {
-    this.services = await this.storage.getServices()
+  ngOnInit() {
     this.today= `${this.day} ${this.months[this.month]} ${this.year}`
+    setTimeout(async () => {
+      this.services = await this.storage.getServices()
+    }, 500); 
   }
   async presentAlert() {
     const alert = await this.alertController.create({
@@ -209,7 +211,7 @@ export class NewAppointmentPage implements OnInit {
         res => {
           Notiflix.Notify.Init({ position:"center-bottom", success: {background:"#fff",textColor:"#0061d5",notiflixIconColor:"#0061d5",}, }); 
           Notiflix.Notify.Success('Appuntamento registrato')
-          this.homeref.drawAppointment(res.id, star, end, details, this.client_name, employee, this.service.id, this.day, 0, this.month, this.year)
+          this.homeref.drawAppointment(res.id, star, end, details, this.client_name, employee, this.service.id, this.day, 0, this.month, this.year,this.phone)
         }).catch(
           err => console.log(err,'err booking')) 
     }
@@ -218,7 +220,7 @@ export class NewAppointmentPage implements OnInit {
         data =>{
           Notiflix.Notify.Init({ position:"center-bottom", success: {background:"#fff",textColor:"#0061d5",notiflixIconColor:"#0061d5",}, }); 
           Notiflix.Notify.Success('Appuntamento registrato')
-          this.homeref.drawAppointment(data.id, star, end, details, this.client_name, employee, this.service.id, this.day, 0, this.month, this.year)
+          this.homeref.drawAppointment(data.id, star, end, details, this.client_name, employee, this.service.id, this.day, 0, this.month, this.year,this.phone)
         },
         err =>{console.log(err)})
     }         

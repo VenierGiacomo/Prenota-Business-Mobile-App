@@ -105,7 +105,6 @@ export class MonthviewPage implements OnInit {
    this.homeref.day= day
    this.homeref.month = (this.month+idx)%12
    this.homeref.month_name =  this.homeref.months_names[this.homeref.month]
-   console.log(week,day, this.homeref.month)
    this.closeModal()
 
  }

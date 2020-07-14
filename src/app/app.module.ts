@@ -18,6 +18,8 @@ import { HammerGestureConfig, HAMMER_GESTURE_CONFIG } from '@angular/platform-br
 import { HammerModule } from '@angular/platform-browser';
 import * as Hammer from 'hammerjs';
 import { PopovercallComponent } from './popovercall/popovercall.component';
+import { AuthguardService } from './services/authguard.service';
+import { OneSignal } from '@ionic-native/onesignal/ngx';
 
 @Injectable()
 export class MyHammerConfig extends HammerGestureConfig {
@@ -44,10 +46,12 @@ export class MyHammerConfig extends HammerGestureConfig {
   providers: [
     StatusBar,
     CallNumber,
+    OneSignal,
     HTTP,
     SplashScreen,
     {provide: HAMMER_GESTURE_CONFIG, useClass: MyHammerConfig },
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    AuthguardService
   ],
   bootstrap: [AppComponent]
 })

@@ -103,8 +103,16 @@ export class MonthviewPage implements OnInit {
    }
    this.homeref.week= week
    this.homeref.day= day
-   this.homeref.month = (this.month+idx)%12
-   this.homeref.month_name =  this.homeref.months_names[this.homeref.month]
+   if(week[6]<week[0] && day<7){
+    this.homeref.month = (this.month+idx)%12
+    this.homeref.month_name =  this.homeref.months_names[this.homeref.month]
+   }else if(week[6]<week[0] && day>7){
+   this.homeref.month = (this.month+idx+1)%12
+    this.homeref.month_name =  this.homeref.months_names[this.homeref.month]
+  }else{
+    this.homeref.month = (this.month+idx)%12
+    this.homeref.month_name =  this.homeref.months_names[this.homeref.month]
+   }
    this.closeModal()
 
  }

@@ -39,6 +39,7 @@ ngOnInit() {
       this.api.getAppointmentsExternal(week).subscribe(
         data=>{
           this.last_external = data
+          console.log(data)
           this.spin="none"
         },
         err=>{

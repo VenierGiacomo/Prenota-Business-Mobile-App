@@ -101,7 +101,12 @@ bookAppointment(start, end, day, month, year,name, phone, details, employee, ser
 //     return this.http.post(BASE_URL+'bookings/', data,{headers: this.newheader()})
 // }
 getAppointments(week):Observable<any>{
-  return this.http.get(BASE_URL+'bookings/week/'+week+'/?owner=2', {headers: this.httpheader})
+  var l  
+  let token  =  this.getToken()
+  if (token) {
+       l = this.parseJwt(token)
+    }
+  return this.http.get(BASE_URL+'bookings/week/'+week+'/?owner='+l.user_id, {headers: this.httpheader})
 }
 
 getAppointmentsExternal(week):Observable<any>{

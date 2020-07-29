@@ -14,7 +14,7 @@
       </div>
     <div class='not-el' *ngFor='let app of last_external; let ind =index' [class.no-disp]='day>app.day && month>=app.month'>
         <!-- <span class="serial">{{ind+1}}.</span> -->
-       <span *ngIf='app.day >=day && app.month >=month'>
+       <span *ngIf='(app.day >=day && app.month >=month) || app.month >month'  >
         <span class="date">Data: {{app.day}}/{{app.month+1}}/{{app.year}}</span>
         <span class="hour">Ora: {{rows[app.start]}}</span>
         <!-- <span>{{app.phone}}</span> -->
@@ -30,23 +30,16 @@
         <!-- </span>  -->
         </span>
     </div>
-      <div class='not-el' *ngFor='let app of last_external; let ind =index' [class.no-disp]='app.day >=day && app.month >=month' [class.faded]='day>app.day && month>=app.month'>
-          <!-- <span class="serial">{{ind+1}}.</span> -->
+      <!-- <div class='not-el' *ngFor='let app of last_external; let ind =index'  [class.faded]='day>app.day && month>=app.month'>
          <span *ngIf='day>app.day && month>=app.month'>
           <span class="date">Data: {{app.day}}/{{app.month+1}}/{{app.year}}</span>
           <span class="hour">Ora: {{rows[app.start]}}</span>
-          <!-- <span>{{app.phone}}</span> -->
          <span class="service">{{app.details}}</span> 
          
           
           <span class="name">{{app.client_name}}</span>
-          <!-- <span style="text-align: left;" *ngIf='app.day >=day && app.month >=month'> -->
-              <!-- <span class="badge badge-complete">Nuovo</span>
+       
           </span>
-          <span style="text-align: left;" *ngIf='day>app.day && month>=app.month'>
-              <span class="badge badge-pending">Passato</span>-->
-          <!-- </span>  -->
-          </span>
-      </div>
+      </div> -->
       
 </ion-content>

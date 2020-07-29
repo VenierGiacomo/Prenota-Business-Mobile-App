@@ -5,6 +5,8 @@ import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Router } from '@angular/router';
 import { OneSignal } from '@ionic-native/onesignal/ngx';
+import { NativeApiService } from './services/nativeapi.service';
+import { ApiService } from './services/api.service';
 
 @Component({
   selector: 'app-root',
@@ -21,7 +23,9 @@ export class AppComponent implements OnInit {
     private statusBar: StatusBar,
     public menuCtrl: MenuController,
     private nav: NavController,
-    private oneSignal: OneSignal
+    private apiNative: NativeApiService,
+    private api: ApiService,
+    // private oneSignal: OneSignal
   ) {
     this.initializeApp();
   }
@@ -74,10 +78,11 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     const path = window.location.pathname
-    if (path == '/calendar' || path == '/'){
-      this.selectedIndex= 0
-    }else{
+    console.log(path)
+    if (path == '/notifications' || path == 'notifications'){
       this.selectedIndex= 1
+    }else{
+      this.selectedIndex= 0
     }
   
   }
@@ -89,7 +94,18 @@ export class AppComponent implements OnInit {
     this.selectedIndex= 1
     this.nav.navigateRoot('/notifications')
   }
-  close(){
-    this.menuCtrl.close();
+  async close(){
+    await this.menuCtrl.close();
+  }
+  async logout(){
+  if (this.platform.is('hybrid')){
+    await this.menuCtrl.close();
+    await this.apiNative.deleteStorage()
+    await this.nav.navigateBack('login')
+  }else{
+    await this.menuCtrl.close();
+    await this.api.deleteStorage()
+    await this.nav.navigateBack('login')
+  }
   }
 }

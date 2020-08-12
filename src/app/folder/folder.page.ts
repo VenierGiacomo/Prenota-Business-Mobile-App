@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ModalController, Platform } from '@ionic/angular';
+import { ModalController, Platform, NavController } from '@ionic/angular';
 import { NewAppointmentPage } from '../new-appointment/new-appointment.page';
 import { ApiService } from '../services/api.service';
 import { PopoverController } from '@ionic/angular';
@@ -10,6 +10,11 @@ import { NativeApiService } from '../services/nativeapi.service';
 import { MonthviewPage } from '../monthview/monthview.page';
 import Notiflix from "notiflix";
 import { OneSignal } from '@ionic-native/onesignal/ngx';
+import { CallLog } from '@ionic-native/call-log/ngx';
+import { AppComponent } from '../app.component'
+import { zip } from 'rxjs';
+
+
 
 @Component({
   selector: 'app-folder',
@@ -19,6 +24,7 @@ import { OneSignal } from '@ionic-native/onesignal/ngx';
 export class FolderPage implements OnInit {
   // public folder: string;
   day
+  numbers:any
   all_appointments_list = []
   week = []
   employee:any ={ name:''}
@@ -36,28 +42,29 @@ export class FolderPage implements OnInit {
   hours = ["06:45", "07:00", "07:15", "07:30", "07:45", "08:00", "08:15", "08:30", "08:45", "09:00", "09:15", "09:30", "09:45", "10:00", "10:15", "10:30", "10:45", "11:00", "11:15", "11:30", "11:45", "12:00", "12:15", "12:30", "12:45", "13:00", "13:15", "13:30", "13:45", "14:00", "14:15", "14:30", "14:45", "15:00", "15:15", "15:30", "15:45", "16:00", "16:15", "16:30", "16:45", "17:00", "17:15", "17:30", "17:45", "18:00", "18:15", "18:30", "18:45", "19:00", "19:15", "19:30", "19:45", "20:00", "20:15", "20:30", "20:45", "21:00", "21:15", "21:30", "21:45", "22:00", "22:15", "22:30", "22:45", "23:00", "23:15", "23:30", "23:45", "24:00"]
   services:any = []
   spin="block"
-  constructor( private oneSignal: OneSignal, private plt:  Platform, public modalController: ModalController, private api: ApiService, private apiNative: NativeApiService, private popoverController: PopoverController, private storage: StorageService, private router: Router) {
+  constructor(private navcomp: AppComponent, private oneSignal: OneSignal, private plt:  Platform, public modalController: ModalController, private api: ApiService, private apiNative: NativeApiService, private popoverController: PopoverController, private storage: StorageService, private router: Router) {
     this.plt.ready().then(() => {
       this.getservices()
       this.getEmployees()
       setTimeout(() => {
         this.getAppoitments()
      }, 500);
-    });
-    if (this.plt.is('hybrid')){
+     if (this.plt.is('hybrid')){
       // this.oneSignal.setLogLevel({logLevel: 6, visualLevel: 0});
-    
-      var notificationOpenedCallback = function(jsonData) {
-        console.log('notificationOpenedCallback: ' + JSON.stringify(jsonData));
+    var self = this
+      var notificationOpenedCallback =  function(jsonData) {
+        setTimeout(() => {
+          self.spin="none"
+          self.navcomp.navigateNotifications()
+        }, 300);
       };
-      
       // Set your iOS Settings
       var iosSettings = {};
       iosSettings["kOSSettingsKeyAutoPrompt"] = false;
       iosSettings["kOSSettingsKeyInAppLaunchURL"] = false;
       this.oneSignal
         .startInit("b6e8e712-c4da-4a04-9379-1a3045d3ebdb",'773947626483')
-        .handleNotificationOpened(notificationOpenedCallback)
+        .handleNotificationOpened(notificationOpenedCallback) //.then(this.nav.navigateRoot("notifications"))
         .iOSSettings(iosSettings)
         .inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.Notification)
         .endInit();
@@ -65,15 +72,11 @@ export class FolderPage implements OnInit {
       // The promptForPushNotificationsWithUserResponse function will show the iOS push notification prompt. We recommend removing the following code and instead using an In-App Message to prompt for notification permission (See step 6)
       this.oneSignal.promptForPushNotificationsWithUserResponse().then(function(accepted) {
       });
-      // this.oneSignal.getIds().then(data=>{
-      //   this.apiNative.registerdevice(data).then(data=>{
-      //     console.log(data)
-      //   })
-      // })
+      this.oneSignal.setSubscription(true)
     }
+    });
     
-   }
-
+  }
 // ionViewDidEnter(){ 
 //     this.getservices()
 //     this.getEmployees()
@@ -83,7 +86,7 @@ export class FolderPage implements OnInit {
 // }
 
  async ngOnInit() {
-  var now = new  Date()
+    var now = new  Date()
   var today = now.getDay() -1
   var month = now.getMonth()
   var day_number = now.getDate()
@@ -106,14 +109,11 @@ export class FolderPage implements OnInit {
 this.month=month+1
 this.month_name=this.months_names[month+1]
   }
-   this.spin="block"
-
-  if (this.plt.is('hybrid')){
+  this.spin="block"
     this.oneSignal.getIds().then(data =>{
       this.apiNative.registerdevice(data.userId).then(data =>{
       })
     })
-  }
  }
   async presentModal(i) {
     if(this.week[6]<this.week[0] && this.day>7){

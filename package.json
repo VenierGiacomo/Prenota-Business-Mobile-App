@@ -20,6 +20,7 @@
     "@angular/platform-browser": "~9.1.6",
     "@angular/platform-browser-dynamic": "~9.1.6",
     "@angular/router": "~9.1.6",
+    "@ionic-native/call-log": "^5.27.0",
     "@ionic-native/call-number": "^5.26.0",
     "@ionic-native/core": "^5.0.7",
     "@ionic-native/http": "^5.26.0",

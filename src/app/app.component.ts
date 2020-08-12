@@ -25,7 +25,7 @@ export class AppComponent implements OnInit {
     private nav: NavController,
     private apiNative: NativeApiService,
     private api: ApiService,
-    // private oneSignal: OneSignal
+    private oneSignal: OneSignal
   ) {
     this.initializeApp();
   }
@@ -58,6 +58,9 @@ export class AppComponent implements OnInit {
     //   console.log("User accepted notifications: " + accepted);
     // });
   });
+  // this.oneSignal.handleNotificationOpened().subscribe(data => {
+  // this.nav.navigateRoot("/notifications")
+  // });
 }
 //       this.oneSignal.setLogLevel({logLevel: 6, visualLevel: 4});
 //     this.oneSignal.startInit('b6e8e712-c4da-4a04-9379-1a3045d3ebdb');
@@ -68,17 +71,13 @@ export class AppComponent implements OnInit {
 //  // do something when notification is received
 //  console.log(data)
 // });
-// this.oneSignal.handleNotificationOpened().subscribe(data => {
-//   // do something when a notification is opened
-//   console.log(data)
-// });
+
 
 // this.oneSignal.endInit();
 
 
   ngOnInit() {
     const path = window.location.pathname
-    console.log(path)
     if (path == '/notifications' || path == 'notifications'){
       this.selectedIndex= 1
     }else{
@@ -99,13 +98,13 @@ export class AppComponent implements OnInit {
   }
   async logout(){
   if (this.platform.is('hybrid')){
-    await this.menuCtrl.close();
     await this.apiNative.deleteStorage()
     await this.nav.navigateBack('login')
-  }else{
     await this.menuCtrl.close();
+  }else{
     await this.api.deleteStorage()
     await this.nav.navigateBack('login')
+    await this.menuCtrl.close();
   }
   }
 }

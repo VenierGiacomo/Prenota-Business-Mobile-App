@@ -10,9 +10,9 @@ import { NativeApiService } from '../services/nativeapi.service';
 import { MonthviewPage } from '../monthview/monthview.page';
 import Notiflix from "notiflix";
 import { OneSignal } from '@ionic-native/onesignal/ngx';
-import { CallLog } from '@ionic-native/call-log/ngx';
+
 import { AppComponent } from '../app.component'
-import { zip } from 'rxjs';
+
 
 
 

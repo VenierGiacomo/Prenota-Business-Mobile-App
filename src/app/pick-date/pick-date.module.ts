@@ -4,17 +4,17 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { NotificationsPageRoutingModule } from './notifications-routing.module';
+import { PickDatePageRoutingModule } from './pick-date-routing.module';
 
-import { NotificationsPage } from './notifications.page';
+import { PickDatePage } from './pick-date.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    NotificationsPageRoutingModule
+    PickDatePageRoutingModule
   ],
-  declarations: [NotificationsPage]
+  declarations: [PickDatePage]
 })
-export class NotificationsPageModule {}
+export class PickDatePageModule {}

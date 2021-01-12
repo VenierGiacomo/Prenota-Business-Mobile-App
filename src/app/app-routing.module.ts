@@ -13,11 +13,11 @@ const routes: Routes = [
     loadChildren: () => import('./folder/folder.module').then( m => m.FolderPageModule), 
      canActivate: [AuthguardService]
   },
-  {
-    path: 'notifications',
-    loadChildren: () => import('./notifications/notifications.module').then( m => m.NotificationsPageModule), 
-     canActivate: [AuthguardService]
-  },
+  // {
+  //   path: 'notifications',
+  //   loadChildren: () => import('./notifications/notifications.module').then( m => m.NotificationsPageModule), 
+  //    canActivate: [AuthguardService]
+  // },
   {
     path: 'new-appointment',
     loadChildren: () => import('./new-appointment/new-appointment.module').then( m => m.NewAppointmentPageModule),
@@ -34,9 +34,17 @@ const routes: Routes = [
     path: 'update-booking',
     loadChildren: () => import('./update-booking/update-booking.module').then( m => m.UpdateBookingPageModule)
   },
+  // {
+  //   path: 'notifications',
+  //   loadChildren: () => import('./notifications/notifications.module').then( m => m.NotificationsPageModule)
+  // },
+  // {
+  //   path: 'scan',
+  //   loadChildren: () => import('./scan/scan.module').then( m => m.ScanPageModule)
+  // },
   {
-    path: 'notifications',
-    loadChildren: () => import('./notifications/notifications.module').then( m => m.NotificationsPageModule)
+    path: 'pick-date',
+    loadChildren: () => import('./pick-date/pick-date.module').then( m => m.PickDatePageModule)
   }
 ];
 

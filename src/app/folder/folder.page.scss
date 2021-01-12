@@ -1,7 +1,7 @@
 
 ion-title{
   font-size: 21px;
-  color: #0061d5;
+  color: #707579;
   font-weight: 400;
 }
 ion-content, ion-header{
@@ -146,22 +146,24 @@ $margin_date: calc(calc(100vw -210px) /28);
     display: grid;
     grid-template-columns: 1fr 9fr;
       .time{
-        color: #002d8e;
+        color: #707579;
+        font-weight: 500;
         padding: 0px 5px;
         line-height: 12px;
         margin-top: -6px;
+        margin-left: -2px;
         font-size: 12px;
       }
       .cell{
         height: 30px !important;
         display: block;
-        border-bottom: #d7e1f5 1px solid;
+        border-bottom: #9EA1A4 1px solid;
       }
     }
   .slot:nth-child(odd){
     height: 30px;
     display: grid;
-    grid-template-columns: 1fr 9fr;
+    grid-template-columns: 1fr 8fr;
       .time{
         color: #ffffff;
 
@@ -172,7 +174,7 @@ $margin_date: calc(calc(100vw -210px) /28);
       .cell{
         height: 30px !important;
         display: block;
-        border-bottom: #a9bbe2 1px solid;
+        border-bottom: #9EA1A4 1px solid;
       }
   }
 }
@@ -249,17 +251,21 @@ $margin_date: calc(calc(100vw -210px) /28);
 ///margin top calendar, http , splash screen
 
 ion-menu-button{
-  color:#0061d5;
+  color:#707579;
 }
 
 
 ion-footer{
   position: absolute;
+  height: 70px;
   display: block;
   z-index: 500;
   bottom: 0px;
   ion-toolbar{
     --background: #0061d5;
+    -webkit-box-shadow: 0px 0px 15px 0px rgba(0,0,50,0.17);
+    -moz-box-shadow: 0px 0px 15px 0px rgba(0,0,0,50.17);
+    box-shadow: 0px 0px 15px 0px rgba(0,0,50,0.17);
     padding: 10px 0px 30px 0px;
     text-align: center;
     p{
@@ -275,7 +281,7 @@ ion-footer{
 ion-header{
   z-index: 10000;
   ion-buttons{
-    color:  #0061d5;
+    color:  #707579;
   }
 }
 

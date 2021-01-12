@@ -5,8 +5,10 @@
     color: #ffffff;
     .m-day-name{
         text-align: center;
+        overflow: auto;
         display: inline-block;
         width: calc(100% / 7) ;
+        line-height: 20px;
     }
     .month_section{
         width: 100vw;
@@ -42,4 +44,15 @@ padding: 20px 0px;
 body, ion-content{
     --background: #0061d5 !important;
     background: #0061d5 !important;
+}
+
+.active_date{
+    display: block;
+    margin: auto;
+    background: #ffffff !important;
+    color: #0061d5;
+    line-height: 28px;
+    width: 28px !important;
+    height: 28px !important;
+    border-radius: 50%;
 }

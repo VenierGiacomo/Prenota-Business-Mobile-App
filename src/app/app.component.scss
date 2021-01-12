@@ -153,7 +153,9 @@ ion-menu.ios ion-note {
 ion-menu.ios ion-note {
   margin-bottom: 8px;
 }
-
+ion-item{
+  margin-bottom: 20px;
+}
 ion-note {
   display: inline-block;
   font-size: 16px;
@@ -178,7 +180,6 @@ ion-item, ion-item:active, ion-lable, ion-lable:active {
 
 .move-down{
   margin-top: 40px;
-  margin-bottom: 20px;
 }
 // .dates{
 //   background: #019aff;
@@ -216,3 +217,13 @@ ion-item, ion-item:active, ion-lable, ion-lable:active {
 // .dates{
 //   -ms-overflow-style: none;
 // }
+:root {
+  .popover-content {
+      left: 0 !important;
+      width: 100%;
+  }
+}
+
+.modal-wrapper{
+  background: transparent !important;
+}

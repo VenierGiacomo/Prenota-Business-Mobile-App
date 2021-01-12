@@ -1,11 +1,11 @@
-<ion-list *ngIf="n==-1">
-    <ion-list-header>Seleziona</ion-list-header>
+<ion-list *ngIf="appo==-1">
+    
     <ion-item button *ngFor='let employee of employees' (click)='set(employee)'>{{employee.name}}</ion-item>
     <ion-item lines="none" detail="false" style='color: #8f3434' (click)="dismissPopover('name')">Chiudi</ion-item>
 </ion-list>
-<ion-list *ngIf="n!=-1">
-    <a *ngIf='n.phone!=undefined'href="tel:+39{{n.phone}}" target="_blank"><ion-item button>Chiama</ion-item></a>
-    <ion-item *ngIf='n.phone==undefined'button>Numero di cellulare assente</ion-item>
+<ion-list *ngIf="appo!=-1">
+    <a *ngIf='appo.phone!=undefined'href="tel:+39{{appo.phone}}" target="_blank"><ion-item button>Chiama</ion-item></a>
+    <ion-item *ngIf='appo.phone==undefined'button>Numero di cellulare assente</ion-item>
     <ion-item button (click)='updateBooking()'>Modifica</ion-item>
     <ion-item button (click)='deleteAppointment()' style='color: #8f3434' >Elimina</ion-item>
 </ion-list>

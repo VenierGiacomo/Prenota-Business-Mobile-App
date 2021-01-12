@@ -1,20 +1,22 @@
-<ion-header translucent>
-  <ion-toolbar>
+<ion-header >
+  <ion-toolbar style=" background: transparent !important;"> 
     <ion-buttons slot="end">
-      <ion-button (click)="closeModal()" class="close">Chiudi</ion-button>
+      <ion-button (click)="closeModal()" class="close"><ion-icon name="close-outline"></ion-icon></ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <ion-list>
-      <ion-item (click)='selectService()'> 
-          <ion-label>Tipo di servizio</ion-label>
-          <div [innerHTML]="service.name" class="align-right"></div>
-        </ion-item>
-        <ion-item *ngIf='service.name=="Personalizza"'>
-          <ion-label>Nome servizio</ion-label>
-        <ion-input class="align-right" [(ngModel)]="desc"placeholder="Visita spec."></ion-input>
+        <ion-item  > 
+          <ion-label>Servizio</ion-label>
+        <ion-select interface="popover" placeholder="Seleziona un servizio" [(ngModel)]='service'>
+          <ion-select-option *ngFor='let serv of services'  value='{{serv.id}}'>{{serv.name}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+        <ion-item *ngIf='service==-1'>
+          <ion-label>Nome del servizio</ion-label>
+        <ion-input class="align-right-1" [(ngModel)]="desc" placeholder="Visita spec."></ion-input>
       </ion-item >
     <ion-item >
         <ion-label>Nome cliente</ion-label>
@@ -31,14 +33,20 @@
       <ion-label>Data</ion-label>
       <div  [innerHTML]="today" class="align-right"></div>
     </ion-item>
-    <ion-item (click)='showTimePicker()'> 
-      <ion-label>Ora</ion-label>
-      <div  [innerHTML]="time" class="align-right"></div>
-    </ion-item>
-    <ion-item (click)='showPicker()' *ngIf='service.name=="Personalizza"'> 
-      <ion-label>Durata</ion-label>
-      <div [innerHTML]="duration" [(ngModel)]="duration" class="align-right"></div>
-    </ion-item>
+    <ion-item > 
+      <ion-label>Orario</ion-label>
+    <ion-select interface="popover" placeholder="Seleziona un servizio" [(ngModel)]='time'>
+      <ion-select-option *ngFor='let hour of hours_list'  value='{{hour}}'>{{hour}}</ion-select-option>
+    </ion-select>
+  </ion-item>
+  <ion-item *ngIf='service==-1'>
+    <ion-label>Durata</ion-label>
+  <ion-select interface="popover" placeholder="Seleziona una durata" [(ngModel)]='duration'>
+    <ion-select-option *ngFor='let dur of time_duration'  value='{{dur}}'>{{dur}}</ion-select-option>
+  </ion-select>
+  </ion-item>
   </ion-list>
-  <ion-button class='add' (click)="newAppointment()">Aggiungi</ion-button>
+  <ion-button class='add' (click)="newAppointment(0)">Aggiungi</ion-button>
+  <ion-button class='add-block' (click)="newAppointment(1)">Blocca un'ora</ion-button>
+  <ion-button class='add-block' (click)="newAppointment(2)">Chiudi tutto il giorno</ion-button>
 </ion-content>

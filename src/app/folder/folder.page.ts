@@ -10,7 +10,7 @@ import { NativeApiService } from '../services/nativeapi.service';
 import { MonthviewPage } from '../monthview/monthview.page';
 import Notiflix from "notiflix";
 import { OneSignal } from '@ionic-native/onesignal/ngx';
-
+import { Badge } from '@ionic-native/badge/ngx';
 import { AppComponent } from '../app.component'
 
 
@@ -24,6 +24,7 @@ import { AppComponent } from '../app.component'
 export class FolderPage implements OnInit {
   // public folder: string;
   day
+  interval
   numbers:any
   all_appointments_list = []
   week = []
@@ -41,8 +42,9 @@ export class FolderPage implements OnInit {
   times =["06:45", "06:50", "06:55", "07:00", "07:05", "07:10", "07:15", "07:20", "07:25", "07:30", "07:35", "07:40", "07:45", "07:50", "07:55", "08:00", "08:05", "08:10", "08:15", "08:20", "08:25", "08:30", "08:35", "08:40", "08:45", "08:50", "08:55", "09:00", "09:05", "09:10", "09:15", "09:20", "09:25", "09:30", "09:35", "09:40", "09:45", "09:50", "09:55", "10:00", "10:05", "10:10", "10:15", "10:20", "10:25", "10:30", "10:35", "10:40", "10:45", "10:50", "10:55", "11:00", "11:05", "11:10", "11:15", "11:20", "11:25", "11:30", "11:35", "11:40", "11:45", "11:50", "11:55", "12:00", "12:05", "12:10", "12:15", "12:20", "12:25", "12:30", "12:35", "12:40", "12:45", "12:50", "12:55", "13:00", "13:05", "13:10", "13:15", "13:20", "13:25", "13:30", "13:35", "13:40", "13:45", "13:50", "13:55","14:00", "14:05", "14:10", "14:15", "14:20", "14:25", "14:30", "14:35", "14:40", "14:45", "14:50", "14:55", "15:00", "15:05", "15:10", "15:15", "15:20", "15:25", "15:30", "15:35", "15:40", "15:45", "15:50", "15:55", "16:00", "16:05", "16:10", "16:15", "16:20", "16:25", "16:30", "16:35", "16:40", "16:45", "16:50", "16:55", "17:00", "17:05", "17:10", "17:15", "17:20", "17:25", "17:30", "17:35", "17:40", "17:45", "17:50", "17:55", "18:00", "18:05", "18:10", "18:15", "18:20", "18:25", "18:30", "18:35", "18:40", "18:45", "18:50", "18:55", "19:00", "19:05", "19:10", "19:15", "19:20", "19:25", "19:30", "19:35", "19:40", "19:45", "19:50", "19:55", "20:00", "20:05", "20:10", "20:15", "20:20", "20:25", "20:30", "20:35", "20:40", "20:45", "20:50", "20:55", "21:00", "21:05", "21:10", "21:15", "21:20", "21:25", "21:30", "21:35", "21:40", "21:45", "21:50", "21:55", "22:00", "22:05", "22:10", "22:15","22:20", "22:25", "22:30", "22:35", "22:40", "22:45", "22:50", "22:55", "23:00", "23:05", "23:10", "23:15", "23:20", "23:25", "23:30", "23:35", "23:40", "23:45", "23:50", "23:55" ]
   hours = ["06:45", "07:00", "07:15", "07:30", "07:45", "08:00", "08:15", "08:30", "08:45", "09:00", "09:15", "09:30", "09:45", "10:00", "10:15", "10:30", "10:45", "11:00", "11:15", "11:30", "11:45", "12:00", "12:15", "12:30", "12:45", "13:00", "13:15", "13:30", "13:45", "14:00", "14:15", "14:30", "14:45", "15:00", "15:15", "15:30", "15:45", "16:00", "16:15", "16:30", "16:45", "17:00", "17:15", "17:30", "17:45", "18:00", "18:15", "18:30", "18:45", "19:00", "19:15", "19:30", "19:45", "20:00", "20:15", "20:30", "20:45", "21:00", "21:15", "21:30", "21:45", "22:00", "22:15", "22:30", "22:45", "23:00", "23:15", "23:30", "23:45", "24:00"]
   services:any = []
+  norm_year
   spin="block"
-  constructor(private navcomp: AppComponent, private oneSignal: OneSignal, private plt:  Platform, public modalController: ModalController, private api: ApiService, private apiNative: NativeApiService, private popoverController: PopoverController, private storage: StorageService, private router: Router) {
+  constructor(private badge: Badge,private navcomp: AppComponent, private oneSignal: OneSignal, private plt:  Platform, public modalController: ModalController, private api: ApiService, private apiNative: NativeApiService, private popoverController: PopoverController, private storage: StorageService, private router: Router) {
     this.plt.ready().then(() => {
       this.getservices()
       this.getEmployees()
@@ -55,7 +57,7 @@ export class FolderPage implements OnInit {
       var notificationOpenedCallback =  function(jsonData) {
         setTimeout(() => {
           self.spin="none"
-          self.navcomp.navigateNotifications()
+          // self.navcomp.navigateNotifications()
         }, 300);
       };
       // Set your iOS Settings
@@ -73,6 +75,19 @@ export class FolderPage implements OnInit {
       this.oneSignal.promptForPushNotificationsWithUserResponse().then(function(accepted) {
       });
       this.oneSignal.setSubscription(true)
+      this.oneSignal.handleNotificationReceived().subscribe(() => {
+        this.updatebadge()
+       });
+       this.plt.pause.subscribe(()=>{
+        clearInterval(this.interval);
+       })
+       this.plt.resume.subscribe(()=>{
+         this.getAppoitments()
+        clearInterval(this.interval);
+        this.interval =setInterval(()=>{
+          this.getAppoitments()
+              },300000)
+       })
     }
     });
     
@@ -86,6 +101,7 @@ export class FolderPage implements OnInit {
 // }
 
  async ngOnInit() {
+   this.norm_year=this.year
     var now = new  Date()
   var today = now.getDay() -1
   var month = now.getMonth()
@@ -106,17 +122,49 @@ export class FolderPage implements OnInit {
     this.week.push(day)
   }
   if(this.week[6]<this.week[0] && day_number>20){
-this.month=month+1
-this.month_name=this.months_names[month+1]
+    if(this.month==11){
+      this.month=0
+        this.month_name=this.months_names[0]
+    }else{
+      this.month=month+1
+      this.month_name=this.months_names[month+1]
+    }
+
   }
   this.spin="block"
     this.oneSignal.getIds().then(data =>{
       this.apiNative.registerdevice(data.userId).then(data =>{
       })
     })
+    this.interval =setInterval(()=>{
+      this.getAppoitments()
+        },300000)
+
+ }
+ public updatebadge(){
+  this.badge.set(1);
  }
   async presentModal(i) {
+  
+    clearInterval(this.interval);
     if(this.week[6]<this.week[0] && this.day>7){
+      if(this.month==0){
+        const modal = await this.modalController.create({
+          component:NewAppointmentPage,
+          swipeToClose: true,
+          cssClass: 'select-modal' ,
+          componentProps: { 
+            time: this.hours[i],
+            day: this.day,
+            month: 11,
+            year: this.year,
+            homeref: this
+          }
+        });
+        return await modal.present();
+      }else{
+
+ 
       const modal = await this.modalController.create({
         component:NewAppointmentPage,
         swipeToClose: true,
@@ -130,6 +178,7 @@ this.month_name=this.months_names[month+1]
         }
       });
       return await modal.present();
+    }
     }else if(this.week[6]<this.week[0] && this.day<7){
       const modal = await this.modalController.create({
         component:NewAppointmentPage,
@@ -182,11 +231,16 @@ this.month_name=this.months_names[month+1]
     return await modal.present();
   }
   async infoApp(ev, n) {
+    var appo =n 
+    if(n!=-1){
+       appo = this.all_appointments_list.filter( x => x.id == n.id)[0]
+    }
     this.currentPopover = await this.popoverController.create({
       component: PopovercallComponent,
       event: ev,
       translucent: true,
-      componentProps: {homeref:this, n: n, employees: this.employees},
+      
+      componentProps: {homeref:this, appo: appo, employees: this.employees},
     });
     this.currentPopover.onDidDismiss().then((data) => {
       if(data.data == "name"){
@@ -216,49 +270,50 @@ this.month_name=this.months_names[month+1]
     while(paras[0]) {
       paras[0].parentNode.removeChild(paras[0]);
     } ​
-    setTimeout(() => {
+
     //change dates
-    var next_m = 0
-    for (let day in this.week){
-      if (this.week[day] +7 <= this.months_days[this.month]){
-        this.week[day] +=7
+   var next_m = 0
+  for (let day in this.week){
+    if (this.week[day] +7 <= this.months_days[this.month]){
+      this.week[day] +=7
+    }
+    else{
+      if (this.week[day] +7 > this.months_days[this.month] && this.week[6] +7 <= this.months_days[this.month]){
+        if (this.month == 0){
+          this.week[day] =this.week[day] +7  -this.months_days[11]
+          
+        }else{
+          this.week[day] =this.week[day] +7  -this.months_days[this.month-1]
+        }
       }
       else{
-        if (this.week[day] +7 > this.months_days[this.month] && this.week[6] +7 <= this.months_days[this.month]){
-          if (this.month == 0){
-            this.week[day] =this.week[day] +7  -this.months_days[11]
-            
-          }else{
-            this.week[day] =this.week[day] +7  -this.months_days[this.month-1]
-          }
-        }
-        else{
-          this.week[day] =this.week[day] +7  -this.months_days[this.month]
-          next_m = 1
+        this.week[day] =this.week[day] +7  -this.months_days[this.month]
+        next_m = 1
+     
        
-         
-        }
       }
     }
-    if(next_m == 1){
-      if (this.month == 11){
-        this.month =0
-        this.year += 1
-      }
-      else{
-        this.month +=1
-      }
-      
-      next_m = 0
-      this.month_name = this.months_names[this.month]
+  }
+  if(next_m == 1){
+    if (this.month == 11){
+      this.month =0
+      this.year += 1
+      this.norm_year=this.year
     }
-    // this.week= this.week.map((value, index, array)=>{
-    //   value+=7
-    //   return value})
-    //get appointments
+    else{
+      this.month +=1
+    }
+    
+    next_m = 0
+    this.month_name = this.months_names[this.month]
+  }
     this.day = this.week[0]
+    // console.log(this.day,this.month_name,this.year)
+    setTimeout(() => {
     this.getAppoitments()
+    // console.log(this.day,this.month_name,this.year)
   }, 100);
+  // console.log(this.day,this.month_name,this.year)
   }  
     //get appointments
     
@@ -271,55 +326,65 @@ this.month_name=this.months_names[month+1]
       //change dates
       setTimeout(() => {
         var next_m = 0
-      for (let day in this.week){
-        if (this.week[day] > 7){
-          this.week[day] -=7
-        }
-        else{
-          if (this.week[day] < 7  && this.week[6] > 7){
-          if (this.month == 0){
-            this.week[day] = this.week[day] -7 +this.months_days[11]
+        for (let day in this.week){
+          if (this.week[day] > 7){
+            this.week[day] -=7
           }
           else{
-            this.week[day] = this.week[day] -7 +this.months_days[this.month-1]
-          }
-          }
-          else{
-            if (this.week[day] < 7  && this.week[0] > 7){
-    
-              if (this.month == 0){
-                this.week[day] = this.week[day] -7 +this.months_days[11]
-                next_m = 1
-              }
-              else{
-                this.week[day] = this.week[day] -7 +this.months_days[this.month-1]
-                next_m = 1
-              }
-             
+            if (this.week[day] < 7  && this.week[6] > 7){
+            if (this.month == 0){
+              this.week[day] = this.week[day] -7 +this.months_days[11]
             }
             else{
-              this.week[day]= this.week[day] -7 +this.months_days[this.month-1]
-              // next_m = 1
+              if(this.month==0){
+                this.week[day] = this.week[day] -7 +this.months_days[11]
+              }else{
+                this.week[day] = this.week[day] -7 +this.months_days[this.month-1]
+              }
+              
             }
-           
-           
+            }
+            else{
+              if (this.week[day] < 7  && this.week[0] > 7){
+      
+                if (this.month == 0){
+                  this.week[day] = this.week[day] -7 +this.months_days[11]
+                  next_m = 1
+                }
+                else{
+                  this.week[day] = this.week[day] -7 +this.months_days[this.month-1]
+                  next_m = 1
+                }
+               
+              }
+              else{
+                if(this.month==0){
+                this.week[day]= this.week[day] -7 +this.months_days[11]
+                }else{
+                  this.week[day]= this.week[day] -7 +this.months_days[this.month-1]
+                }
+                // next_m = 1
+              }
+             
+             
+            }
           }
         }
-      }
-      if(next_m == 1){
-        if (this.month == 0){
-          this.month = 11
-          this.year -= 1
+        if(next_m == 1){
+          if (this.month == 0){
+            this.month = 11
+            this.year = this.norm_year -1
+            this.norm_year=this.year
+          }
+          else{
+            this.month -=1
+          }
+         
+          next_m = 0
+          this.month_name = this.months_names[this.month]
         }
-        else{
-          this.month -=1
-        }
-       
-        next_m = 0
-        this.month_name = this.months_names[this.month]
-      }
-      this.day=this.week[6]
-      //get appointments
+  this.day = this.week[6]
+  //get appointments
       this.getAppoitments()
       }, 100);
       
@@ -342,9 +407,17 @@ getAppoitments(){
     this.no_appointments = "none"
     this.appointments = []
     var week 
+    
     if(this.week[6]<this.week[0]){
-      week = this.getWeekNumber(new Date(this.year, this.month-1, this.week[0]))
+      if(this.month==0){
+        week = 53
+      }else{
+        
+        week = this.getWeekNumber(new Date(this.year, this.month-1, this.week[0]))
+      }
+      
     }else{
+      
       week = this.getWeekNumber(new Date(this.year, this.month, this.week[0]))
     }
     if (this.plt.is('hybrid')) {
@@ -429,27 +502,46 @@ getAppoitments(){
     } ​
     this.day = day
     if(day > this.week[6]){
-      this.month_name= this.months_names[this.month-1]
+      if(this.month==0){
+        this.month_name= this.months_names[11]
+        this.year=this.norm_year
+      }else{
+        this.month_name= this.months_names[this.month-1]
+        this.year=this.norm_year
+      }
+   
       // this.month=this.absmonth
     }else{
-      this.month_name= this.months_names[this.month]
+      if(this.month==0){
+        this.month_name= this.months_names[this.month]
+        // this.month_name= this.months_names[11]
+        this.year=this.norm_year
+      }else{
+        this.month_name= this.months_names[this.month]
+        this.year=this.norm_year
+      }
+   
       // this.month=this.absmonth+1
     }
     setTimeout(() => {
       for (let appo of this.all_appointments_list){
         if (appo.day == day){
-         this.drawAppointment(appo.id, appo.start, appo.end, appo.details, appo.client_name, appo.employee, appo.service_n, appo.day ,appo.week, appo.month, appo.year, appo.phone )
+         this.drawAppointment(appo.id, appo.start, appo.end, appo.details, appo.client_name, appo.employee, appo.service_n, appo.day ,appo.week, appo.month, appo.year, appo.phone, appo.note )
         }
       }
     }, 50);
     this.spin="none"
   }
-  drawAppointment(id, start, end, details, client_name, employee, service, day ,week, month, year, phone ){
+  drawAppointment(id, start, end, details, client_name, employee, service, day ,week, month, year, phone, note ){
     var height = end - start
     var div_height = ((height*10)-4)+'px'
     var div = document.createElement('div');
     div.style.margin = '2px auto'
     var self = this
+    var has_note = false
+    if(note!='' && note!=null){
+      has_note = true
+    }
     var pass_data={
       id: id,
       phone: phone,
@@ -477,10 +569,18 @@ getAppoitments(){
     div.classList.add('task','task--primary', `c${color}`) 
     div.id= id
     div.style.height =div_height
-    div.innerHTML = `
-                    <div class="task-details" id=${id}>${details}</div>
-                    <div class="task-names" id=${id}>${client_name}</div>
-                    `
+    if(has_note){
+      div.innerHTML = `
+      <div class="task-details" id=${id}>${details} </div>
+      <div class="task-names" id=${id}>${client_name}</div>
+      `
+    }else{
+      div.innerHTML = `
+      <div class="task-details" id=${id}>${details}</div>
+      <div class="task-names" id=${id}>${client_name}</div>
+      `
+    }
+    
     if (this.day == day &&  this.employee.employee ==employee){
         document.getElementById(start).append(div)
     }
@@ -491,21 +591,49 @@ getAppoitments(){
     if (this.plt.is('hybrid')) {
       this.apiNative.deleteAppointment(id).then(
         res => {
-          console.log(res) }
+         Notiflix.Notify.Init({ position:"left-bottom", distance:"70px", success: {background:"#00479d",textColor:"#fff",notiflixIconColor:"#fff",}, }); 
+          Notiflix.Notify.Success('Appuntamento cancellato')
+         }
         ).catch(
           err => console.log(err)) 
     }
     else{
       this.api.deleteAppointment(id).subscribe(
         data=> {
+         Notiflix.Notify.Init({ position:"left-bottom", distance:"70px", success: {background:"#00479d",textColor:"#fff",notiflixIconColor:"#fff",}, }); 
+          Notiflix.Notify.Success('Appuntamento cancellato')
         },err =>{
           console.log(err)
          })
     }
   }
-  clearAppointment(id){
+  async clearAppointment(id, start, end, day, month, year, client_name, phone,details, employee,service,client,note,shop,store_name, store_phone){
     var paras = document.getElementById(id);
     paras.parentNode.removeChild(paras);
+    var week = this.getWeekNumber(new Date(year,month,day))
+    this.all_appointments_list = await this.all_appointments_list.filter( x => x.id != id) 
+    this.all_appointments_list.push(
+    {
+    client: client,
+    client_name: client_name,
+    day: day,
+    details: details,
+    employee: employee,
+    end: end,
+    id: id,
+    location: null,
+    month: month,
+    note: note,
+    phone: phone,
+    service_n: service,
+    shop: shop,
+    start: start,
+    store_name: store_name,
+    store_phone:store_phone,
+    week:week,
+    year: year,
+    }
+    )
   }
   viewMonth(){
     this.router.navigateByUrl('/monthview')

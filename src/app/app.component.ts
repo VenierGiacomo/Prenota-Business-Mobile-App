@@ -3,8 +3,6 @@ import { Component, OnInit } from '@angular/core';
 import { Platform, MenuController, NavController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
-import { Router } from '@angular/router';
-import { OneSignal } from '@ionic-native/onesignal/ngx';
 import { NativeApiService } from './services/nativeapi.service';
 import { ApiService } from './services/api.service';
 
@@ -25,7 +23,7 @@ export class AppComponent implements OnInit {
     private nav: NavController,
     private apiNative: NativeApiService,
     private api: ApiService,
-    private oneSignal: OneSignal
+    // private oneSignal: OneSignal
   ) {
     this.initializeApp();
   }
@@ -77,22 +75,35 @@ export class AppComponent implements OnInit {
 
 
   ngOnInit() {
-    const path = window.location.pathname
-    if (path == '/notifications' || path == 'notifications'){
-      this.selectedIndex= 1
-    }else{
-      this.selectedIndex= 0
-    }
+    this.selectedIndex= 0
+    // const path = window.location.pathname
+    // if (path == '/notifications' || path == 'notifications'){
+    //   this.selectedIndex= 1
+    // }else{
+    //   if (path == '/scan' || path == 'scan'){
+    //     this.selectedIndex= 2
+    //   }else{
+    //     this.selectedIndex= 0
+    //   }
+      
+    // }
   
+  }
+  assistence(){
+    window.location.href = 'https://wa.me/393404526854'
   }
   navigateCalendar(){
     this.selectedIndex= 0
     this.nav.navigateRoot('/calendar')
   }
-  navigateNotifications(){
-    this.selectedIndex= 1
-    this.nav.navigateRoot('/notifications')
-  }
+  // navigateNotifications(){
+  //   this.selectedIndex= 1
+  //   this.nav.navigateRoot('/notifications')
+  // }
+  // navigateScan(){
+  //   this.selectedIndex= 2
+  //   this.nav.navigateRoot('/scan')
+  // }
   async close(){
     await this.menuCtrl.close();
   }

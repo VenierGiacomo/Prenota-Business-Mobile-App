@@ -25,6 +25,9 @@
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
 
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
 @font-face {
   font-family: "Comfortaa Regular";
   src: url('./assets/Comfortaa/static/Comfortaa-Regular.ttf') format('opentype');
@@ -37,7 +40,7 @@
 .select-modal{
   background: transparent;
   .modal-wrapper { border-top-left-radius: 15px; border-top-right-radius: 15px;}
-  padding-top: 160px   !important;
+  padding-top: 80px   !important;
   padding-left: 0px   !important;
   padding-right: 0px   !important;
 }
@@ -57,6 +60,9 @@ ion-header{
     }
 
   }
+  body, html{
+    font-family: 'Roboto', sans-serif !important;
+  }
 ion-title {
     width: 100vw !important;
     position: absolute !important;
@@ -64,3 +70,14 @@ ion-title {
     bottom:15px;
     text-align:center !important;
   }
+//   :root {
+//     .popover-content {
+//         left: calc(5vw -  var(--ion-safe-area-right, 0px)) !important; 
+//         width: 90vw;
+        
+//         ion-lable{
+//           font-size: 11px !important;
+//           --font-size: 11px !important;
+//         }
+//     }
+// }

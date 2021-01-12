@@ -10,7 +10,6 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations'
 import { HttpClientModule } from '@angular/common/http';
-import { CallNumber } from '@ionic-native/call-number/ngx';
 import { IonicStorageModule } from '@ionic/storage';
 import { HTTP } from '@ionic-native/http/ngx';
 import 'hammerjs'
@@ -20,7 +19,7 @@ import * as Hammer from 'hammerjs';
 import { PopovercallComponent } from './popovercall/popovercall.component';
 import { AuthguardService } from './services/authguard.service';
 import { OneSignal } from '@ionic-native/onesignal/ngx';
-
+import { Badge } from '@ionic-native/badge/ngx';
 @Injectable()
 export class MyHammerConfig extends HammerGestureConfig {
     buildHammer(element: HTMLElement): any {
@@ -45,9 +44,9 @@ export class MyHammerConfig extends HammerGestureConfig {
   ],
   providers: [
     StatusBar,
-    CallNumber,
     OneSignal,
     HTTP,
+    Badge,
     SplashScreen,
     {provide: HAMMER_GESTURE_CONFIG, useClass: MyHammerConfig },
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },

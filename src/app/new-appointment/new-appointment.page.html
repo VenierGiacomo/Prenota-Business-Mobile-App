@@ -36,7 +36,7 @@
     <ion-item > 
       <ion-label>Orario</ion-label>
     <ion-select interface="popover" placeholder="Seleziona un servizio" [(ngModel)]='time'>
-      <ion-select-option *ngFor='let hour of hours_list'  value='{{hour}}'>{{hour}}</ion-select-option>
+      <ion-select-option *ngFor='let hour of times'  value='{{hour}}'>{{hour}}</ion-select-option>
     </ion-select>
   </ion-item>
   <ion-item *ngIf='service==-1'>

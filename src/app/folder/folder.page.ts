@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ModalController, Platform, NavController } from '@ionic/angular';
+import { ModalController, Platform, NavController, ActionSheetController } from '@ionic/angular';
 import { NewAppointmentPage } from '../new-appointment/new-appointment.page';
 import { ApiService } from '../services/api.service';
 import { PopoverController } from '@ionic/angular';
@@ -39,12 +39,15 @@ export class FolderPage implements OnInit {
   month = new Date().getMonth()
   absmonth = new Date().getMonth()
   month_name = this.months_names[this.month]
-  times =["06:45", "06:50", "06:55", "07:00", "07:05", "07:10", "07:15", "07:20", "07:25", "07:30", "07:35", "07:40", "07:45", "07:50", "07:55", "08:00", "08:05", "08:10", "08:15", "08:20", "08:25", "08:30", "08:35", "08:40", "08:45", "08:50", "08:55", "09:00", "09:05", "09:10", "09:15", "09:20", "09:25", "09:30", "09:35", "09:40", "09:45", "09:50", "09:55", "10:00", "10:05", "10:10", "10:15", "10:20", "10:25", "10:30", "10:35", "10:40", "10:45", "10:50", "10:55", "11:00", "11:05", "11:10", "11:15", "11:20", "11:25", "11:30", "11:35", "11:40", "11:45", "11:50", "11:55", "12:00", "12:05", "12:10", "12:15", "12:20", "12:25", "12:30", "12:35", "12:40", "12:45", "12:50", "12:55", "13:00", "13:05", "13:10", "13:15", "13:20", "13:25", "13:30", "13:35", "13:40", "13:45", "13:50", "13:55","14:00", "14:05", "14:10", "14:15", "14:20", "14:25", "14:30", "14:35", "14:40", "14:45", "14:50", "14:55", "15:00", "15:05", "15:10", "15:15", "15:20", "15:25", "15:30", "15:35", "15:40", "15:45", "15:50", "15:55", "16:00", "16:05", "16:10", "16:15", "16:20", "16:25", "16:30", "16:35", "16:40", "16:45", "16:50", "16:55", "17:00", "17:05", "17:10", "17:15", "17:20", "17:25", "17:30", "17:35", "17:40", "17:45", "17:50", "17:55", "18:00", "18:05", "18:10", "18:15", "18:20", "18:25", "18:30", "18:35", "18:40", "18:45", "18:50", "18:55", "19:00", "19:05", "19:10", "19:15", "19:20", "19:25", "19:30", "19:35", "19:40", "19:45", "19:50", "19:55", "20:00", "20:05", "20:10", "20:15", "20:20", "20:25", "20:30", "20:35", "20:40", "20:45", "20:50", "20:55", "21:00", "21:05", "21:10", "21:15", "21:20", "21:25", "21:30", "21:35", "21:40", "21:45", "21:50", "21:55", "22:00", "22:05", "22:10", "22:15","22:20", "22:25", "22:30", "22:35", "22:40", "22:45", "22:50", "22:55", "23:00", "23:05", "23:10", "23:15", "23:20", "23:25", "23:30", "23:35", "23:40", "23:45", "23:50", "23:55" ]
+  times =["06:00", "06:05", "06:10", "06:15", "06:20", "06:25", "06:30", "06:35", "06:40","06:45", "06:50", "06:55", "07:00", "07:05", "07:10", "07:15", "07:20", "07:25", "07:30", "07:35", "07:40", "07:45", "07:50", "07:55", "08:00", "08:05", "08:10", "08:15", "08:20", "08:25", "08:30", "08:35", "08:40", "08:45", "08:50", "08:55", "09:00", "09:05", "09:10", "09:15", "09:20", "09:25", "09:30", "09:35", "09:40", "09:45", "09:50", "09:55", "10:00", "10:05", "10:10", "10:15", "10:20", "10:25", "10:30", "10:35", "10:40", "10:45", "10:50", "10:55", "11:00", "11:05", "11:10", "11:15", "11:20", "11:25", "11:30", "11:35", "11:40", "11:45", "11:50", "11:55", "12:00", "12:05", "12:10", "12:15", "12:20", "12:25", "12:30", "12:35", "12:40", "12:45", "12:50", "12:55", "13:00", "13:05", "13:10", "13:15", "13:20", "13:25", "13:30", "13:35", "13:40", "13:45", "13:50", "13:55","14:00", "14:05", "14:10", "14:15", "14:20", "14:25", "14:30", "14:35", "14:40", "14:45", "14:50", "14:55", "15:00", "15:05", "15:10", "15:15", "15:20", "15:25", "15:30", "15:35", "15:40", "15:45", "15:50", "15:55", "16:00", "16:05", "16:10", "16:15", "16:20", "16:25", "16:30", "16:35", "16:40", "16:45", "16:50", "16:55", "17:00", "17:05", "17:10", "17:15", "17:20", "17:25", "17:30", "17:35", "17:40", "17:45", "17:50", "17:55", "18:00", "18:05", "18:10", "18:15", "18:20", "18:25", "18:30", "18:35", "18:40", "18:45", "18:50", "18:55", "19:00", "19:05", "19:10", "19:15", "19:20", "19:25", "19:30", "19:35", "19:40", "19:45", "19:50", "19:55", "20:00", "20:05", "20:10", "20:15", "20:20", "20:25", "20:30", "20:35", "20:40", "20:45", "20:50", "20:55", "21:00", "21:05", "21:10", "21:15", "21:20", "21:25", "21:30", "21:35", "21:40", "21:45", "21:50", "21:55", "22:00", "22:05", "22:10", "22:15","22:20", "22:25", "22:30", "22:35", "22:40", "22:45", "22:50", "22:55", "23:00", "23:05", "23:10", "23:15", "23:20", "23:25", "23:30", "23:35", "23:40", "23:45", "23:50", "23:55" ]
   hours = ["06:45", "07:00", "07:15", "07:30", "07:45", "08:00", "08:15", "08:30", "08:45", "09:00", "09:15", "09:30", "09:45", "10:00", "10:15", "10:30", "10:45", "11:00", "11:15", "11:30", "11:45", "12:00", "12:15", "12:30", "12:45", "13:00", "13:15", "13:30", "13:45", "14:00", "14:15", "14:30", "14:45", "15:00", "15:15", "15:30", "15:45", "16:00", "16:15", "16:30", "16:45", "17:00", "17:15", "17:30", "17:45", "18:00", "18:15", "18:30", "18:45", "19:00", "19:15", "19:30", "19:45", "20:00", "20:15", "20:30", "20:45", "21:00", "21:15", "21:30", "21:45", "22:00", "22:15", "22:30", "22:45", "23:00", "23:15", "23:30", "23:45", "24:00"]
   services:any = []
   norm_year
+  quarter_displ
+  five_displ
+  is_sport
   spin="block"
-  constructor(private badge: Badge,private navcomp: AppComponent, private oneSignal: OneSignal, private plt:  Platform, public modalController: ModalController, private api: ApiService, private apiNative: NativeApiService, private popoverController: PopoverController, private storage: StorageService, private router: Router) {
+  constructor(private actionSheetController: ActionSheetController, private badge: Badge,private navcomp: AppComponent, private oneSignal: OneSignal, private plt:  Platform, public modalController: ModalController, private api: ApiService, private apiNative: NativeApiService, private popoverController: PopoverController, private storage: StorageService, private router: Router) {
     this.plt.ready().then(() => {
       this.getservices()
       this.getEmployees()
@@ -101,8 +104,9 @@ export class FolderPage implements OnInit {
 // }
 
  async ngOnInit() {
-   this.norm_year=this.year
-    var now = new  Date()
+ 
+  this.norm_year=this.year
+  var now = new  Date()
   var today = now.getDay() -1
   var month = now.getMonth()
   var day_number = now.getDate()
@@ -131,6 +135,40 @@ export class FolderPage implements OnInit {
     }
 
   }
+  var store_info = await this.storage.getstore()
+  this.is_sport =  store_info.business_type==7
+  if(store_info.custom_size){
+
+    // this.table_line_heigth =store_info.table_line_heigth
+    this.quarter_displ = store_info.quarter_displ
+    this.five_displ = store_info.five_displ
+    // this.table_font_size = store_info.table_font_size
+  }
+  // this.five_displ=false
+  if(this.quarter_displ){
+    if(!this.five_displ){
+      for(let ind in this.times){
+        var el
+        if((+ind)%3!=0){
+          el = document.getElementById(ind+'-')
+          if(el!=null){
+            el.style.display='none'
+          }
+         
+        }
+      }
+    }
+  }else{
+    for(let ind in this.times){
+      if(+ind%6!=0){
+        el =  document.getElementById(ind+'-')
+        if(el!=null){
+          el.style.display='none'
+        }
+      }
+    }
+  }
+
   this.spin="block"
     this.oneSignal.getIds().then(data =>{
       this.apiNative.registerdevice(data.userId).then(data =>{
@@ -145,7 +183,7 @@ export class FolderPage implements OnInit {
   this.badge.set(1);
  }
   async presentModal(i) {
-  
+  console.log( this.times[i])
     clearInterval(this.interval);
     if(this.week[6]<this.week[0] && this.day>7){
       if(this.month==0){
@@ -154,7 +192,7 @@ export class FolderPage implements OnInit {
           swipeToClose: true,
           cssClass: 'select-modal' ,
           componentProps: { 
-            time: this.hours[i],
+            time: this.times[i],
             day: this.day,
             month: 11,
             year: this.year,
@@ -170,7 +208,7 @@ export class FolderPage implements OnInit {
         swipeToClose: true,
         cssClass: 'select-modal' ,
         componentProps: { 
-          time: this.hours[i],
+          time: this.times[i],
           day: this.day,
           month: this.month-1,
           year: this.year,
@@ -185,7 +223,7 @@ export class FolderPage implements OnInit {
         swipeToClose: true,
         cssClass: 'select-modal' ,
         componentProps: { 
-          time: this.hours[i],
+          time: this.times[i],
           day: this.day,
           month: this.month,
           year: this.year,
@@ -200,7 +238,7 @@ export class FolderPage implements OnInit {
         swipeToClose: true,
         cssClass: 'select-modal' ,
         componentProps: { 
-          time: this.hours[i],
+          time: this.times[i],
           day: this.day,
           month: this.month,
           year: this.year,
@@ -526,7 +564,7 @@ getAppoitments(){
     setTimeout(() => {
       for (let appo of this.all_appointments_list){
         if (appo.day == day){
-         this.drawAppointment(appo.id, appo.start, appo.end, appo.details, appo.client_name, appo.employee, appo.service_n, appo.day ,appo.week, appo.month, appo.year, appo.phone, appo.note )
+         this.drawAppointment(appo.id, appo.start_t, appo.end_t, appo.details, appo.client_name, appo.employee, appo.service_n, appo.day ,appo.week, appo.month, appo.year, appo.phone, appo.note )
         }
       }
     }, 50);
@@ -534,7 +572,18 @@ getAppoitments(){
   }
   drawAppointment(id, start, end, details, client_name, employee, service, day ,week, month, year, phone, note ){
     var height = end - start
-    var div_height = ((height*10)-4)+'px'
+    if(this.quarter_displ){
+      var div_height = (height*15)-4+'px'
+      if(this.five_displ){
+        var div_height = (height*30)-4+'px'
+      }
+    }else{
+    
+      var div_height = (height*7.5)-4+'px'
+      
+      
+    }
+  
     var div = document.createElement('div');
     div.style.margin = '2px auto'
     var self = this
@@ -559,13 +608,16 @@ getAppoitments(){
     div.onclick = function(ev) {
       self.infoApp(ev, pass_data)
   };
+  
+ 
+
     var color = 10000
   for (let service_el of this.services){
     if (service_el.id == service){
       color = service_el.color
     }
   }
-    div.draggable =true
+   
     div.classList.add('task','task--primary', `c${color}`) 
     div.id= id
     div.style.height =div_height
@@ -582,9 +634,42 @@ getAppoitments(){
     }
     
     if (this.day == day &&  this.employee.employee ==employee){
+      console.log(start)
         document.getElementById(start).append(div)
     }
   } 
+  // allowDrop(ev) { 
+  //   ev.preventDefault();
+  // }
+  // drag(ev) {
+  //   console.log(ev, ev.dataTransfer)
+  //   // ev.preventDefault();
+  //   // function preventDefault(e) {
+  //   //   e.preventDefault();
+  //   // }
+  //   var el = document.getElementById(ev.target.id)
+  //   el.style.zIndex='0'
+  //   ev.dataTransfer.setData("height", ev.srcElement.scrollHeight);
+  //   ev.dataTransfer.setData("text", ev.target.id);
+  //   console.log(el)
+  //   // el.style.position='absolute'
+  //   // window.addEventListener('touchmove', ev=>{
+     
+  //   //  el.style.left = ev.changedTouches[0].pageX+'px'
+  //   //  el.style.top = ev.changedTouches[0].pageY+'px'
+  //   // }, false);
+
+   
+
+   
+  // }
+  // async drop(ev) {
+  //   console.log(ev)
+  //   // ev.preventDefault();
+   
+ 
+   
+  // }
   deleteAppointment(id){
     var paras = document.getElementById(id);
     paras.parentNode.removeChild(paras);
@@ -635,6 +720,37 @@ getAppoitments(){
     }
     )
   }
+
+  async presentClientActionSheet(){
+    var buttons = []
+    for(let  empl of this.employees){
+      var button={
+      text: empl.name,
+      
+      handler: () => {
+       this.employee = empl
+       var paras = document.getElementsByClassName('task');
+       while(paras[0]) {
+         paras[0].parentNode.removeChild(paras[0]);
+       } ​
+       this.todayAppointments(this.day)
+      }
+    }
+    buttons.push(button)
+    }
+    buttons.push( {
+      text: 'Annulla',
+      // icon: 'close',
+      role: 'cancel',
+    })
+    var head = this.is_sport?  'Campo' :"Collaboratore"
+    var actionSheet = await this.actionSheetController.create({
+      header: head,
+      
+      buttons: buttons
+    });
+    await actionSheet.present();
+  }
   viewMonth(){
     this.router.navigateByUrl('/monthview')
   }
@@ -646,5 +762,38 @@ getAppoitments(){
     this.api.deleteStorage()
     this.router.navigateByUrl('/login')
     }
+  }
+
+  goToday(){
+  var now = new  Date()
+  var today = now.getDay() -1
+  var month = now.getMonth()
+  var day_number = now.getDate()
+  this.day=day_number
+  this.week=[]
+  if (today == -1){
+    today= 6
+  }
+  for (let i=0;i<7;i++){
+    if( day_number - today  + i<= this.months_days[month]){
+      var day = day_number - today  + i
+      if(day<1){
+      day= day +this.months_days[month-1]
+      }
+    }else{
+      var day = day_number - today  + i - this.months_days[month]
+    }
+    this.week.push(day)
+  }
+  if(this.week[6]<this.week[0] && day_number>20){
+    if(this.month==11){
+      this.month=0
+        this.month_name=this.months_names[0]
+    }else{
+      this.month=month+1
+      this.month_name=this.months_names[month+1]
+    }
+
+  }
   }
 }

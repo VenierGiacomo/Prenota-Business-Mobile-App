@@ -68,7 +68,9 @@ login(email, password):Observable<any>{
   }
   return this.http.post(BASE_URL+'auth/', data,{headers: this.httpheader })
 }
-
+hasStore(){
+  return this.http.get(BASE_URL+'store/owner/',  {headers: this.newheader()})
+}
 getEmployees(): Observable<any>{
   const token = this.getToken()
   var l 
@@ -91,7 +93,7 @@ setopenHours(data): Observable<any>{
 
 bookAppointment(start, end, day, month, year,name, phone, details, employee, service):Observable<any>{
   var week = this.getWeekNumber(new Date(year, month, day))
-  var data = {'start': start , 'end': end, 'day': day, 'week':week, 'month':month, 'year' : year, 'employee': employee,  'client_name' :name, 'phone':phone, 'details': details, 'service_n': service}
+  var data = {'new': true, 'start': start , 'end': end, 'day': day, 'week':week, 'month':month, 'year' : year, 'employee': employee,  'client_name' :name, 'phone':phone, 'details': details, 'service_n': service}
     return this.http.post(BASE_URL+'bookings/', data,{headers: this.newheader()})
 }
 // working booking

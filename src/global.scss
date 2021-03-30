@@ -80,4 +80,13 @@ ion-title {
 //           --font-size: 11px !important;
 //         }
 //     }
-// }
+// } 
+.toast-class{
+  --background: #0061d5;
+  --color:white;
+  position: fixed;
+  top:10px; 
+  font-size: 15px!important;
+  font-weight: 500!important;
+   text-align: center!important;
+ }

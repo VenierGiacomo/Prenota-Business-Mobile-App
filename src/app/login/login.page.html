@@ -1,20 +1,30 @@
-
-
-<ion-content>
-  <ion-title [style.top.px]="sizeElement">prenota</ion-title> 
- <div class="input-cont" [style.top.px]="sizeElement1">
-  <ion-item >
-    <ion-label position="stacked">Email</ion-label>
-    <ion-input [(ngModel)]='email'></ion-input>
-  </ion-item>
-  <ion-item >
-    <ion-label position="stacked">Password</ion-label>
-    <ion-input [(ngModel)]='password'  type="password"></ion-input>
-  </ion-item>
+<ion-header class="ion-no-border bar-header">
+  <ion-toolbar style=" background: transparent !important;">
+     
+  </ion-toolbar>
+</ion-header>
+<ion-content >
+ <h1>prenota <br> <span>for business</span></h1>
+ <div class="input-cont">
+<ion-item lines='none' >
+  <ion-label position="stacked">Email</ion-label>
+  <ion-input [(ngModel)]='email' type="email" name="email"></ion-input>
+</ion-item>
+<ion-item lines='none' >
+  <ion-label position="stacked">Password</ion-label>
+  <ion-input id='input' [(ngModel)]='password'  type="text"  (click)='toggleShow()'>
+          
+    <ion-icon class="show-option" [hidden]="showPassword" name="eye-off-outline" (click)="toggleShow()"></ion-icon>
+          <ion-icon class="hide-option" [hidden]="!showPassword" name="eye-outline" (click)="toggleShow()"></ion-icon>
+        
+  </ion-input>
+</ion-item>
   <div class="login-btn">
-    <ion-button expand="block" fill="outline" type="submit" (click)='login()'>Login</ion-button>
+  <ion-button fill=outline color='primary'(click)='login()'>Accedi</ion-button>
   </div>
-  <p *ngIf='error!=""' >{{error}}</p>  
+  <p class='err' *ngIf='error!=""' >{{error}}</p>
+  <p class="login">Hai dimenticato la password? <a (click)='changePassword()'> Cambiala</a> <br></p>
+  <p class="login">Hai bisogno di assistenza? <a href="tel:+393312233645"> Chiamaci</a></p>
  </div>
  
 </ion-content>

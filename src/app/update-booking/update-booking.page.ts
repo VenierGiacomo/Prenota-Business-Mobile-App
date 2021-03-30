@@ -138,7 +138,7 @@ async ngOnInit() {
       this.client_name='~'
     }
     if (this.plt.is('hybrid')) {
-      this.apiNative.updateAppointment(this.booking.id, start, end, this.day, this.month, this.year,this.client_name,this.phone,details, this.booking.employee,service.id).then(
+      this.apiNative.updateAppointment(this.booking.id, start, end, this.day, this.month, this.year,this.client_name,this.phone,details, this.booking.employee,service.id,'').then(
         res => {
           this.homeref.clearAppointment(this.booking.id, start, end, this.day, this.month, this.year,this.client_name,this.phone,details, this.booking.employee,service.id.toString(), this.booking.client,this.booking.note,this.booking.shop, this.booking.store_name,this.booking.store_phone )
           this.homeref.drawAppointment(this.booking.id, start, end, details, this.client_name, this.booking.employee,service.id.toString(), this.day, 0, this.month, this.year,this.phone)

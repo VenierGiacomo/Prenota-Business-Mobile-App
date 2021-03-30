@@ -9,7 +9,7 @@
     <ion-buttons slot="start" >
      <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title  (click)='infoApp($event, -1)' style="font-size:18px !important">{{employee.name}}</ion-title>   
+    
     <ion-buttons slot="end" (click)='presentMonth()'>
      {{month_name}}
     </ion-buttons>
@@ -28,17 +28,49 @@
 
 <ion-content >
 <div class="calendar" (swipeleft)='nextWeek()' (swiperight)='pastWeek()'>
-  
-<div *ngFor='let time_slot of hours; let i = index' class="slot"><div class="time">{{time_slot}}</div> <div  (press)='presentModal(i)' class="cell" id='{{i}}' ></div></div>
+
+<div *ngFor='let time_slot of times; let i = index' class="slot" id='{{i + "-"}}'><div class="time">{{time_slot}}</div> <div  (press)='presentModal(i)' class="cell" id='{{i}}'></div></div>
 <!-- <div><div class="time">8:15</div> <div class="cell"></div></div> -->
 </div>
+
 </ion-content>
 
 <ion-footer>
-  <ion-toolbar>
-    <!-- <button  class='add-appointment' expand="block" (click)='presentModal()'> -->
-     <p (click)='presentModal(15)'>Aggiungi appuntamento</p>
-    <!-- </button> -->
-  </ion-toolbar>
+
+    <ion-tabs  mode=ios >
+      <!-- <ion-fab vertical="bottom" horizontal="center" translucent="true">
+        <ion-fab-button (click)="buyTicket()">
+          <ion-icon name="bus-outline"></ion-icon>
+        </ion-fab-button>
+      </ion-fab> -->
+      <ion-tab-bar slot="bottom"  mode=ios>
+        <ion-tab-button   mode=ios (click)='goToday()'>
+    
+          <ion-icon name="today-outline"></ion-icon>
+          <ion-label>Oggi</ion-label>
+    
+        </ion-tab-button>
+       
+        <!-- <svg height="50" viewBox="0 0 100 50" width="100" xmlns="http://www.w3.org/2000/svg"><path d="M100 0v50H0V0c.543 27.153 22.72 49 50 49S99.457 27.153 99.99 0h.01z" fill="#ffffff" fill-rule="evenodd"></path></svg> -->
+        
+        <ion-tab-button mode=ios (click)='presentModal(36)'>
+          
+          <ion-icon name="add-circle-outline"></ion-icon>
+          <ion-label>Aggiungi</ion-label>
+      
+          
+        </ion-tab-button>
+    
+        <ion-tab-button mode=ios (click)='presentClientActionSheet()'>
+          <ion-icon name="albums-outline"></ion-icon>
+          <ion-label>{{is_sport?  "Campo" :"Collaboratore"}}
+          </ion-label>
+        </ion-tab-button>
+      </ion-tab-bar>
+    
+    </ion-tabs>
+    
+  
 </ion-footer>
 </body>
+

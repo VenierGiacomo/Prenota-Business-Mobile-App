@@ -1,7 +1,7 @@
 
 ion-title{
   font-size: 21px;
-  color: #707579;
+  color: #0061d5;
   font-weight: 400;
 }
 ion-content, ion-header{
@@ -12,10 +12,13 @@ $margin_date: calc(calc(100vw -210px) /28);
 .dates{
   height: 80px;
   position: absolute;
-  background: #0061d5;
+  background: #fff;
   overflow:hidden;
   white-space: nowrap;
   z-index: 1000000;
+  -webkit-box-shadow:  0 4px 2px -2px  rgba(0,0,50,0.17);
+    -moz-box-shadow:  0 4px 2px -2px  rgba(0,0,0,50.17);
+    box-shadow:  0 4px 2px -2px  rgba(0,0,50,0.17);
   .date-today{
     display: block;
     width: 100vw;
@@ -25,23 +28,23 @@ $margin_date: calc(calc(100vw -210px) /28);
     .d-month{
       width: max-content;
       font-size: 15px;
-      color:#ffffff ;
+      color:#424242 ;
     }
     .d-day{
       width: max-content;
       font-size: 15px;
-      color:#ffffff ;
+      color:#424242 ;
     }
     .d-year{
       width: max-content;
       font-size: 15px;
-      color:#ffffff ;
+      color:#424242 ;
     }
   }
   div{
     height: 50px;
     display: inline-block;
-    color: #ffffff;
+    color: #424242;
     width: $base_width;
     text-align: center;
     span{
@@ -62,9 +65,9 @@ $margin_date: calc(calc(100vw -210px) /28);
     }
   }
   .active{
-    background: #ffffff;
+    background: #0061d5;
     border-radius: 50%;
-    color: #0061d5;
+    color: #fff;
   }
 }
 .dates::-webkit-scrollbar {
@@ -144,14 +147,12 @@ $margin_date: calc(calc(100vw -210px) /28);
   .slot:nth-child(even){
     height: 30px;
     display: grid;
-    grid-template-columns: 1fr 9fr;
+    grid-template-columns: 1fr 8fr;
       .time{
-        color: #707579;
-        font-weight: 500;
-        padding: 0px 5px;
+        color: #ffffff;
+
         line-height: 12px;
         margin-top: -6px;
-        margin-left: -2px;
         font-size: 12px;
       }
       .cell{
@@ -163,13 +164,16 @@ $margin_date: calc(calc(100vw -210px) /28);
   .slot:nth-child(odd){
     height: 30px;
     display: grid;
-    grid-template-columns: 1fr 8fr;
+    grid-template-columns: 1fr 9fr;
       .time{
-        color: #ffffff;
-
+        color: #707579;
+        font-weight: 500;
+        padding: 0px 5px;
         line-height: 12px;
         margin-top: -6px;
+        margin-left: -2px;
         font-size: 12px;
+        
       }
       .cell{
         height: 30px !important;
@@ -251,7 +255,7 @@ $margin_date: calc(calc(100vw -210px) /28);
 ///margin top calendar, http , splash screen
 
 ion-menu-button{
-  color:#707579;
+  color:#0061d5;
 }
 
 
@@ -261,27 +265,15 @@ ion-footer{
   display: block;
   z-index: 500;
   bottom: 0px;
-  ion-toolbar{
-    --background: #0061d5;
-    -webkit-box-shadow: 0px 0px 15px 0px rgba(0,0,50,0.17);
-    -moz-box-shadow: 0px 0px 15px 0px rgba(0,0,0,50.17);
-    box-shadow: 0px 0px 15px 0px rgba(0,0,50,0.17);
-    padding: 10px 0px 30px 0px;
-    text-align: center;
-    p{
-      color: #fff;
-      font-size: 18px;
-      font-weight: 400;
-      margin: 0px;
-    } 
-  }
+
+
 }
 
 
 ion-header{
   z-index: 10000;
   ion-buttons{
-    color:  #707579;
+    color:  #0061d5;
   }
 }
 
@@ -346,3 +338,59 @@ ion-header{
     -webkit-transform: scale(1.0);
   }
 }
+
+ion-tab-bar{
+  --color:#0061d5 !important;
+  padding: 0px 0px  10px 0px;
+  }
+  ion-icon{
+      height: 25px;
+  }
+  ion-label{
+      line-height: 13px;
+  }
+  ion-tabs{
+    ion-fab {
+      margin-bottom: 5px; /* fix notch ios*/
+      ion-fab-button {
+        --box-shadow: none;
+      }
+    }
+    ion-tab-bar {
+      --border: 0;
+      --background: #fff;
+      position: absolute;
+      bottom: 0;
+      left:0; right: 0;
+          width: 100%;
+          -webkit-box-shadow: 0px 0px 15px 0px rgba(0,0,50,0.17);
+          -moz-box-shadow: 0px 0px 15px 0px rgba(0,0,0,50.17);
+          box-shadow: 0px 0px 15px 0px rgba(0,0,50,0.17);
+      &:after{
+        content: " ";
+        width: 100%;
+        bottom: 0;
+        background: #fff;
+        height: env(safe-area-inset-bottom);
+        position: absolute;
+      }
+      ion-tab-button {
+        --background: #fff;
+      }
+      ion-tab-button.comments {
+        margin-right: 0px;
+        border-top-right-radius: 18px;
+      }
+      ion-tab-button.notifs {
+        margin-left: 0px;
+        border-top-left-radius: 18px;
+      }
+      svg {    
+        width: 72px;
+        margin-top: 19px;
+        path{
+          fill:  #fff;
+        }		
+      }
+    }
+  }

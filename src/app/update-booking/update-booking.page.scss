@@ -45,47 +45,20 @@ ion-header{
 .close{
     --color: #fff;
 }
-.popover-content{
-    width: 400px
-  }
-
-  ::ng-deep .app-popover {
-    ion-select-popover {
-      background: pink;
-      --background: pink;
-  
-      ion-list,
-      ion-list-header,
-      ion-item,
-      ion-radio-group {
-        --background: red;
-        background: red;
-      }
-    }
-  }  
-  ::ng-deep  .popover-content {
-            left: calc(5vw -  var(--ion-safe-area-right, 0px)) !important; 
-            width: 90vw !important; 
-            background: #0061d5 !important; 
-            --background: #0061d5 !important; 
-            background: #0061d5 !important; 
-            --background: #0061d5 !important; 
-  }
-
- ::ng-deep  .popover-content {
-    left: calc(10vw -  var(--ion-safe-area-right, 0px)) !important; 
+::ng-deep  .popover-content {
+    left: calc(19vw -  var(--ion-safe-area-right, 0px)) !important; 
     width: 80vw !important; 
+    background: #0061d5 !important; 
+    --background: #0061d5 !important; 
+    background: #0061d5 !important; 
+    --background: #0061d5 !important; 
     .sc-ion-select-popover-ios{
         font-size: 13px
     } 
     .sc-ion-select-popover-md{
         font-size: 13px
     } 
-
-   
-   
- 
-}  
+}
 ion-select {
     /* Applies to the value and placeholder color */
     color: #f3f3f3;

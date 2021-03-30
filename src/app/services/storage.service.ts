@@ -16,4 +16,14 @@ async getServices(){
         var services = await this.storage.get('service');
         return services
     }
+   async  setStore(store){
+      await this.storage.set('shop_data',store)
+        }
+    
+    async getstore(){
+            var store = await this.storage.get('shop_data');
+            return store
+        }
+    
 }
+

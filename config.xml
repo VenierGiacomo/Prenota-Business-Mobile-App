@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="io.prenota.business" version="0.1.9" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>Prenota Business </name>
+    <name>Prenota Busines</name>
     <description>Prenota Business </description>
     <author email="giacomo.venier@gmail.com" href="http://ionicframework.com/">prenota</author>
     <content src="index.html" />

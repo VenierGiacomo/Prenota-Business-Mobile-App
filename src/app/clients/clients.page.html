@@ -1,0 +1,39 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Clienti</ion-title>
+    <!--  (click)='logout()' -->
+    <ion-buttons slot="start" >
+     <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    
+    <ion-buttons slot="end"  (click)='registerClient()'>
+      <ion-icon name="add-circle-outline"></ion-icon>
+    </ion-buttons>
+</ion-toolbar> 
+<ion-toolbar>
+  <ion-searchbar placeholder='Cerca clienti'(ionChange)='filterClients()' [(ngModel)]='client_name_search' showCancelButton='focus' cancelButtonText="Annulla" (ionCancel)='client_name_search=""'></ion-searchbar>
+</ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content>
+    
+    </ion-refresher-content>
+   
+  </ion-refresher>
+  <ion-list>
+    <ion-item (click)='showClientOptions(client)' *ngFor='let client of clients_to_show'>
+      <ion-icon name="person-circle-outline"></ion-icon>
+      <ion-label>{{client.client_name}}</ion-label>
+    </ion-item>
+  </ion-list>
+  
+  <div class="back_qr" *ngIf='backdrop_active' (click)="closeQR()">
+    <div  id='qr-card'>
+        
+    </div>
+    
+  </div>
+
+</ion-content>

@@ -22,11 +22,13 @@ export class MonthviewPage implements OnInit {
   next_past
   first_day_next
   month_per_month =[]
+  today
   @Input() homeref
   constructor(public modalController: ModalController,) { }
 
   ngOnInit() {
     var now = new Date()
+    this.today = now.getDate()
     this.month = now.getMonth()
     this.year = now.getFullYear()
     this.month_displayed = this.months_names[this.month]
@@ -77,6 +79,7 @@ export class MonthviewPage implements OnInit {
     this.next_month_days = ((this.last_month_days.length+this.current_month_days.length)%7==0) ? [] : Array(7-((this.last_month_days.length+this.current_month_days.length)%7))
   }
  setWeek(day, idx ){
+   console.log(day, idx, this.today, 0)
    if ((this.month+idx)>11){
     var now = new  Date(this.year+1, (this.month+idx)%12, day)
     this.homeref.year = this.year+1

@@ -5,10 +5,18 @@ ion-menu ion-content {
 }
 
 ion-menu.md ion-content {
-  --padding-start: 8px;
-  --padding-end: 8px;
-  --padding-top: 20px;
-  --padding-bottom: 20px;
+  --padding-start: 0px;
+  --padding-end: 0px;
+  --padding-top: 10px;
+  --padding-bottom: 0px;
+  --background: #0061d5;
+  color: white;
+}
+ion-menu.ios ion-content {
+  --padding-start: 0px;
+  --padding-end: 0px;
+  --padding-top: 10px;
+  --padding-bottom: 0px;
   --background: #0061d5;
   color: white;
 }
@@ -30,7 +38,7 @@ ion-menu.md ion-note {
   padding-left: 10px;
   --background: #0061d5;
   color: white;
-  font-family: 'Comfortaa Bold' ;
+  // font-family: 'Comfortaa Bold' ;
 }
 
 ion-menu.md ion-list#inbox-list {
@@ -42,7 +50,7 @@ ion-menu.md ion-list#inbox-list {
 ion-menu.md ion-list#inbox-list ion-list-header {
   font-size: 22px;
   font-weight: 600;
-  font-family: 'Comfortaa Bold' ;
+  // font-family: 'Comfortaa Bold' ;
   background: #0061d5;
   color: white;
   min-height: 20px;
@@ -50,7 +58,7 @@ ion-menu.md ion-list#inbox-list ion-list-header {
 ion-list-header{
   font-size: 30px;
   margin: 20px;
-  font-family: 'Comfortaa Bold' ;
+  // font-family: 'Comfortaa Bold' ;
   --background: #0061d5;
   color: white;
 }
@@ -58,7 +66,7 @@ ion-list-header{
 
 ion-menu.md ion-list#labels-list ion-list-header {
   font-size: 16px;
-  font-family: 'Comfortaa Bold' ;
+  // font-family: 'Comfortaa Bold' ;
   margin-bottom: 18px;
 
   --background: #0061d5;
@@ -93,11 +101,7 @@ ion-menu.md ion-item ion-label {
   font-weight: 500;
 }
 
-ion-menu.ios ion-content {
-  --padding-bottom: 20px;
-  --background: #0061d5;
-  color: white;
-}
+
 
 ion-menu.ios ion-list {
   padding: 20px 0 0 0;
@@ -135,7 +139,7 @@ ion-menu.ios ion-item ion-icon {
 }
 
 ion-menu.ios ion-list#labels-list ion-list-header {
-  font-family: 'Comfortaa Bold' ;
+  // font-family: 'Comfortaa Bold' ;
   margin-bottom: 8px;
   --background: #0061d5;
   color: white;
@@ -144,7 +148,7 @@ ion-menu.ios ion-list#labels-list ion-list-header {
 ion-menu.ios ion-list-header,
 ion-menu.ios ion-note {
   padding-left: 16px;
-  font-family: 'Comfortaa Bold' ;
+  // font-family: 'Comfortaa Bold' ;
   padding-right: 16px;
   --background: #0061d5;
   color: white;

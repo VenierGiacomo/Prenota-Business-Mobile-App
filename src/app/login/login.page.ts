@@ -107,33 +107,30 @@ showPassword=true
         "email": this.email,
         "password": this.password,
       }
-      console.log(params)
-      this.nativeApi.login(params).then( res=>{
-        console.log(res)
-         this.nativeApi.hasStore().then(async (data)=>{
-          var res:any = await data
-          if(res.has_store==undefined){
-            await this.storage.setStore(res)
-            this.nav.navigateForward('calendar')
-          }else{
-            Notiflix.Report.Failure( 
-              'Non sei un proprietario', 
-              "Per usare quest'app devi essere un proprietario",
-              'Ok' )
-          
-          }
-         
-          this.presentToast('Che bello riverderti  '+ data.first_name)
-          
-      }).catch(err=>{
-        this.presentToast('Email e Password non combaciano')
-       
 
-      })
-  }).catch((error:any) => {
-    this.presentToast('Email e Password non combaciano ')
+      this.nativeApi.login(params).then( res=>{
   
-  });
+        if(res.non_field_errors){
+          this.presentToast('Email e Password non combaciano')
+        }else{
+          this.nativeApi.hasStore().then(async (data)=>{
+            var res:any = await data
+            if(res.has_store==undefined){
+                await this.storage.setStore(res)
+                this.nav.navigateForward('calendar')
+            }
+            else{
+                    Notiflix.Report.Failure( 
+                      'Non sei un proprietario', 
+                      "Per usare quest'app devi essere un proprietario",
+                      'Ok' )   
+            }
+          })
+        }
+      }).catch((error:any) => {
+        this.presentToast('Email e Password non combaciano ')
+      
+      });
       
     } else {
       this.api.login(this.email, this.password).subscribe(

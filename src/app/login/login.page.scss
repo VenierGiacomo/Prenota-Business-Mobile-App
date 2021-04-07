@@ -29,18 +29,20 @@ font-weight: 500;;
 }
 h1{
     font-family: 'Comfortaa Bold' ;
-    margin: 10px 0px;
-    font-size: 28px;
+    margin: 0px 0px;
+    font-size: 72px;
     text-align: center;
     color:#0061d5;
+    line-height: 50px;
     font-weight: 700;
     span{
-        font-size: 11px;
+        line-height: 1px;
+        font-size: 15px;
     }
 }
 .input-cont{
     position: absolute;
-    top: 180px;
+    top: 210px;
    
     ion-item{
         font-size: 13px !important;

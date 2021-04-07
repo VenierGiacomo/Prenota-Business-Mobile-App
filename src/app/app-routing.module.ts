@@ -45,6 +45,26 @@ const routes: Routes = [
   {
     path: 'pick-date',
     loadChildren: () => import('./pick-date/pick-date.module').then( m => m.PickDatePageModule)
+  },
+  {
+    path: 'clients',
+    loadChildren: () => import('./clients/clients.module').then( m => m.ClientsPageModule)
+  },
+  {
+    path: 'invita-modal',
+    loadChildren: () => import('./invita-modal/invita-modal.module').then( m => m.InvitaModalPageModule)
+  },
+  {
+    path: 'register-client',
+    loadChildren: () => import('./register-client/register-client.module').then( m => m.RegisterClientPageModule)
+  },
+  {
+    path: 'online-appointment',
+    loadChildren: () => import('./online-appointment/online-appointment.module').then( m => m.OnlineAppointmentPageModule)
+  },
+  {
+    path: 'note',
+    loadChildren: () => import('./note/note.module').then( m => m.NotePageModule)
   }
 ];
 

@@ -1,0 +1,27 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Prenotazioni</ion-title>
+    <!--  (click)='logout()' -->
+    <ion-buttons slot="start" >
+     <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    
+</ion-toolbar> 
+<ion-toolbar>
+  <ion-searchbar placeholder='Cerca cliente'(ionChange)='filterClients()' [(ngModel)]='client_name_search' showCancelButton='focus' cancelButtonText="Annulla" (ionCancel)='client_name_search=""'></ion-searchbar>
+</ion-toolbar>
+</ion-header>
+
+<ion-content>
+  
+  <div  class="appintment"  *ngFor="let appointment of show_appointments" (click)='call(appointment)'>
+    <div *ngIf='appointment.payed' style="position: absolute; top:10px; right: 10px; font-size: 13px; font-weight: 700; color: #009c49"><ion-icon  style='font-size: 16px;margin-bottom: -3px;;' name="checkmark-circle-outline"></ion-icon> Pagato</div>
+    <div  *ngIf='!appointment.payed'  style="position: absolute; top:10px; right: 10px; font-size: 13px; font-weight: 700; color: #757575"> Da pagare</div>
+    <div class='app-Shop'>{{appointment.details}}</div>
+    <div class='app-service'> <ion-icon name="person-outline"></ion-icon> {{appointment.client_name}}</div>
+    <div class='app-date'>  <ion-icon name="today-outline"></ion-icon> {{appointment.day}} {{months_names[appointment.month]}} {{appointment.year}} ore {{times[appointment.start_t]}} ({{employess_name[appointment.employee]}})</div>
+    <div class='app-date'></div>
+</div>
+
+
+</ion-content>

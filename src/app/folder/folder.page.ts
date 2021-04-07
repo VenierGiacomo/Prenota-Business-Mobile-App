@@ -1,6 +1,6 @@
-import { Component, OnInit, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewChild, ElementRef, NgZone } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ModalController, Platform, NavController, ActionSheetController } from '@ionic/angular';
+import { ModalController, Platform, NavController, ActionSheetController, ToastController } from '@ionic/angular';
 import { NewAppointmentPage } from '../new-appointment/new-appointment.page';
 import { ApiService } from '../services/api.service';
 import { PopoverController } from '@ionic/angular';
@@ -8,10 +8,13 @@ import { PopovercallComponent } from '../popovercall/popovercall.component';
 import { StorageService } from '../services/storage.service';
 import { NativeApiService } from '../services/nativeapi.service';
 import { MonthviewPage } from '../monthview/monthview.page';
-import Notiflix from "notiflix";
+// import Notiflix from "notiflix";
+import { IonContent } from '@ionic/angular';
 import { OneSignal } from '@ionic-native/onesignal/ngx';
 import { Badge } from '@ionic-native/badge/ngx';
 import { AppComponent } from '../app.component'
+import { UpdateBookingPage } from '../update-booking/update-booking.page';
+import { NotePage } from '../note/note.page';
 
 
 
@@ -43,11 +46,12 @@ export class FolderPage implements OnInit {
   hours = ["06:45", "07:00", "07:15", "07:30", "07:45", "08:00", "08:15", "08:30", "08:45", "09:00", "09:15", "09:30", "09:45", "10:00", "10:15", "10:30", "10:45", "11:00", "11:15", "11:30", "11:45", "12:00", "12:15", "12:30", "12:45", "13:00", "13:15", "13:30", "13:45", "14:00", "14:15", "14:30", "14:45", "15:00", "15:15", "15:30", "15:45", "16:00", "16:15", "16:30", "16:45", "17:00", "17:15", "17:30", "17:45", "18:00", "18:15", "18:30", "18:45", "19:00", "19:15", "19:30", "19:45", "20:00", "20:15", "20:30", "20:45", "21:00", "21:15", "21:30", "21:45", "22:00", "22:15", "22:30", "22:45", "23:00", "23:15", "23:30", "23:45", "24:00"]
   services:any = []
   norm_year
-  quarter_displ
-  five_displ
+  quarter_displ =true
+  five_displ =false
   is_sport
-  spin="block"
-  constructor(private actionSheetController: ActionSheetController, private badge: Badge,private navcomp: AppComponent, private oneSignal: OneSignal, private plt:  Platform, public modalController: ModalController, private api: ApiService, private apiNative: NativeApiService, private popoverController: PopoverController, private storage: StorageService, private router: Router) {
+  spin="none"
+  @ViewChild(IonContent, { static: false }) content: IonContent;
+  constructor(private ngZone: NgZone,private toastController: ToastController,private actionSheetController: ActionSheetController, private badge: Badge,private navcomp: AppComponent, private oneSignal: OneSignal, private plt:  Platform, public modalController: ModalController, private api: ApiService, private apiNative: NativeApiService, private popoverController: PopoverController, private storage: StorageService, private router: Router) {
     this.plt.ready().then(() => {
       this.getservices()
       this.getEmployees()
@@ -58,10 +62,23 @@ export class FolderPage implements OnInit {
       // this.oneSignal.setLogLevel({logLevel: 6, visualLevel: 0});
     var self = this
       var notificationOpenedCallback =  function(jsonData) {
-        setTimeout(() => {
-          self.spin="none"
-          // self.navcomp.navigateNotifications()
-        }, 300);
+      
+
+       
+          var not_data =jsonData.notification.payload.additionalData
+          if(not_data!=undefined && not_data!=null){
+            var emplo = self.employees.filter((val)=>{return val.employee==not_data.employee})
+            self.employee = emplo[0]
+            var paras = document.getElementsByClassName('task');
+            while(paras[0]) {
+              paras[0].parentNode.removeChild(paras[0]);
+            } 
+            self.onNotRecieved(not_data)
+            
+          }
+        
+          
+         
       };
       // Set your iOS Settings
       var iosSettings = {};
@@ -147,6 +164,7 @@ export class FolderPage implements OnInit {
   // this.five_displ=false
   if(this.quarter_displ){
     if(!this.five_displ){
+      
       for(let ind in this.times){
         var el
         if((+ind)%3!=0){
@@ -169,11 +187,14 @@ export class FolderPage implements OnInit {
     }
   }
 
-  this.spin="block"
+  // this.spin="block"
+  if (this.plt.is('hybrid')){
     this.oneSignal.getIds().then(data =>{
       this.apiNative.registerdevice(data.userId).then(data =>{
+    
       })
     })
+  }
     this.interval =setInterval(()=>{
       this.getAppoitments()
         },300000)
@@ -182,8 +203,12 @@ export class FolderPage implements OnInit {
  public updatebadge(){
   this.badge.set(1);
  }
-  async presentModal(i) {
-  console.log( this.times[i])
+  async presentModal(i,ev) {
+  if(ev.target.id>210){
+this.updateBooking(ev.target.id)
+  }else{
+
+
     clearInterval(this.interval);
     if(this.week[6]<this.week[0] && this.day>7){
       if(this.month==0){
@@ -247,7 +272,20 @@ export class FolderPage implements OnInit {
       });
       return await modal.present();
     }
-   
+  }
+  }
+  async updateBooking(id){ 
+    var appo = this.all_appointments_list.filter( x => x.id == id)[0]
+    const modal = await this.modalController.create({
+    component:UpdateBookingPage,
+    swipeToClose: true,
+    cssClass: 'select-modal' ,
+    componentProps: { 
+     booking:appo,
+     homeref: this
+    }
+  });
+  return await modal.present();
   }
   async presentMonth() {
     let modal = await this.modalController.create({
@@ -262,53 +300,100 @@ export class FolderPage implements OnInit {
       while(paras[0]) {
         paras[0].parentNode.removeChild(paras[0]);
       } ​
-     this.spin="block"
+    //  this.spin="block"
         this.getAppoitments()
      
   });
     return await modal.present();
   }
-  async infoApp(ev, n) {
-    var appo =n 
-    if(n!=-1){
-       appo = this.all_appointments_list.filter( x => x.id == n.id)[0]
+  async infoApp(ev, lt_appo) {
+    var appo =lt_appo 
+    if(lt_appo!=-1){
+       appo = this.all_appointments_list.filter( x => x.id == lt_appo.id)[0]
     }
-    this.currentPopover = await this.popoverController.create({
-      component: PopovercallComponent,
-      event: ev,
-      translucent: true,
-      
-      componentProps: {homeref:this, appo: appo, employees: this.employees},
-    });
-    this.currentPopover.onDidDismiss().then((data) => {
-      if(data.data == "name"){
-        var paras = document.getElementsByClassName('task');
-        while(paras[0]) {
-          paras[0].parentNode.removeChild(paras[0]);
-        } ​
-        this.todayAppointments(this.day)
+    var buttons:Array<any>= [{
+      text: 'Chiama',
+      // icon: 'share',
+      handler: () => {
+        window.location.href="tel:+39"+lt_appo.phone
       }
-      });
-    return this.currentPopover.present();
+    }, {
+      text: 'Modifica appuntamento',
+      // icon: 'caret-forward-circle',
+      handler: () => {
+        setTimeout(() => {
+          this.updateBooking(lt_appo.id)
+        }, 100);
+     
+      }
+    }, 
+     {
+      text: 'Visualizza nota',
+      // icon: 'caret-forward-circle',
+      handler: () => {
+        setTimeout(() => {
+          this.noteModal(appo)
+        }, 100);
+     
+      }
+  } ,
+     {
+      text: 'Elimina appuntamento',
+      // icon: 'heart',
+      role: 'destructive',
+      handler:  () => {
+        this.deleteAppointment(lt_appo.id)
+        this.all_appointments_list = this.all_appointments_list.filter(x => x.id != lt_appo.id )
+
+
+      }
+    }, {
+      text: 'Indietro',
+      // icon: 'close',
+      role: 'cancel',
+    }]
+    const actionSheet = await this.actionSheetController.create({
+      header: "Gestisci appuntamento",
+      
+      buttons: buttons
+    });
+    await actionSheet.present();
+    
 
   }
-
-//  dismissPopover() {
-//     if (this.currentPopover) {
-//       this.currentPopover.dismiss().then(() => {
-//         console.log('called')
-//         this.todayAppointments(this.day)
-//         this.currentPopover = null; });
-//     }
-//   }
+async noteModal(appo){
+  const modal = await this.modalController.create({
+    component:NotePage,
+    swipeToClose: true,
+    cssClass: 'note-modal' ,
+    componentProps: { 
+     homeref:this,
+     appointment:appo,
+     note:appo.note
+    }
+  });
+  return await modal.present();
+}
+ dismissPopover() {
+    if (this.currentPopover) {
+      this.currentPopover.dismiss().then(() => {
+       
+        this.todayAppointments(this.day)
+        this.currentPopover = null; });
+    }
+  }
+  
   nextWeek(){
-   this.spin="block"
+  
     //remove last week appoitments
-    var paras = document.getElementsByClassName('task');
+    
+    var day_of_week = this.week.indexOf(this.day)
+    if(day_of_week == 6){
+      var paras = document.getElementsByClassName('task');
     while(paras[0]) {
       paras[0].parentNode.removeChild(paras[0]);
     } ​
-
+    // this.spin="block"
     //change dates
    var next_m = 0
   for (let day in this.week){
@@ -351,11 +436,16 @@ export class FolderPage implements OnInit {
     this.getAppoitments()
     // console.log(this.day,this.month_name,this.year)
   }, 100);
+}else{
+  this.todayAppointments(this.week[day_of_week+1])
+}
   // console.log(this.day,this.month_name,this.year)
   }  
     //get appointments
     
     pastWeek(){
+      var day_of_week = this.week.indexOf(this.day)
+      if(day_of_week == 0){
       //remove last week appoitments
       var paras = document.getElementsByClassName('task');
       while(paras[0]) {
@@ -426,8 +516,68 @@ export class FolderPage implements OnInit {
       this.getAppoitments()
       }, 100);
       
+    }else{
+      this.todayAppointments(this.week[day_of_week-1])
+    }
+    }  
+    
+    onNotRecieved(data){
+      this.ngZone.run(() => {
+      this.month=data.month
+      this.year=data.year
+      this.day=data.day
+         
+      var now = new  Date(this.year, this.month, this.day)
+
+       var today = now.getDay() -1
+       var day_number = now.getDate()
+       if (today == -1){
+         today= 6
+       }
+       var week =[]
+       for (let i=0;i<7;i++){
+         var day_n = day_number - today  + i
+         if (day_n > this.months_days[(this.month)%12]){
+          day_n =day_n-this.months_days[(this.month)%12]
+         }
+         if(day_n <1){
+          day_n =this.months_days[(this.month-1)]+day_n
+         }
+         week.push(day_n)
+       }
+       this.week= week
+       this.month_name =  this.months_names[this.month]
+       var paras = document.getElementsByClassName('task');
+        while(paras[0]) {
+          paras[0].parentNode.removeChild(paras[0]);
+        } ​
+      //  this.spin="block"
+          
+       setTimeout(() => {​
+        var y
+        if(this.quarter_displ){
+          if(!this.five_displ){
+            y =(data.start-2)*10
+            this.content.scrollToPoint(0,y,400)
+          }else{
+            y =(data.start-2)*30
+            this.content.scrollToPoint(0,y,400)
+          }
+        }else{
+          y =(data.start-2)*5
+            this.content.scrollToPoint(0,y,400)
+        }
       
-    }    
+       
+        this.getAppoitments()
+        // this.todayAppointments(this.day)
+        
+      // self.spin="none"
+      // self.navcomp.navigateNotifications()
+    }, 800);
+
+  })
+    }
   getWeekNumber(d) {
     // Copy date so don't modify original
     d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
@@ -461,20 +611,19 @@ getAppoitments(){
     if (this.plt.is('hybrid')) {
       this.apiNative.getAppointments(week).then(
         res => {
+          
                 this.all_appointments_list = res 
                 this.todayAppointments(this.day)}
              
         ).catch(
           err => {
-            this.spin="none"
-          Notiflix.Report.Failure( 
-            'Notiflix Failure', 
-            `${err}`,
-            'Click' )
-        console.log(err,'folder no appointemet')})
+            // this.spin="none"
+            this.presentToast('Problema nello scaricare gli appuntamenti','err')
+         })
     }
     else{
       this.api.getAppointments(week).subscribe(data =>{
+        
         this.all_appointments_list = data 
         this.todayAppointments(this.day) 
       }, err =>{
@@ -491,12 +640,8 @@ getAppoitments(){
               this.storage.setServices(res)
         }).catch(
           err => {
-            this.spin="none"
-          Notiflix.Report.Failure( 
-            'Notiflix Failure', 
-            `${err}`,
-            'Click' )
-        console.log(err,'folder no appointemet')})
+            // this.spin="none"
+            this.presentToast('Problema nello scaricare gli appuntamenti','err')})
     }
     else{
       this.api.getStoreservice().subscribe(
@@ -509,21 +654,19 @@ getAppoitments(){
     if (this.plt.is('hybrid')) {
       this.apiNative.getEmployees().then(
         res => {
+          this.storage.setEmployees(res)
               this.employee = res[0]
               this.employees = res
               }
         ).catch(
           err => {
-            this.spin="none"
-          Notiflix.Report.Failure( 
-            'Notiflix Failure', 
-            `${err}`,
-            'Click' )
-        console.log(err,'folder no appointemet')})
+            // this.spin="none"
+            this.presentToast('Problema nello scaricare gli appuntamenti','err')})
     }
     else{
       this.api.getEmployees().subscribe(
         data=>{
+          this.storage.setEmployees(data)
           this.employee = data[0]
           this.employees = data
           this.getservices()
@@ -564,22 +707,22 @@ getAppoitments(){
     setTimeout(() => {
       for (let appo of this.all_appointments_list){
         if (appo.day == day){
-         this.drawAppointment(appo.id, appo.start_t, appo.end_t, appo.details, appo.client_name, appo.employee, appo.service_n, appo.day ,appo.week, appo.month, appo.year, appo.phone, appo.note )
+         this.drawAppointment(appo.id, appo.start_t, appo.end_t, appo.details, appo.client_name, appo.employee, appo.service_n, appo.day ,appo.week, appo.month, appo.year, appo.phone, appo.note,appo.payed )
         }
       }
     }, 50);
-    this.spin="none"
+    
   }
-  drawAppointment(id, start, end, details, client_name, employee, service, day ,week, month, year, phone, note ){
+  drawAppointment(id, start, end, details, client_name, employee, service, day ,week, month, year, phone, note,payed ){
     var height = end - start
     if(this.quarter_displ){
-      var div_height = (height*15)-4+'px'
+      var div_height = (height*10)-4+'px'
       if(this.five_displ){
         var div_height = (height*30)-4+'px'
       }
     }else{
     
-      var div_height = (height*7.5)-4+'px'
+      var div_height = (height*5)-4+'px'
       
       
     }
@@ -588,7 +731,7 @@ getAppoitments(){
     div.style.margin = '2px auto'
     var self = this
     var has_note = false
-    if(note!='' && note!=null){
+    if(note!='' && note!=null&& note!=undefined){
       has_note = true
     }
     var pass_data={
@@ -617,25 +760,50 @@ getAppoitments(){
       color = service_el.color
     }
   }
-   
+  if (service == -1){
+    color = 6
+  }
     div.classList.add('task','task--primary', `c${color}`) 
     div.id= id
+    div.style.zIndex='10'
     div.style.height =div_height
     if(has_note){
-      div.innerHTML = `
-      <div class="task-details" id=${id}>${details} </div>
-      <div class="task-names" id=${id}>${client_name}</div>
-      `
+      if(payed){
+        div.innerHTML = `
+        <ion-icon  style='position:absolute; right:5px; font-size:16px; top:5px;' name="information-circle-outline"></ion-icon>
+        <div class="task-details" id=${id}> ${details} </div>
+        <div class="task-names" id=${id}>${client_name} <ion-icon name="checkmark-circle-outline" style='font-size:16px; margin-bottom: -3px;'></ion-icon>   </div>
+        `
+      }else{
+        div.innerHTML = `
+        <ion-icon  style='position:absolute; right:5px; font-size:16px; top:5px;' name="information-circle-outline"></ion-icon>
+        <div class="task-details" id=${id}> ${details} </div>
+        <div class="task-names" id=${id}>${client_name}</div>
+        `
+      }
+     
     }else{
-      div.innerHTML = `
-      <div class="task-details" id=${id}>${details}</div>
-      <div class="task-names" id=${id}>${client_name}</div>
-      `
+      if(payed){
+        div.innerHTML = `
+        <div class="task-details" id=${id}> ${details} </div>
+        <div class="task-names" id=${id}>${client_name} <ion-icon name="checkmark-circle-outline" style='font-size:16px; margin-bottom: -3px;'></ion-icon>   </div>
+        `
+      }else{
+        div.innerHTML = `
+        <div class="task-details" id=${id}> ${details} </div>
+        <div class="task-names" id=${id}>${client_name}</div>
+        `
+      }
     }
     
     if (this.day == day &&  this.employee.employee ==employee){
-      console.log(start)
-        document.getElementById(start).append(div)
+      var div_parent = document.getElementById(start)
+      if(div_parent!=null && div_parent!=undefined){
+        div_parent.append(div)
+      }else{
+        console.log(div.id)
+      }
+       
     }
   } 
   // allowDrop(ev) { 
@@ -676,8 +844,7 @@ getAppoitments(){
     if (this.plt.is('hybrid')) {
       this.apiNative.deleteAppointment(id).then(
         res => {
-         Notiflix.Notify.Init({ position:"left-bottom", distance:"70px", success: {background:"#00479d",textColor:"#fff",notiflixIconColor:"#fff",}, }); 
-          Notiflix.Notify.Success('Appuntamento cancellato')
+          this.presentToast('Appuntamento cancellato','succ')
          }
         ).catch(
           err => console.log(err)) 
@@ -685,14 +852,13 @@ getAppoitments(){
     else{
       this.api.deleteAppointment(id).subscribe(
         data=> {
-         Notiflix.Notify.Init({ position:"left-bottom", distance:"70px", success: {background:"#00479d",textColor:"#fff",notiflixIconColor:"#fff",}, }); 
-          Notiflix.Notify.Success('Appuntamento cancellato')
+          this.presentToast('Appuntamento cancellato','succ')
         },err =>{
           console.log(err)
          })
     }
   }
-  async clearAppointment(id, start, end, day, month, year, client_name, phone,details, employee,service,client,note,shop,store_name, store_phone){
+  async clearAppointment(id, start_t, end_t, day, month, year, client_name, phone,details, employee,service,client,note,shop,store_name, store_phone,payed){
     var paras = document.getElementById(id);
     paras.parentNode.removeChild(paras);
     var week = this.getWeekNumber(new Date(year,month,day))
@@ -704,7 +870,7 @@ getAppoitments(){
     day: day,
     details: details,
     employee: employee,
-    end: end,
+    end_t: end_t,
     id: id,
     location: null,
     month: month,
@@ -712,13 +878,15 @@ getAppoitments(){
     phone: phone,
     service_n: service,
     shop: shop,
-    start: start,
+    start_t: start_t,
     store_name: store_name,
     store_phone:store_phone,
     week:week,
     year: year,
+    payed:payed
     }
     )
+    console.log(this.all_appointments_list)
   }
 
   async presentClientActionSheet(){
@@ -785,6 +953,7 @@ getAppoitments(){
     }
     this.week.push(day)
   }
+  this.getAppoitments()
   if(this.week[6]<this.week[0] && day_number>20){
     if(this.month==11){
       this.month=0
@@ -795,5 +964,36 @@ getAppoitments(){
     }
 
   }
+  this.todayAppointments(this.week[today])
+  }
+  async presentToast(text,type) {
+    if(type=='succ'){
+      const toast = await this.toastController.create({
+        message: text,
+        position: 'top',
+        duration: 2500,
+        cssClass:'toast-class',
+      });
+      toast.present();
+    }else{
+      if(type=='warn'){
+      const toast = await this.toastController.create({
+        message: text,
+        position: 'top',
+        duration: 2500,
+        cssClass:'toast-warn-class',
+      });
+      toast.present();
+    }else{
+        const toast = await this.toastController.create({
+          message: text,
+          position: 'top',
+          duration: 2500,
+          cssClass:'toast-err-class',
+        });
+        toast.present();
+    }
+    }
+    
   }
 }

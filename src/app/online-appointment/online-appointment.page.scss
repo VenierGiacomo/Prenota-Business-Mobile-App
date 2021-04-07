@@ -1,0 +1,33 @@
+.appintment{
+    padding:  10px;
+    position: relative;
+    display: block;
+    margin: 15px 6vw;
+    width: 88vw;
+    
+    background: white;
+    border-radius: 5px;
+    -webkit-box-shadow: 0px 0px 15px 0px rgba(0,0,50,0.17);
+-moz-box-shadow: 0px 0px 15px 0px rgba(0,0,0,50.17);
+box-shadow: 0px 0px 15px 0px rgba(0,0,50,0.17);
+    .app-Shop{
+        color: #040041;
+        font-weight: 600;
+        font-size: 18px;
+        line-height: 18px;
+    }
+    .app-service{
+        text-transform: capitalize;
+    color: #00479D ;
+    font-size: 15px;
+    }
+    .app-date{
+        color: #040041;
+
+        font-size: 13px;
+        ion-icon{
+            margin-bottom: -3px;
+        }
+    padding: 0px 0px 0px 0px;
+    }
+}

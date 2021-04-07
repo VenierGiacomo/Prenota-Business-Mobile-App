@@ -1,0 +1,12 @@
+<ion-content scrollY='false'>
+<div class="book-int"> 
+  <h3>Nota</h3>
+  
+    <ion-textarea placeholder="Inserisci qui la tua nota..." [(ngModel)]='note'></ion-textarea>
+  <div class="note_btn " (click)='setNote()' > <button><span *ngIf="!_loading"> <ion-icon name="document-text-outline"></ion-icon> &nbsp; Salva Nota</span> <div class="loader-5 center" *ngIf="_loading"><span></span></div></button></div>
+    <!-- <div class="loader-5 center" *ngIf="book_load"><span></span></div> </button> </div> -->
+  <div class="separator" >
+      <p (click)='closeModal()'>Indietro</p>
+    </div>
+  </div>
+</ion-content>

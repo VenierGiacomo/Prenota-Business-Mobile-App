@@ -28,6 +28,7 @@ export class PickDatePage implements OnInit {
   constructor(public modalController: ModalController,) { }
 
   ngOnInit() {
+    console.log(this.today,this.month_passed)
     var now = new Date()
     this.month = now.getMonth()
     this.year = now.getFullYear()

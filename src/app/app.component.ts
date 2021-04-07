@@ -76,26 +76,42 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.selectedIndex= 0
-    // const path = window.location.pathname
-    // if (path == '/notifications' || path == 'notifications'){
-    //   this.selectedIndex= 1
-    // }else{
-    //   if (path == '/scan' || path == 'scan'){
-    //     this.selectedIndex= 2
-    //   }else{
-    //     this.selectedIndex= 0
-    //   }
-      
-    // }
+    const path = window.location.pathname
+    if (path == '/clients' || path == 'clients'){
+      this.selectedIndex= 1
+    }else{
+      if (path == '/online-appointment' || path == 'online-appointment'){
+        this.selectedIndex= 2
+      }else{
+        this.selectedIndex= 0
+      }
+    }
   
+  }
+  async navigateClients(){
+   
+      // await this.menuCtrl.close();
+    await this.nav.navigateRoot('/clients')
+    // await this.menuCtrl.close();
+    this.selectedIndex= 1
   }
   assistence(){
     window.location.href = 'https://wa.me/393404526854'
   }
-  navigateCalendar(){
+  async navigateCalendar(){
+   
+      // await this.menuCtrl.close();
+    await this.nav.navigateRoot('/calendar')
+ 
     this.selectedIndex= 0
-    this.nav.navigateRoot('/calendar')
   }
+  async navigateOnlineAppointments(){
+   
+    // await this.menuCtrl.close();
+  await this.nav.navigateRoot('/online-appointment')
+
+  this.selectedIndex= 2
+}
   // navigateNotifications(){
   //   this.selectedIndex= 1
   //   this.nav.navigateRoot('/notifications')
@@ -108,6 +124,8 @@ export class AppComponent implements OnInit {
     await this.menuCtrl.close();
   }
   async logout(){
+
+    this.selectedIndex= 0
   if (this.platform.is('hybrid')){
     await this.apiNative.deleteStorage()
     await this.nav.navigateBack('login')

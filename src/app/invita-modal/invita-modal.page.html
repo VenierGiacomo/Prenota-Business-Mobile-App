@@ -1,0 +1,14 @@
+<ion-content scrollY='false'>
+  <div class="book-int" >  
+    <div class="whatsapp_btn "  (click)='sendWhatsApp()'> <button><span > <ion-icon name="logo-whatsapp"></ion-icon> &nbsp; WhatsApp</span> </button></div>      
+    <div class="white_btn "  (click)='sendSMS()'> <button><span > <ion-icon name="chatbubble-ellipses-outline"></ion-icon> &nbsp; SMS</span> </button></div>
+    <div class="qr_btn " (click)='qrcode()' > <button><span > <ion-icon name="qr-code-outline"></ion-icon> &nbsp; QR code</span> </button></div>
+    
+    <div class="email_btn " (click)='inviteEmail()' > <button><span > <ion-icon name="mail-outline"></ion-icon> &nbsp; Email</span> </button></div>
+    <div class="separator" >
+      <p (click)='closeModal()'>Chiudi</p>
+    </div>
+  </div>
+    
+    </ion-content>
+    

@@ -87,14 +87,70 @@ getEmployees(): Observable<any>{
 getopenHours(): Observable<any>{
         return this.http.get(BASE_URL+'closedhours/',{headers: this.httpheader})
 }
+
+async getStoreClients(force?){
+  var last_download 
+  if(JSON.parse(await localStorage.getItem('last_clients_update'))!= null && JSON.parse(localStorage.getItem('last_clients_update'))!= undefined){
+    last_download = await Number(JSON.parse(localStorage.getItem('last_clients_update')).time)  
+  }else{
+    last_download=0
+  }
+  if(force){
+    var x = await this.http.get(BASE_URL+'store/clients/',{headers: this.newheader()}).pipe().toPromise()
+    await localStorage.setItem('last_clients_update', JSON.stringify({ 'time': Number(new Date())}))
+    await localStorage.setItem('client_list', JSON.stringify({'list':  x}))
+    return  x
+  }
+  if(Number(new Date())-last_download>1200000 ||  JSON.parse(localStorage.getItem('client_list'))==null ||  JSON.parse(localStorage.getItem('client_list'))==undefined){
+    var x = await this.http.get(BASE_URL+'store/clients/',{headers: this.newheader()}).pipe().toPromise()
+    await localStorage.setItem('last_clients_update', JSON.stringify({ 'time': Number(new Date())}))
+    await localStorage.setItem('client_list', JSON.stringify({'list':  x}))
+    return  x
+  }else{
+    var stored = await JSON.parse(await localStorage.getItem('client_list'))
+    return stored.list
+  }
+  
+}
+registerClientWithEmail(first_name, last_name, phone ,email?  ):Observable<any>{
+  var data 
+  if(email){
+    data={
+      "first_name": first_name,
+      "last_name": last_name,
+      "email": email,
+      "phone": phone,
+      'client_name': first_name+' '+last_name
+    }
+  }else{
+    data={
+      "first_name": first_name,
+      "last_name": last_name,
+      "phone": phone,
+      'client_name': first_name+' '+last_name,
+    }
+  }
+ 
+  return this.http.post(BASE_URL+'store/clients/new/', data,{headers: this.newheader() })
+}
 setopenHours(data): Observable<any>{
   return this.http.post(BASE_URL+'closedhours/', data, {headers: this.newheader()})
 }
-
+deleteClientStore(id){
+  return this.http.delete(BASE_URL+'store/clients/'+id+'/',  {headers: this.newheader()})
+}
 bookAppointment(start, end, day, month, year,name, phone, details, employee, service):Observable<any>{
   var week = this.getWeekNumber(new Date(year, month, day))
   var data = {'new': true, 'start': start , 'end': end, 'day': day, 'week':week, 'month':month, 'year' : year, 'employee': employee,  'client_name' :name, 'phone':phone, 'details': details, 'service_n': service}
     return this.http.post(BASE_URL+'bookings/', data,{headers: this.newheader()})
+}
+inviteCLient(client):Observable<any>{
+  var data={
+    'id': client.id,
+    "client_name": client.client_name,
+
+  }
+  return this.http.post(BASE_URL+'store/clients/invite/email/', data,{headers: this.newheader() })
 }
 // working booking
 // bookAppointment(start, end, day, month, year,name, phone, details, employee, service):Observable<any>{
@@ -120,9 +176,9 @@ getAppointmentsExternal(week):Observable<any>{
   }
   throw throwError("error");    
 }
-updateAppointment(id, start, end, day, month, year,name, phone, details, employee, service):Observable<any>{
+updateAppointment(id, start, end, day, month, year,name, phone, details, employee, service,note):Observable<any>{
   var week = this.getWeekNumber(new Date(year, month, day))
-  var data = {'start': start , 'end': end, 'day': day, 'week':week, 'month':month, 'year' : year, 'employee': employee,  'client_name' :name, 'details': details, 'service_n': service, 'phone':phone}
+  var data = {'new':true,'start': start , 'end': end, 'day': day, 'week':week, 'month':month, 'year' : year, 'employee': employee,  'client_name' :name, 'details': details, 'service_n': service, 'phone':phone,'note':note}
   return this.http.put(BASE_URL+'bookings/'+id+'/', data, {headers: this.newheader()})
 }
 

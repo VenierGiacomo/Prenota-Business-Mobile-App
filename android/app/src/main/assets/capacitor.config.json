@@ -22,9 +22,5 @@
       "SplashScreenDelay": "3000",
       "WKWebViewOnly": "true"
     }
-  },
-  "server": {
-    "url": "http://192.168.1.168:8102",
-    "cleartext": true
   }
 }

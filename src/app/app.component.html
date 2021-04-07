@@ -1,12 +1,12 @@
 <ion-app>
-  <ion-split-pane contentId="main-content">
+  <!-- <ion-split-pane contentId="main-content"> -->
     <ion-menu swipeGesture="false" (swipeleft)='close()' contentId="main-content" type="overlay" >
-      <ion-content >
+      <ion-content scrollY='false'>
         <ion-list id="inbox-list">
-          <ion-list-header><span >pre</span><span>nota</span></ion-list-header>
+          <ion-list-header>Menu</ion-list-header>
           <!-- <ion-note>hi@ionicframework.com</ion-note> -->
 
-          <ion-menu-toggle auto-hide="false">
+          <ion-menu-toggle >
             <!-- <ion-item (click)='navigateCalendar()'lines="none" detail="false" [class.selected]="selectedIndex == i">
               <ion-icon slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
               <ion-label>{{ p.title }}</ion-label>
@@ -15,10 +15,20 @@
                 <ion-icon slot="start" name="calendar-outline"></ion-icon>
                 <ion-label>Calendario</ion-label>
             </ion-item>
+            <ion-item lines="none" detail="false" (click)='navigateClients()' [class.selected]="selectedIndex == 1">
+              <ion-icon slot="start" name="people-circle-outline"></ion-icon>
+              <ion-label>Clienti</ion-label>
+          </ion-item>
+          <ion-item lines="none" detail="false" (click)='navigateOnlineAppointments()' [class.selected]="selectedIndex == 2">
+            <ion-icon slot="start"  name="list-outline"></ion-icon>
+            <ion-label>Prenotazioni clienti</ion-label>
+        </ion-item>
             <ion-item lines="none" detail="false" (click)='assistence()'>
               <ion-icon slot="start" name="chatbubbles-outline"></ion-icon>
               <ion-label>Assistenza</ion-label>
           </ion-item>
+         
+          
           </ion-menu-toggle>
         </ion-list>
 
@@ -29,5 +39,5 @@
       </ion-content>
     </ion-menu>
     <ion-router-outlet id="main-content" [swipeGesture]="false"></ion-router-outlet>
-  </ion-split-pane>
+  <!-- </ion-split-pane> -->
 </ion-app>

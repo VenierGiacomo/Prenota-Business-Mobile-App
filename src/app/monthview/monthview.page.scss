@@ -1,8 +1,8 @@
 .m-calendar{
     width: 100vw;
     display: block;
-    background: #0061d5;
-    color: #ffffff;
+    background: #fff;
+    color: #343a40;
     .m-day-name{
         text-align: center;
         display: inline-block;
@@ -12,22 +12,32 @@
         width: 100vw;
         display: block;
         h2{
+            color: #0061d5;
             text-align: center;
         }
         .m-day{
             text-align: center;
             display: inline-block;
-            padding: 10px 0px;
+            line-height: 36px;
+            padding: 0px;
             width: calc(100% / 7) ;
         }
     }
     
 }
 ion-title{
-    color: #707579;
+    color: #343a40;
     font-size:15px;
 }
-
+.active{
+    background: #0061d5;
+    display: block;
+    height: 36px;
+    margin: 0px auto;
+    width: 36px;
+    border-radius: 50%;
+    color: #fff;
+  }
 .select-modal{
     background: transparent;
     .modal-wrapper { border-top-left-radius: 15px; border-top-right-radius: 15px;}
@@ -40,6 +50,6 @@ padding: 20px 0px;
 }
 
 body, ion-content{
-    --background: #0061d5 !important;
-    background: #0061d5 !important;
+    --background: #fff !important;
+    background: #fff !important;
 }

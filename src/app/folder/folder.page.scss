@@ -1,11 +1,16 @@
 
 ion-title{
-  font-size: 21px;
-  color: #0061d5;
+  font-size: 16px;
+  color: #41484e;
   font-weight: 400;
 }
 ion-content, ion-header{
   width:100vw
+
+}
+ion-content{
+  margin-top:20px;
+  --padding-bottom:150px;
 }
 $base_width: calc(100vw/7);
 $margin_date: calc(calc(100vw -210px) /28);
@@ -49,15 +54,16 @@ $margin_date: calc(calc(100vw -210px) /28);
     text-align: center;
     span{
       display: block;
-      padding-top: 5px;
+      // padding-top: 5px;
       height: 20px;
       height: auto;
     
     }
     .datenumber{
-      line-height: 16px;
+      text-align: center;
+
+      line-height: 30px;
       font-size: 16px;
-      padding-top:7px;
       margin: 0 auto;
       height: 30px;
       width: 30px;
@@ -74,6 +80,7 @@ $margin_date: calc(calc(100vw -210px) /28);
   display: none;
 }
 .dates{
+  padding-top: 5px;
   -ms-overflow-style: none;
 }
 // .appoinment-cont{
@@ -142,6 +149,7 @@ $margin_date: calc(calc(100vw -210px) /28);
 
 .calendar{
   margin-top: 80px;
+  padding-top:20px;
   overflow: auto;
   width: 100vw;
   .slot:nth-child(even){
@@ -166,7 +174,7 @@ $margin_date: calc(calc(100vw -210px) /28);
     display: grid;
     grid-template-columns: 1fr 9fr;
       .time{
-        color: #707579;
+        color: #41484e;
         font-weight: 500;
         padding: 0px 5px;
         line-height: 12px;
@@ -235,7 +243,7 @@ $margin_date: calc(calc(100vw -210px) /28);
       background: #b3e1f7;
     }
     &5{
-      color: #4c21a3;
+      color: #c9bfdb;
       background: #c5cbe9;
     }
     &6{
@@ -247,8 +255,14 @@ $margin_date: calc(calc(100vw -210px) /28);
       background: #ddbde6;
     }
     &10000{
-      color: rgb(68, 78, 126);
-      background: #d7dbef; 
+      // height: 60px;
+      width: 100%;
+      margin: 0px !important;
+      color: rgba(#98a0a6, 0.6);
+      background-color: #ffffff;
+      background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23f2f2fe' fill-opacity='1' fill-rule='evenodd'%3E%3Cpath d='M0 40L40 0H20L0 20M40 40V20L20 40'/%3E%3C/g%3E%3C/svg%3E");
+      cursor: not-allowed;
+      background-size: 20px 20px;
     }
 }
 
@@ -273,6 +287,7 @@ ion-footer{
 ion-header{
   z-index: 10000;
   ion-buttons{
+    font-size: 16px;
     color:  #0061d5;
   }
 }
@@ -340,7 +355,7 @@ ion-header{
 }
 
 ion-tab-bar{
-  --color:#0061d5 !important;
+  --color:#41484e !important;
   padding: 0px 0px  10px 0px;
   }
   ion-icon{

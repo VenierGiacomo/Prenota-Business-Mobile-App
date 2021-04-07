@@ -61,7 +61,11 @@ ion-header{
 
   }
   body, html{
+    color: #343a40;
     font-family: 'Roboto', sans-serif !important;
+  }
+  .action-sheet-title{
+    text-transform: capitalize !important;
   }
 ion-title {
     width: 100vw !important;
@@ -84,9 +88,44 @@ ion-title {
 .toast-class{
   --background: #0061d5;
   --color:white;
-  position: fixed;
-  top:10px; 
+  // position: fixed;
+  // top:10px; 
   font-size: 15px!important;
   font-weight: 500!important;
    text-align: center!important;
  }
+
+ .toast-warn-class{
+  --background: #ecb00b;
+  --color:white;
+  // position: fixed;
+  // top:10px; 
+  font-size: 15px!important;
+  font-weight: 500!important;
+   text-align: center!important;
+ }
+ .toast-err-class{
+  --background: #b30f0a;
+  --color:white;
+  // position: fixed;
+  // top:10px; 
+  font-size: 15px!important;
+  font-weight: 500!important;
+   text-align: center!important;
+ }
+ .invite-modal{
+  background: transparent;
+  .modal-wrapper { border-top-left-radius: 15px; border-top-right-radius: 15px;}
+  padding-top:calc(100vh - 380px)
+  
+}
+.select-modal{
+  // background: transparent;
+  .modal-wrapper { border-top-left-radius: 15px; border-top-right-radius: 15px;}
+  padding-top:50px!important;
+}
+.note-modal{
+  // background: transparent;
+  .modal-wrapper { border-top-left-radius: 15px; border-top-right-radius: 15px;}
+  padding-top:calc(100vh - 350px) !important
+}

@@ -1,4 +1,4 @@
-<ion-header translucent>
+<!-- <ion-header translucent>
   <ion-toolbar>
     <ion-title>Modifica</ion-title>
     <ion-buttons slot="end">
@@ -15,7 +15,7 @@
       <ion-select-option *ngFor='let serv of services'  value='{{serv.id}}'>{{serv.name}}</ion-select-option>
     </ion-select>
     </ion-item>
-    <ion-item *ngIf='service==-1'>
+    <ion-item *ngIf='0>service'>
       <ion-label>Nome del servizio</ion-label>
     <ion-input class="align-right-1" [(ngModel)]="desc" placeholder="Visita spec."></ion-input>
   </ion-item >
@@ -37,10 +37,10 @@
     <ion-item > 
       <ion-label>Orario</ion-label>
     <ion-select interface="popover" placeholder="Seleziona un servizio" [(ngModel)]='time'>
-      <ion-select-option *ngFor='let hour of hours_list'  value='{{hour}}'>{{hour}}</ion-select-option>
+      <ion-select-option *ngFor='let hour of times'  value='{{hour}}'>{{hour}}</ion-select-option>
     </ion-select>
   </ion-item>
-  <ion-item *ngIf='service==-1'>
+  <ion-item *ngIf='0>service'>
     <ion-label>Durata</ion-label>
   <ion-select interface="popover" placeholder="Seleziona una durata" [(ngModel)]='duration'>
     <ion-select-option *ngFor='let dur of time_duration'  value='{{dur}}'>{{dur}}</ion-select-option>
@@ -48,4 +48,78 @@
   </ion-item>
   </ion-list>
   <ion-button class='add' (click)="updateAppointment()">Modifica</ion-button>
+</ion-content> -->
+
+<ion-header class="ion-no-border bar-header">
+  <ion-toolbar style=" background: transparent !important; border:none !important;">
+      <ion-icon slot="end" name="close-outline"  (click)='closeModal()'></ion-icon>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content  >
+  
+<h1>Modifica Prenotazione</h1>
+
+ <div class="input-cont">
+  <ion-item (click)='showDatePicker()' > 
+    <ion-label position="stacked">Data</ion-label>
+    <div  [innerHTML]="today" class="align-right"></div>
+  </ion-item>
+  <ion-item *ngIf='actual_times==2'> 
+    <ion-label position="stacked">Orario</ion-label>
+    <ion-select interface="popover" placeholder="Seleziona un orario" [(ngModel)]='time'>
+      <ion-select-option *ngFor='let hour of times'  value='{{hour}}'>{{hour}}</ion-select-option>
+    </ion-select>
+</ion-item>
+<ion-item *ngIf='actual_times==1'> 
+  <ion-label position="stacked">Orario</ion-label>
+<ion-select interface="popover" placeholder="Seleziona un orario" [(ngModel)]='time'>
+  <ion-select-option *ngFor='let hour of hours_list'  value='{{hour}}'>{{hour}}</ion-select-option>
+</ion-select>
+</ion-item>
+<ion-item *ngIf='actual_times==0'> 
+  <ion-label position="stacked">Orario</ion-label>
+<ion-select interface="popover" placeholder="Seleziona un orario" [(ngModel)]='time'>
+  <ion-select-option *ngFor='let hour of half_list'  value='{{hour}}'>{{hour}}</ion-select-option>
+</ion-select>
+</ion-item>
+
+
+    <ion-item  >
+ <ion-label position="stacked">Nome e cognome</ion-label>
+ <ion-input class="align-right" [(ngModel)]="client_name" placeholder="Mario"></ion-input>
+  <!-- <p *ngIf='first_name_err!=""'>{{first_name_err}}</p> -->
+</ion-item>
+<ion-item  >
+    <ion-label position="stacked">Cellulare</ion-label>
+    <ion-input class="align-right" inputmode="tel" [(ngModel)]="phone" placeholder="3312233645"></ion-input>
+    <!-- <p *ngIf='phone_err!=""'>{{phone_err}}</p> -->
+  </ion-item>
+  
+  <ion-item >
+    <ion-label position="stacked">Servizio</ion-label>
+    <ion-select interface="popover" placeholder="Seleziona un servizio" [(ngModel)]='service'>
+      <ion-select-option *ngFor='let serv of services'  value='{{serv.id}}'>{{serv.name}}</ion-select-option>
+    </ion-select>
+  </ion-item>
+  <ion-item *ngIf='0>service' >
+    <ion-label position="stacked">Nome del servizio</ion-label>
+    <ion-input class="align-right-1" [(ngModel)]="desc" placeholder="Visita spec."></ion-input>
+</ion-item >
+<ion-item *ngIf='0>service' >
+  <ion-label position="stacked">Durata</ion-label>
+  <ion-select interface="popover" placeholder="Seleziona una durata" [(ngModel)]='duration'>
+    <ion-select-option *ngFor='let dur of time_duration'  value='{{dur}}'>{{dur}}</ion-select-option>
+  </ion-select>
+</ion-item>
+  
+  <div class="login-btn">
+    <ion-button  color='primary' (click)='updateAppointment()'>Salva</ion-button>
+  
+  </div>
+ 
+  
+ </div>
 </ion-content>
+

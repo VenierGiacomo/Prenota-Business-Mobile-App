@@ -23,12 +23,14 @@
    
   </ion-refresher>
   <ion-list>
-    <ion-item (click)='showClientOptions(client)' *ngFor='let client of clients_to_show'>
+  <ion-virtual-scroll [items]="clients_to_show" approxItemHeight="30px">
+    <ion-item *virtualItem="let client" (click)='showClientOptions(client)' >
       <ion-icon name="person-circle-outline"></ion-icon>
       <ion-label>{{client.client_name}}</ion-label>
     </ion-item>
-  </ion-list>
-  
+
+</ion-virtual-scroll>
+</ion-list>
   <div class="back_qr" *ngIf='backdrop_active' (click)="closeQR()">
     <div  id='qr-card'>
         

@@ -62,11 +62,12 @@ export class FolderPage implements OnInit {
       // this.oneSignal.setLogLevel({logLevel: 6, visualLevel: 0});
     var self = this
       var notificationOpenedCallback =  function(jsonData) {
-      
+       
 
        
           var not_data =jsonData.notification.payload.additionalData
           if(not_data!=undefined && not_data!=null){
+            self.spin='block'
             var emplo = self.employees.filter((val)=>{return val.employee==not_data.employee})
             self.employee = emplo[0]
             var paras = document.getElementsByClassName('task');
@@ -574,6 +575,7 @@ async noteModal(appo){
         
       // self.spin="none"
       // self.navcomp.navigateNotifications()
+      this.spin='none'
     }, 800);
 
   })

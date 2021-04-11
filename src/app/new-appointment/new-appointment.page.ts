@@ -296,27 +296,28 @@ export class NewAppointmentPage implements OnInit {
             var appo ={id:res.id, star_t:star, end_t:end, details:details, client_name:this.client_name, employee:employee, service_n:this.service, day:this.day, week:res.week, month:this.month, year:this.year,phone:this.phone,note:''}
              this.homeref.drawAppointment(res.id, star, end, details, this.client_name, employee, this.service, this.day, 0, this.month, this.year,this.phone,'',false)
             
-             this.homeref.all_appointments_list.push(appo)
+             
              var week = this.getWeekNumber(new Date(this.year,this.month,this.day))
-           var app = { client: 1,
-             client_name: this.client_name,
-             day: this.day,
-             details: details,
-             employee: employee,
-             end: end,
-             id: res.id,
-             month: this.month,
-             note: null,
-             phone: this.phone,
-             service_n:  this.service,
-             shop: 0,
-             start: star,
-             store_name: "",
-             store_phone: "",
-             week: week,
-             year: this.year
-           }
-             this.homeref.all_appointments_list.push(app)
+             var app = { client: 1,
+              client_name: this.client_name,
+              day: this.day,
+              details: details,
+              employee: employee,
+              end: end,
+              id: res.id,
+              month: this.month,
+              note: null,
+              phone: this.phone,
+              service_n:  this.service,
+              shop: 0,
+              start: star,
+              start_t: res.start_t,
+              end_t: res.end_t,
+              store_name: "",
+              store_phone: "",
+              week: week,
+              year: this.year}
+              this.homeref.all_appointments_list.push(app)
            
            }).catch(
              err =>     this.presentToast("C'è stato un errore durante il salvataggio",'warn')) 

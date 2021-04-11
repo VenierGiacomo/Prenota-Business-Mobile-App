@@ -223,37 +223,45 @@ $margin_date: calc(calc(100vw -210px) /28);
 }
 :host ::ng-deep .c{
   &0{
-      color: #85040a !important;
-      background: #f2b3b3 !important;
-    }
-    &1{
-      color: #b63a00;
-      background: #fccbbc;
-    }
-    &2{
-      color: #9c6b00;
-      background: #fcecbe;
-    }
-    &3{
-      color: #047a10;
-      background: #c2e9d7;
-    }
-    &4{
-      color: #0954cc;
-      background: #b3e1f7;
-    }
-    &5{
-      color: #c9bfdb;
-      background: #c5cbe9;
-    }
-    &6{
-      color: rgb(68, 78, 126);
-      background: #d7dbef;  
-    }
-    &7{
-      color: rgb(95, 17, 131);
-      background: #ddbde6;
-    }
+    color: #85040a !important;
+    background: #f2b3b3 !important;
+  }
+  &1{
+    color: #b63a00;
+    background: #fccbbc;
+  }
+  &2{
+    color: #9c6b00;
+    background: #fcecbe;
+  }
+  &3{
+    color: #047a10;
+    background: #c2e9d7;
+  }
+  &4{
+    color: #0954cc;
+    background: #b3e1f7;
+  }
+  &5{
+    color: #4c21a3;
+    background: #c5cbe9;
+  }
+  &6{
+    color: rgb(68, 78, 126);
+    background: #d7dbef;  
+  }
+  &7{
+    color: rgb(95, 17, 131);
+    background: #ddbde6;
+  }
+  &8{
+    color:#291004;
+    background: #d19a7a;
+  }
+  &9{
+      color:#f3f3f3;
+    background: #E80627
+  }
     &10000{
       // height: 60px;
       width: 100%;

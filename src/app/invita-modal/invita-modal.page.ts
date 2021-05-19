@@ -3,6 +3,7 @@ import { ModalController, Platform } from '@ionic/angular';
 import { ApiService } from '../services/api.service';
 import { NativeApiService } from '../services/nativeapi.service';
 import { StorageService } from '../services/storage.service';
+import { SMS } from '@ionic-native/sms/ngx';
 
 @Component({
   selector: 'app-invita-modal',
@@ -11,7 +12,7 @@ import { StorageService } from '../services/storage.service';
 })
 export class InvitaModalPage implements OnInit {
 
-  constructor(private plt: Platform, private api: ApiService,private apiNative: NativeApiService,private modalController: ModalController, private storage: StorageService) { }
+  constructor(private sms: SMS,private plt: Platform, private api: ApiService,private apiNative: NativeApiService,private modalController: ModalController, private storage: StorageService) { }
 @Input()client
 @Input()homeref
 store
@@ -26,9 +27,11 @@ generated = '';
 
   async ngOnInit() {
     this.store= await this.storage.getstore()
-    this.store_name_url = this.store.store_name.replaceAll(' ', '%20')
+    console.log(this.store)
+    var store_name = await this.store.store_name
+    this.store_name_url = store_name.replace(/ /g, '%20');
 
-    this.store_name_url_dash = this.store.store_name.replaceAll(' ', '_')
+    this.store_name_url_dash = this.store.store_name.replace(/ /g, '_');
     var name = this.client.client_name.split(' ')
     function capitalizeFirstLetter(string) {
       return string.charAt(0).toUpperCase() + string.slice(1);
@@ -41,7 +44,7 @@ generated = '';
        email = this.client.email.replace('@','%40')
     }
     var full_name = this.first_name[0].charAt(0).toUpperCase() + this.first_name.slice(1)+'%20'+this.last_name.charAt(0).toUpperCase() + this.last_name.slice(1);
-    this.message_body=`Gentile%20${full_name}!%0A${this.store_name_url}%20%C3%A8%20finalmente%20prenotabile%20online!%F0%9F%98%83%0A%0APu%C3%B2%20scaricare%20l%27app%20da%20questo%20link%3A%20https%3A%2F%2Fprenota.cc%2Fapp%0A%0AQuando%20ha%20scaricato%20l%27app%2C%20clicchi%20qui%20sotto%20per%20accedere%20al%20suo%20account%3A%0Ahttps%3A%2F%2Fprenota.cc%2Fregister%2F${this.first_name}%2F${this.last_name}%2F${email}%2F%2B${this.client.phone}%2F${this.store_name_url_dash}%2F${this.client.id}%0A`
+    this.message_body=`Gentile%20${full_name}!%0A${this.store_name_url}%20%C3%A8%20finalmente%20prenotabile%20online!%F0%9F%98%83%0A%0APu%C3%B2%20scaricare%20l%27app%20da%20questo%20link%3A%20https%3A%2F%2Fprenota.cc%2Fapp%0A%0AQuando%20ha%20scaricato%20l%27app%2C%20clicchi%20qui%20sotto%20per%20accedere%20al%20suo%20account%3A%0Ahttps%3A%2F%2Fprenota.cc%2Fregister%2F${this.first_name}%2F${this.last_name}%2F${email}%2F${this.client.phone}%2F${this.store_name_url_dash}%2F${this.client.id}%0A`
 
   }
   async closeModal(){
@@ -70,7 +73,14 @@ generated = '';
     window.location.href=`https://api.whatsapp.com/send?phone=39${this.client.phone}&text=${this.message_body}`
   }
   sendSMS(){  
-    window.location.href=`sms:+39${this.client.phone};&body=${this.message_body}`
+    // this.sms.send(this.client.phone,this.message_body)
+    if(this.plt.is('android')){      
+      window.location.href=`sms:+39${this.client.phone}?body=${this.message_body}`
+      
+    }else{
+      window.location.href=`sms:+39${this.client.phone};&body=${this.message_body}`
+    }
+   
   }
  qrcode(){
    this.closeModal().then(()=>{this.homeref.qrcode(this.url_to_connect)})

@@ -1,0 +1,29 @@
+
+<ion-header class="ion-no-border bar-header">
+  <ion-toolbar style=" background: transparent !important; border:none !important;">
+    <ion-title>Seleziona un cliente</ion-title>
+      <ion-icon slot="end" name="close-outline"  (click)='closeModal()'></ion-icon>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-searchbar placeholder='Cerca clienti'(ionChange)='filterClients()' [(ngModel)]='client_name_search' showCancelButton='focus' cancelButtonText="Annulla" (ionCancel)='client_name_search=""'></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content>
+    
+    </ion-refresher-content>
+   
+  </ion-refresher>
+  <ion-list>
+  <ion-virtual-scroll [items]="clients_to_show" approxItemHeight="30px">
+    <ion-item *virtualItem="let client" (click)='selectClient(client)' >
+      <ion-icon name="person-circle-outline"></ion-icon>
+      <ion-label>{{client.client_name}}</ion-label>
+    </ion-item>
+
+</ion-virtual-scroll>
+</ion-list>
+
+
+</ion-content>

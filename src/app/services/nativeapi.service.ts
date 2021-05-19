@@ -121,8 +121,12 @@ async login(params){
     'Content-Type': 'application/json',
     'Authorization':'JWT '+ res.token 
   }
-  console.log(this.token_header)
   await this.storeToken(res.token)
+  return res
+}
+async loginread(params){
+  let url = BASE_URL+'auth/';
+  let res = await  this.postData(url,params,this.simple_header)
   return res
 }
 
@@ -171,14 +175,54 @@ async getEmployees(){
   return  await  this.getData(url,this.token_header)
 }
 
-async bookAppointment(start, end, day, month, year,name, phone,details, employee, service){
+async bookAppointment(start, end, day, month, year,name, phone,details, employee, service,client_id, adons, store_client){
   var week = this.getWeekNumber(new Date(year, month, day))
-  var data = {'new':true, 'start': start , 'end': end, 'day': day, 'week':week, 'month':month, 'year' : year, 'employee': employee,  'client_name' :name, 'phone': phone,'details': details, 'service_n': service}
+  
+  var data
+  if(client_id>1){
+    if(store_client){
+      data = {'new':true,'start': start , 'end': end, 'day': day, 'week':week, 'month':month, 'year' : year, 'employee': employee,  'client_name' :name, 'phone':phone, 'details': details, 'service_n': service, 'note': '','client':client_id,'adons':adons,'store_client':store_client}
+     }else{
+        
+        data = {'new':true,'start': start , 'end': end, 'day': day, 'week':week, 'month':month, 'year' : year, 'employee': employee,  'client_name' :name, 'phone':phone, 'details': details, 'service_n': service, 'note': '','client':client_id, 'adons':adons}
+     }
+
+  }else{
+    if(store_client){
+      data = {'new':true,'start': start , 'end': end, 'day': day, 'week':week, 'month':month, 'year' : year, 'employee': employee,  'client_name' :name, 'phone':phone, 'details': details, 'service_n': service, 'note': '', 'adons':adons,'store_client':store_client}
+     }else{
+        
+        data = {'new':true,'start': start , 'end': end, 'day': day, 'week':week, 'month':month, 'year' : year, 'employee': employee,  'client_name' :name, 'phone':phone, 'details': details, 'service_n': service, 'note': '',  'adons':adons}
+     }
+  }
+  
   let url = BASE_URL+'bookings/'
   return await this.postData(url,data,this.token_header)
 
 }
 
+async updateClientStore(id,first_name, last_name, phone ,email?  ){
+  let url =BASE_URL+'store/clients/'+id+'/'
+  var data
+  if(email && email!=''){
+    data={
+      "first_name": first_name,
+      "last_name": last_name,
+      "email": email,
+      "phone": phone,
+      'client_name': first_name+' '+last_name
+    }
+  }else{
+    data={
+      "first_name": first_name,
+      "last_name": last_name,
+      "phone": phone,
+      'client_name': first_name+' '+last_name,
+    }
+  }
+  
+  return await this.putData(url, data,this.token_header)
+}
 async booknotifications(list_ids){
   var ids=list_ids.toString()
   let url = BASE_URL+'bookings/notifications/?list_ids='+ids
@@ -348,12 +392,18 @@ async paymentMethods(){
   let url = BASE_URL+'webhooks/payment_methods/'
   return await  this.postData(url,{},this.token_header)
 }
-async updateAppointment(id, start, end, day, month, year,name, phone, details, employee, service, note){
+async updateAppointment(id, start, end, day, month, year,name, phone, details, employee, service, note,  client_id, store_client, payed?,){
   let url = BASE_URL+'bookings/'+id+'/'
   var week = this.getWeekNumber(new Date(year, month, day))
-  var data = {'new':true,'start': start , 'end': end, 'day': day, 'week':week, 'month':month, 'year' : year, 'employee': employee,  'client_name' :name, 'details': details, 'service_n': service,'phone':phone, 'note':note}
+  var data
+  if(payed){
+    data = {'new':true,'start': start , 'end': end, 'day': day, 'week':week, 'month':month, 'year' : year, 'employee': employee,  'client_name' :name, 'details': details, 'service_n': service,'phone':phone, 'note':note, 'client_id':client_id,'store_client':store_client, 'payed':payed,}
+  }else{
+    data = {'new':true,'start': start , 'end': end, 'day': day, 'week':week, 'month':month, 'year' : year, 'employee': employee,  'client_name' :name, 'details': details, 'service_n': service,'phone':phone, 'note':note, 'client_id':client_id,'store_client':store_client,}
+  }
   return await this.putData(url, data, this.token_header)
 }
+
 async getAppointmentsExternal(week){
   var l
   let token 
@@ -406,7 +456,7 @@ async getStoreClients(force?){
 }
 async registerClientWithEmail(first_name, last_name, phone ,email?  ){
   var data 
-  let url =BASE_URL+'store/clients/new/'
+  let url = BASE_URL+'store/clients/new/'
   if(email){
     data={
       "first_name": first_name,
@@ -423,8 +473,7 @@ async registerClientWithEmail(first_name, last_name, phone ,email?  ){
       'client_name': first_name+' '+last_name,
     }
   }
- 
-  return this.postData(url, data,this.token_header)
+  return await this.postData(url, data, this.token_header)
 }
 async deleteClientStore(id){
   let url = BASE_URL+'store/clients/'+id+'/'

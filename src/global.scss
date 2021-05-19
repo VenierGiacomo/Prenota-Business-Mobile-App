@@ -45,15 +45,19 @@
   padding-right: 0px   !important;
 }
 :root {
-    --ion-safe-area-top: 20px;
+    --ion-safe-area-top: 40px;
     --ion-safe-area-bottom: 22px;
+    @media(max-height: 650px){
+      --ion-safe-area-top: 20px  !important
+      ;
+    }
   }
 ion-app{
     background: white;
   }
 ion-header{
     background: white;
-    margin-top:10px;
+    // margin-top:10px;
     padding: 0px 0px 0px 0px;
     ion-toolbar{
         padding: 0px 10px;
@@ -62,6 +66,8 @@ ion-header{
   }
   body, html{
     color: #343a40;
+
+    background: white  !important; 
     font-family: 'Roboto', sans-serif !important;
   }
   .action-sheet-title{
@@ -90,6 +96,7 @@ ion-title {
   --color:white;
   // position: fixed;
   // top:10px; 
+  border-radius: 5px  !important;
   font-size: 15px!important;
   font-weight: 500!important;
    text-align: center!important;
@@ -116,7 +123,7 @@ ion-title {
  .invite-modal{
   background: transparent;
   .modal-wrapper { border-top-left-radius: 15px; border-top-right-radius: 15px;}
-  padding-top:calc(100vh - 380px)
+  padding-top:calc(100vh - 320px)
   
 }
 .select-modal{
@@ -129,3 +136,5 @@ ion-title {
   .modal-wrapper { border-top-left-radius: 15px; border-top-right-radius: 15px;}
   padding-top:calc(100vh - 350px) !important
 }
+
+  

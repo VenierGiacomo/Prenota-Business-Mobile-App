@@ -22,7 +22,7 @@
   <!-- <p *ngIf='last_name_err!=""'>{{last_name_err}}</p> -->
 </ion-item>
 <ion-item lines='none' >
-  <ion-label position="stacked">Email</ion-label>
+  <ion-label position="stacked">Email <span style="font-size: 11px; color: #888;">(opzionale)</span></ion-label>
   <ion-input [(ngModel)]='email' type="email" name="email" ></ion-input>
   <!-- <p *ngIf='email_err!=""'>{{email_err}}</p> -->
 </ion-item>
@@ -35,7 +35,7 @@
 
   
   <div class="login-btn">
-    <ion-button fill=outline color='primary' (click)='register()'>Aggiungi</ion-button>
+    <ion-button fill=outline color='primary' (click)='registerCLi()'>Salva</ion-button>
    
   </div>
  

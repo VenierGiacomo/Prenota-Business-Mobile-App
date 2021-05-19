@@ -1,76 +1,97 @@
 
 <ion-header class="ion-no-border bar-header">
   <ion-toolbar style=" background: transparent !important; border:none !important;">
+  
+    <ion-title>Nuova Prenotazione</ion-title>
       <ion-icon slot="end" name="close-outline"  (click)='closeModal()'></ion-icon>
   </ion-toolbar>
 </ion-header>
 
 
-<ion-content  >
+
+
+<ion-content >
   
-<h1> Nuova Prenotazione</h1>
+
 
  <div class="input-cont">
-  <ion-item (click)='showDatePicker()' > 
+  <div   (click)='choseCLient()'>
+    <ion-label position="stacked">Cliente</ion-label>
+    <span style="display: block;" class="align-right">{{client_txt}}</span>
+   </div>
+   <div *ngIf='client_txt=="Nuovo cliente"' style="display: inline-block !important; width: 50vw;">
+    <ion-label position="stacked">Nome del cliente</ion-label>
+  <ion-input class="align-right-1" [(ngModel)]="client_name" placeholder="Es. Giacomo Venier"></ion-input>
+</div >
+<div *ngIf='client_txt=="Nuovo cliente"' style="display: inline-block !important; width: 50vw;" >
+  <ion-label position="stacked">Cellulare</ion-label>
+<ion-input class="align-right-1" [(ngModel)]="phone" type='tel' placeholder="Es. 3312233645"></ion-input>
+</div >
+
+  <div  (click)='showDatePicker()' > 
     <ion-label position="stacked">Data</ion-label>
-    <div  [innerHTML]="today" class="align-right"></div>
-  </ion-item>
-  <ion-item *ngIf='actual_times==2'> 
+    <span style="display: block;" class="align-right">{{today}}</span>
+  </div>
+
+
+  <div  (click)='selectServiceModal()' >
+    <ion-label position="stacked">Servizio</ion-label>
+    <span style="display: block;"  class="align-right">{{service_txt}}</span>
+    <!-- <ion-select interface="popover" placeholder="Seleziona un servizio" [(ngModel)]='service'>
+      <ion-select-option *ngFor='let serv of services'  value='{{serv.id}}'>{{serv.name}}</ion-select-option>
+    </ion-select> -->
+  </div>
+  <div *ngIf='service==-1' >
+ 
+    <ion-label position="stacked">Nome del servizio</ion-label>
+  <ion-input class="align-right-1" [(ngModel)]="desc" placeholder="Visita spec." style="width: calc(100vw - 40px)"></ion-input>
+  </div>
+  <div  *ngIf='actual_times==2' style="width: 50vw; display: inline-block; padding-right:10px;">
     <ion-label position="stacked">Orario</ion-label>
   <ion-select interface="popover" placeholder="Seleziona un servizio" [(ngModel)]='time'>
     <ion-select-option *ngFor='let hour of times'  value='{{hour}}'>{{hour}}</ion-select-option>
   </ion-select>
-</ion-item>
-<ion-item *ngIf='actual_times==1'> 
+</div>
+<div  *ngIf='actual_times==1' style="width: 50vw; display: inline-block;padding-right:10px;">
   <ion-label position="stacked">Orario</ion-label>
 <ion-select interface="popover" placeholder="Seleziona un servizio" [(ngModel)]='time'>
   <ion-select-option *ngFor='let hour of hours_list'  value='{{hour}}'>{{hour}}</ion-select-option>
 </ion-select>
-</ion-item>
-<ion-item *ngIf='actual_times==0'> 
+</div>
+<div  *ngIf='actual_times==0' style="width: 50vw; display: inline-block;padding-right:10px;">
   <ion-label position="stacked">Orario</ion-label>
 <ion-select interface="popover" placeholder="Seleziona un servizio" [(ngModel)]='time'>
   <ion-select-option *ngFor='let hour of half_list'  value='{{hour}}'>{{hour}}</ion-select-option>
 </ion-select>
-</ion-item>
-
-
-    <ion-item  >
- <ion-label position="stacked">Nome e cognome</ion-label>
-  <ion-input [(ngModel)]='client_name' type="text" name="first_name"  autocapitalize=true></ion-input>
-  <!-- <p *ngIf='first_name_err!=""'>{{first_name_err}}</p> -->
-</ion-item>
-<ion-item  >
-    <ion-label position="stacked">Cellulare</ion-label>
-    <ion-input inputmode="tel" type="tel" [(ngModel)]='phone' ></ion-input>
-    <!-- <p *ngIf='phone_err!=""'>{{phone_err}}</p> -->
-  </ion-item>
-  
-
-  <ion-item >
-    <ion-label position="stacked">Servizio</ion-label>
-    <ion-select interface="popover" placeholder="Seleziona un servizio" [(ngModel)]='service'>
-      <ion-select-option *ngFor='let serv of services'  value='{{serv.id}}'>{{serv.name}}</ion-select-option>
-    </ion-select>
-  </ion-item>
-  <ion-item *ngIf='service==-1' >
-    <ion-label position="stacked">Nome del servizio</ion-label>
-  <ion-input class="align-right-1" [(ngModel)]="desc" placeholder="Visita spec."></ion-input>
-</ion-item >
-<ion-item *ngIf='service==-1' >
+</div>
+<div   style="width: 50vw; display: inline-block; ">
   <ion-label position="stacked">Durata</ion-label>
-<ion-select interface="popover" placeholder="Seleziona una durata" [(ngModel)]='duration'>
+<ion-select interface="popover" placeholder="Seleziona una durata" [(ngModel)]='duration' >
   <ion-select-option *ngFor='let dur of time_duration'  value='{{dur}}'>{{dur}}</ion-select-option>
 </ion-select>
-</ion-item>
+</div>
+
+
+    <!-- <div   >
+ <ion-label position="stacked">Nome e cognome</ion-label>
+  <ion-input   [(ngModel)]='client_name' type="text" name="first_name"  autocapitalize=true></ion-input>
   
-  <div class="login-btn">
-    <ion-button  color='primary' (click)='newAppointment(0)'>Aggiungi</ion-button>
-    <ion-button  color='dark' (click)='newAppointment(1)'>Blocca un'ora</ion-button>
-    <ion-button  color='dark' (click)='newAppointment(2)'>Chiudi tutto il giorno</ion-button>
-  </div>
+</div>
+<div   >
+    <ion-label position="stacked">Cellulare</ion-label>
+    <ion-input inputmode="tel" type="tel" [(ngModel)]='phone' ></ion-input>
+    
+  </div> -->
+ 
+
+  
  
   
  </div>
+ <div class="login-btn" *ngIf='!keyboard_visible'>
+  
+  <button (click)='closeShop()'  >Chiudi</button>
+  <button style="margin-left:20px; background: #0061d5;" (click)='newAppointment(0)'>Salva</button>
+</div>
 </ion-content>
 

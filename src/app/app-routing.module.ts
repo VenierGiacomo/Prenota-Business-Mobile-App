@@ -65,6 +65,15 @@ const routes: Routes = [
   {
     path: 'note',
     loadChildren: () => import('./note/note.module').then( m => m.NotePageModule)
+  },
+
+  {
+    path: 'servicesmodal',
+    loadChildren: () => import('./servicesmodal/servicesmodal.module').then( m => m.ServicesmodalPageModule)
+  },
+  {
+    path: 'selectclientmodal',
+    loadChildren: () => import('./selectclientmodal/selectclientmodal.module').then( m => m.SelectclientmodalPageModule)
   }
 ];
 

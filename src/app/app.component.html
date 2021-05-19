@@ -27,12 +27,18 @@
               <ion-icon slot="start" name="chatbubbles-outline"></ion-icon>
               <ion-label>Assistenza</ion-label>
           </ion-item>
-         
+          
           
           </ion-menu-toggle>
+          <ion-item lines="none" detail="false" >
+            <ion-icon slot="start"  name="book-outline"></ion-icon>
+             <ion-label>Solo lettura</ion-label>
+             <ion-checkbox color="light"  [(ngModel)]="read_only" (click)='tooggleRead($event)'></ion-checkbox>
+    
+         </ion-item>
         </ion-list>
 
-        <ion-item lines=none style="position: absolute; bottom:50px" (click)="logout()">
+        <ion-item lines=none  (click)="logout()">
           <ion-icon slot="start" name="exit-outline"></ion-icon>
           <ion-label>Esci</ion-label>
         </ion-item>

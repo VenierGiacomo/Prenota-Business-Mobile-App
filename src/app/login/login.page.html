@@ -12,14 +12,16 @@
 </ion-item>
 <ion-item lines='none' >
   <ion-label position="stacked">Password</ion-label>
-  <ion-input id='input' [(ngModel)]='password'  type="text"  (click)='toggleShow()'>
+  <ion-input id='input' [(ngModel)]='password'  type="text"  >
           
-    <ion-icon class="show-option" [hidden]="showPassword" name="eye-off-outline" (click)="toggleShow()"></ion-icon>
-          <ion-icon class="hide-option" [hidden]="!showPassword" name="eye-outline" (click)="toggleShow()"></ion-icon>
-        
+    <ion-icon class="show-option" [hidden]="showPassword" name="eye-off-outline" ></ion-icon>
+          <ion-icon class="hide-option" [hidden]="!showPassword" name="eye-outline" ></ion-icon>
   </ion-input>
 </ion-item>
-  <div class="login-btn">
+<ion-item lines='none' (click)="toggleShow()">
+<ion-label  style="color: #0061d5;">{{psw_txt}}</ion-label>
+</ion-item>
+<div class="login-btn">
   <ion-button fill=outline color='primary'(click)='login()'>Accedi</ion-button>
   </div>
   <p class='err' *ngIf='error!=""' >{{error}}</p>

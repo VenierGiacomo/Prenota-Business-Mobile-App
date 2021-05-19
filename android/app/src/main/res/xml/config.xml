@@ -19,6 +19,10 @@
     <param name="onload" value="true"/>
   </feature>
 
+  <feature name="Sms">
+    <param name="android-package" value="com.cordova.plugins.sms.Sms"/>
+  </feature>
+
   <feature name="OneSignalPush">
     <param name="android-package" value="com.plugin.gcm.OneSignalPush"/>
   </feature>

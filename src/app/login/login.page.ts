@@ -20,7 +20,10 @@ error= ''
 sizeElement:number
 sizeElement1:number
 showPassword=true
-  constructor(private toastController: ToastController, private storage: StorageService, private api: ApiService, private nav: NavController, private plt: Platform, private nativeApi: NativeApiService, ){}
+psw_txt='Nascondi password'
+  constructor(private toastController: ToastController, private storage: StorageService, private api: ApiService, private nav: NavController, private plt: Platform, private nativeApi: NativeApiService, ){
+    this.plt.ready().then(async ()=>{await this.nativeApi.deleteStorage(); await this.api.deleteStorage()})
+  }
 
   ngOnInit() {
     
@@ -29,6 +32,11 @@ showPassword=true
     var password_input:any = document.getElementById('input')
     password_input.type = password_input.type === 'password' ?  'text' : 'password';
     this.showPassword = !this.showPassword;
+    if(password_input.type==='password'){
+      this.psw_txt='Mostra password'
+    }else{
+      this.psw_txt='Nacondi password'
+    }
 
 
   }
@@ -102,19 +110,19 @@ showPassword=true
   // }
   async login(){
     if (this.plt.is('hybrid')) {
-     
+    
       let params = {
         "email": this.email,
         "password": this.password,
       }
 
-      this.nativeApi.login(params).then( res=>{
-  
+      this.nativeApi.login(params).then(async  (res)=>{
+        await this.storage.setEmail(this.email)
         if(res.non_field_errors){
           this.presentToast('Email e Password non combaciano')
         }else{
           this.nativeApi.hasStore().then(async (data)=>{
-            var res:any = await data
+            var res:any = data
             if(res.has_store==undefined){
                 await this.storage.setStore(res)
                 this.nav.navigateForward('calendar')
@@ -134,12 +142,15 @@ showPassword=true
       
     } else {
       this.api.login(this.email, this.password).subscribe(
-        data =>{
+        async data =>{
+
+          await this.storage.setEmail(this.email)
           this.api.storeToken(data.token)
           this.api.hasStore().subscribe(
             async data=>{
               var res:any = await data
               if(res.has_store==undefined){
+                // console.log(data,res)
                 await this.storage.setStore(res)
                 
                 this.nav.navigateForward('calendar')

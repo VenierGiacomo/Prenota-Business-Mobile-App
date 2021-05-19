@@ -36,7 +36,18 @@ export class ClientsPage implements OnInit {
         handler: () => {
           window.location.href="tel:+39"+client.phone
         }
-      }, {
+      }, 
+      {
+        text: 'Modifica cliente',
+        // icon: 'caret-forward-circle',
+        handler: () => {
+          setTimeout(() => {
+            this.updateClient(client)
+          }, 100);
+       
+        }
+      },
+      {
         text: 'Invita su Prenota',
         // icon: 'caret-forward-circle',
         handler: () => {
@@ -46,6 +57,7 @@ export class ClientsPage implements OnInit {
        
         }
       }, 
+      
       // {
       //   text: 'QR Code',
       //   // icon: 'heart',
@@ -215,15 +227,17 @@ async registerClient(){
     backdropDismiss: false,
     swipeToClose: false,
     componentProps:{
-      homeref:this
+      homeref:this,
+      first_name: '',
+      last_name: '',
+      email:'',
+      phone: '',
+      isRegister: true,
+      id: '',
     }
    
    
   });
-  modal.onDidDismiss().then(res=>{
-    
- 
-  })
     return await modal.present();
 }
 async doRefresh(ev){
@@ -267,8 +281,6 @@ async deleteClient(id){
      
       setTimeout(async () => {
         var client_list = await this.storage.getClients()
-  
-         
         this.clients = client_list
         
         for(let el of client_list ){
@@ -288,10 +300,10 @@ async deleteClient(id){
       await this.storage.deleteClient(id)
 
       setTimeout(async () => {
+  
         var client_list = await JSON.parse( localStorage.getItem('client_list'))
         this.clients = client_list.list
-        
-        for(let el of client_list ){
+        for(let el of this.clients ){
           el.client_name = el.client_name.toLowerCase()
         }
         this.clients_to_show =  this.clients
@@ -311,5 +323,32 @@ async deleteClient(id){
   // }
   
   
+}
+async updateClient(client){
+  var name_parts = client.client_name.split(' ')
+  var first_name = this.capitalizeFirstLetter(name_parts[0])
+  var last_name = this.capitalizeFirstLetter(name_parts[1])
+  console.log(client.id)
+  var modal = await this.modalController.create({
+    component:RegisterClientPage,    
+    cssClass: 'select-modal' ,
+    backdropDismiss: false,
+    swipeToClose: false,
+    componentProps:{
+      homeref:this,
+      first_name: first_name,
+      last_name: last_name,
+      email:client.email,
+      phone: client.phone,
+      id: client.id,
+      isRegister: false
+    }
+   
+   
+  });
+    return await modal.present();
+}
+ capitalizeFirstLetter(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
 }
 }

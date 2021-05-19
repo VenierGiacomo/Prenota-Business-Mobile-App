@@ -1,10 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
 
-import { Platform, MenuController, NavController } from '@ionic/angular';
-import { SplashScreen } from '@ionic-native/splash-screen/ngx';
-import { StatusBar } from '@ionic-native/status-bar/ngx';
+import { Platform, MenuController, NavController, AlertController, ToastController } from '@ionic/angular';
 import { NativeApiService } from './services/nativeapi.service';
 import { ApiService } from './services/api.service';
+import { StorageService } from './services/storage.service';
+import { Plugins, StatusBarStyle } from '@capacitor/core';
+
+
+const { SplashScreen, StatusBar } = Plugins;
 
 @Component({
   selector: 'app-root',
@@ -14,67 +17,48 @@ import { ApiService } from './services/api.service';
 export class AppComponent implements OnInit {
   public selectedIndex = 0;
   // public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
+  read_only 
+  password
+  email
 
   constructor(
     private platform: Platform,
-    private splashScreen: SplashScreen,
-    private statusBar: StatusBar,
+ 
     public menuCtrl: MenuController,
     private nav: NavController,
     private apiNative: NativeApiService,
     private api: ApiService,
+    private storage: StorageService,
+    private toastController: ToastController,
+    private alertController: AlertController,
+    private ngZone: NgZone
     // private oneSignal: OneSignal
+    
   ) {
     this.initializeApp();
   }
 
   initializeApp() {
-    this.platform.ready().then(() => {
-      this.statusBar.styleDefault();
-      this.splashScreen.hide();
-         //Remove this method to stop OneSignal Debugging 
-    // this.oneSignal.setLogLevel({logLevel: 6, visualLevel: 0});
-    
-    // var notificationOpenedCallback = function(jsonData) {
-    //   console.log('notificationOpenedCallback: ' + JSON.stringify(jsonData));
-    // };
-    
-    // // Set your iOS Settings
-    // var iosSettings = {};
-    // iosSettings["kOSSettingsKeyAutoPrompt"] = false;
-    // iosSettings["kOSSettingsKeyInAppLaunchURL"] = false;
-    
-    // this.oneSignal
-    //   .startInit("b6e8e712-c4da-4a04-9379-1a3045d3ebdb")
-    //   .handleNotificationOpened(notificationOpenedCallback)
-    //   .iOSSettings(iosSettings)
-    //   .inFocusDisplaying(window["plugins"].OneSignal.OSInFocusDisplayOption.Notification)
-    //   .endInit();
-    
-    // // The promptForPushNotificationsWithUserResponse function will show the iOS push notification prompt. We recommend removing the following code and instead using an In-App Message to prompt for notification permission (See step 6)
-    // this.oneSignal.promptForPushNotificationsWithUserResponse().then(function(accepted) {
-    //   console.log("User accepted notifications: " + accepted);
-    // });
+    this.platform.ready().then(async () => {
+      this.read_only= await this.storage.getreadPermission()
+    if(this.read_only==null || this.read_only==undefined ){
+      this.read_only=false
+    }
   });
-  // this.oneSignal.handleNotificationOpened().subscribe(data => {
-  // this.nav.navigateRoot("/notifications")
-  // });
+  StatusBar.setStyle({ style: StatusBarStyle.Light });
+
+  // set status bar to white
+  // this.statusBar.backgroundColorByHexString('#ffffff');
+  // this.statusBar.
+  setTimeout(() => {
+    SplashScreen.hide();
+  }, 500);
+
 }
-//       this.oneSignal.setLogLevel({logLevel: 6, visualLevel: 4});
-//     this.oneSignal.startInit('b6e8e712-c4da-4a04-9379-1a3045d3ebdb');
-   
-//     this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.InAppAlert);
-
-// this.oneSignal.handleNotificationReceived().subscribe(data => {
-//  // do something when notification is received
-//  console.log(data)
-// });
 
 
-// this.oneSignal.endInit();
 
-
-  ngOnInit() {
+  async ngOnInit() {
     this.selectedIndex= 0
     const path = window.location.pathname
     if (path == '/clients' || path == 'clients'){
@@ -86,14 +70,35 @@ export class AppComponent implements OnInit {
         this.selectedIndex= 0
       }
     }
+    
   
   }
+
+  
   async navigateClients(){
    
       // await this.menuCtrl.close();
     await this.nav.navigateRoot('/clients')
     // await this.menuCtrl.close();
     this.selectedIndex= 1
+  }
+  async tooggleRead(ev){
+    ev.stopImmediatePropagation();
+    ev.stopPropagation();
+    ev.preventDefault();
+    this.email =await this.storage.getEmail()
+    if(this.read_only){
+     
+        this.askPassword()
+      
+      
+     
+     
+    }else{
+      this.read_only=!this.read_only
+      await this.storage.setreadOnly(this.read_only)
+    }
+  
   }
   assistence(){
     window.location.href = 'https://wa.me/393404526854'
@@ -123,6 +128,116 @@ export class AppComponent implements OnInit {
   async close(){
     await this.menuCtrl.close();
   }
+
+  async askPassword(){
+
+    const alert = await this.alertController.create({
+      header: 'Password',
+      message: "Per disabilitare la modalità di solo lettura devi inserire la password",
+      inputs: [
+        {
+          name: 'password',
+          type: 'password',
+          placeholder: '*********'
+        },
+       
+      ],
+      buttons: [
+        {
+          text: 'Annulla',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            this.ngZone.run(async ()=>{
+            this.read_only=true
+            await this.close()
+            await this.storage.setreadOnly(this.read_only)
+            await this.nav.navigateRoot('/calendar')
+            setTimeout(() => {
+              this.presentToast('Modalità lettura')
+            },500 
+            );
+            })
+          
+          }
+        }, {
+          text: 'Continua',
+          handler: (data) => {
+            if(this.platform.is('hybrid')){
+              this.ngZone.run(async ()=>{
+                let params = {
+                      "email": this.email,
+                      "password": data.password,
+                    }
+                    this.apiNative.loginread(params).then(async  (res)=>{
+                      if(res.non_field_errors){
+                        this.presentToast('Email e Password non combaciano')
+                        await this.storage.setreadOnly(true)
+                        this.read_only=true
+                        
+                      }else{
+                        this.read_only=false
+                        await this.close()
+                        await this.storage.setreadOnly(this.read_only)
+                        await this.nav.navigateRoot('/calendar')
+                        setTimeout(() => {
+                          this.presentToast('Modifiche attive')
+                        },500 
+                        );
+                      
+                       
+                        
+                      }
+                      
+                    }).catch(async ()=>{  
+                      await this.storage.setreadOnly(true)
+                      this.read_only=true
+                      
+                      this.presentToast('Email e Password non combaciano')})
+              
+              })
+
+            }else{
+              this.ngZone.run(async ()=>{
+                    this.api.login(this.email,data.password).subscribe(async  (res)=>{
+                      if(res.non_field_errors){
+                        this.presentToast('Email e Password non combaciano')
+                        await this.storage.setreadOnly(true)
+                        this.read_only=true
+                        
+                      }else{
+                        this.read_only=false
+                        await this.close()
+                        await this.storage.setreadOnly(this.read_only)
+                        await this.nav.navigateRoot('/calendar')
+                        setTimeout(() => {
+                          this.presentToast('Modifiche attive')
+                        },500 
+                        );
+                      
+                       
+                        
+                      }
+                      
+                    },async ()=>{  
+                      await this.storage.setreadOnly(true)
+                      this.read_only=true
+                      
+                      this.presentToast('Email e Password non combaciano')})
+              
+              })
+            }
+            
+        }
+        }
+      ]
+    });
+
+    await alert.present();
+  
+
+  }
+  
   async logout(){
 
     this.selectedIndex= 0
@@ -135,5 +250,14 @@ export class AppComponent implements OnInit {
     await this.nav.navigateBack('login')
     await this.menuCtrl.close();
   }
+  }
+  async presentToast(text) {
+    const toast = await this.toastController.create({
+      message: text,
+      position: 'top',
+      duration: 4000,
+      cssClass:'toast-class',
+    });
+    toast.present();
   }
 }

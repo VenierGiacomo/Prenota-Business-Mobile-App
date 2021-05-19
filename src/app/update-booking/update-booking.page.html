@@ -49,7 +49,7 @@
   </ion-list>
   <ion-button class='add' (click)="updateAppointment()">Modifica</ion-button>
 </ion-content> -->
-
+<!-- 
 <ion-header class="ion-no-border bar-header">
   <ion-toolbar style=" background: transparent !important; border:none !important;">
       <ion-icon slot="end" name="close-outline"  (click)='closeModal()'></ion-icon>
@@ -89,12 +89,12 @@
     <ion-item  >
  <ion-label position="stacked">Nome e cognome</ion-label>
  <ion-input class="align-right" [(ngModel)]="client_name" placeholder="Mario"></ion-input>
-  <!-- <p *ngIf='first_name_err!=""'>{{first_name_err}}</p> -->
+
 </ion-item>
 <ion-item  >
     <ion-label position="stacked">Cellulare</ion-label>
     <ion-input class="align-right" inputmode="tel" [(ngModel)]="phone" placeholder="3312233645"></ion-input>
-    <!-- <p *ngIf='phone_err!=""'>{{phone_err}}</p> -->
+
   </ion-item>
   
   <ion-item >
@@ -121,5 +121,98 @@
  
   
  </div>
+</ion-content>
+ -->
+
+ <ion-header class="ion-no-border bar-header">
+  <ion-toolbar style=" background: transparent !important; border:none !important;">
+  
+    <ion-title>Modifica Prenotazione</ion-title>
+      <ion-icon slot="end" name="close-outline"  (click)='closeModal()'></ion-icon>
+  </ion-toolbar>
+</ion-header>
+
+
+
+
+<ion-content >
+  
+
+
+ <div class="input-cont">
+  <div   (click)='choseCLient()'>
+    <ion-label position="stacked">Cliente</ion-label>
+    <span style="display: block;"  class="align-right">{{client_txt}}</span>
+   </div>
+   <div *ngIf='client_txt=="Nuovo cliente"' style="display: inline-block !important; width: 50vw;">
+    <ion-label position="stacked">Nome del cliente</ion-label>
+  <ion-input class="align-right-1" [(ngModel)]="client_name" placeholder="Es. Giacomo Venier"></ion-input>
+</div >
+<div *ngIf='client_txt=="Nuovo cliente"' style="display: inline-block !important; width: 50vw;" >
+  <ion-label position="stacked">Cellulare</ion-label>
+<ion-input class="align-right-1" [(ngModel)]="phone" type='tel' placeholder="Es. 3312233645"></ion-input>
+</div >
+
+  <div  (click)='showDatePicker()' > 
+    <ion-label position="stacked">Data</ion-label>
+    <span style="display: block;"  class="align-right">{{today}}</span>
+  </div>
+
+
+  <div  (click)='selectServiceModal()' >
+    <ion-label position="stacked">Servizio</ion-label>
+    <span style="display: block;"  class="align-right">{{service_txt}}</span>
+  </div>
+  <div *ngIf='service==-1' >
+ 
+    <ion-label position="stacked">Nome del servizio</ion-label>
+  <ion-input class="align-right-1" [(ngModel)]="desc" placeholder="Visita spec." style="width: calc(100vw - 40px)"></ion-input>
+  </div>
+  <div  *ngIf='actual_times==2' style="width: 50vw; display: inline-block; padding-right:10px;">
+    <ion-label position="stacked">Orario</ion-label>
+  <ion-select interface="popover" placeholder="Seleziona un servizio" [(ngModel)]='time'>
+    <ion-select-option *ngFor='let hour of times'  value='{{hour}}'>{{hour}}</ion-select-option>
+  </ion-select>
+</div>
+<div  *ngIf='actual_times==1' style="width: 50vw; display: inline-block;padding-right:10px;">
+  <ion-label position="stacked">Orario</ion-label>
+<ion-select interface="popover" placeholder="Seleziona un servizio" [(ngModel)]='time'>
+  <ion-select-option *ngFor='let hour of hours_list'  value='{{hour}}'>{{hour}}</ion-select-option>
+</ion-select>
+</div>
+<div  *ngIf='actual_times==0' style="width: 50vw; display: inline-block;padding-right:10px;">
+  <ion-label position="stacked">Orario</ion-label>
+<ion-select interface="popover" placeholder="Seleziona un servizio" [(ngModel)]='time'>
+  <ion-select-option *ngFor='let hour of half_list'  value='{{hour}}'>{{hour}}</ion-select-option>
+</ion-select>
+</div>
+<div   style="width: 50vw; display: inline-block; ">
+  <ion-label position="stacked">Durata</ion-label>
+<ion-select interface="popover" placeholder="Seleziona una durata" [(ngModel)]='duration'>
+  <ion-select-option *ngFor='let dur of time_duration'  value='{{dur}}'>{{dur}}</ion-select-option>
+</ion-select>
+</div>
+
+
+    <!-- <div   >
+ <ion-label position="stacked">Nome e cognome</ion-label>
+  <ion-input   [(ngModel)]='client_name' type="text" name="first_name"  autocapitalize=true></ion-input>
+  
+</div>
+<div   >
+    <ion-label position="stacked">Cellulare</ion-label>
+    <ion-input inputmode="tel" type="tel" [(ngModel)]='phone' ></ion-input>
+    
+  </div> -->
+ 
+
+  
+ 
+  
+ </div>
+ <div class="login-btn" *ngIf='!keyboard_visible'>
+  <button (click)='confirmDelete()' style="background: #b31611;">Elimina </button>
+  <button (click)='updateAppointment()' style="margin-left: 20px; background: #0061d5;">Salva modifiche</button>
+</div>
 </ion-content>
 

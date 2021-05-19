@@ -50,6 +50,8 @@ export class FolderPage implements OnInit {
   five_displ =false
   is_sport
   spin="none"
+  time_duration: string[] = ["5 min","10 min","15 min","20 min","25 min", "30 min","35 min", "40 min", "45 min", "50 min", "55 min", "1 ora","1 ora e 5 min", "1 ora e 10 min", "1 ora e 15 min","1 ora e 20 min", "1 ora e 25 min","1 ora e 30 min","1 ora e 35 min","1 ora e 40 min","1 ora e 45 min","1 ora e 50 min","1 ora e 55 min","2 ore","2 ore e 5 min", "2 ore e 10 min", "2 ore e 15 min","2 ore e 20 min", "2 ore e 25 min","2 ore e 30 min","2 ore e 35 min","2 ore e 40 min","2 ore e 45 min","2 ore e 50 min","2 ore e 55 min","3 ore","3 ore e 5 min", "3 ore e 10 min", "3 ore e 15 min","3 ore e 20 min", "3 ore e 25 min","3 ore e 30 min","3 ore e 35 min","3 ore e 40 min","3 ore e 45 min","3 ore e 50 min","3 ore e 55 min"];
+  months=['Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno','Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre']
   @ViewChild(IonContent, { static: false }) content: IonContent;
   constructor(private ngZone: NgZone,private toastController: ToastController,private actionSheetController: ActionSheetController, private badge: Badge,private navcomp: AppComponent, private oneSignal: OneSignal, private plt:  Platform, public modalController: ModalController, private api: ApiService, private apiNative: NativeApiService, private popoverController: PopoverController, private storage: StorageService, private router: Router) {
     this.plt.ready().then(() => {
@@ -205,95 +207,125 @@ export class FolderPage implements OnInit {
   this.badge.set(1);
  }
   async presentModal(i,ev) {
-  if(ev.target.id>210){
-this.updateBooking(ev.target.id)
-  }else{
-
-
-    clearInterval(this.interval);
-    if(this.week[6]<this.week[0] && this.day>7){
-      if(this.month==0){
-        const modal = await this.modalController.create({
-          component:NewAppointmentPage,
-          swipeToClose: true,
-          cssClass: 'select-modal' ,
-          componentProps: { 
-            time: this.times[i],
-            day: this.day,
-            month: 11,
-            year: this.year,
-            homeref: this
+   var read_only= await this.storage.getreadPermission()
+     if(read_only){
+      this.presentToast("Sei in modalita 'Solo lettura'",'succ')
+     }else{
+      if(ev.target.id>210){
+        this.updateBooking(ev.target.id)
+          }else{
+        
+        
+            clearInterval(this.interval);
+            if(this.week[6]<this.week[0] && this.day>7){
+              if(this.month==0){
+                const modal = await this.modalController.create({
+                  component:NewAppointmentPage,
+                  swipeToClose: true,
+                  // cssClass: 'select-modal' ,
+                  componentProps: { 
+                    time: this.times[i],
+                    today: `${this.day} ${this.months[11]} ${this.year}`,
+                    day: this.day,
+                    month: 11,
+                    year: this.year,
+                    homeref: this
+                  }
+                });
+                return await modal.present();
+              }else{
+        
+         
+              const modal = await this.modalController.create({
+                component:NewAppointmentPage,
+                swipeToClose: true,
+                // cssClass: 'select-modal' ,
+                componentProps: { 
+                  time: this.times[i],
+                  today: `${this.day} ${this.months[this.month-1]} ${this.year}`,
+                  day: this.day,
+                  month: this.month-1,
+                  year: this.year,
+                  homeref: this
+                }
+              });
+              return await modal.present();
+            }
+            }else if(this.week[6]<this.week[0] && this.day<7){
+              const modal = await this.modalController.create({
+                component:NewAppointmentPage,
+                swipeToClose: true,
+                // cssClass: 'select-modal' ,
+                componentProps: { 
+                  time: this.times[i],
+                  today: `${this.day} ${this.months[this.month]} ${this.year}`,
+                  day: this.day,
+                  month: this.month,
+                  year: this.year,
+                  homeref: this
+                }
+              });
+              return await modal.present();
+            }
+            else{
+              const modal = await this.modalController.create({
+                component:NewAppointmentPage,
+                swipeToClose: true,
+                // cssClass: 'select-modal' ,
+                componentProps: { 
+                  time: this.times[i],
+                  today: `${this.day} ${this.months[this.month]} ${this.year}`,
+                  day: this.day,
+                  month: this.month,
+                  year: this.year,
+                  homeref: this
+                }
+              });
+              return await modal.present();
+            }
           }
-        });
-        return await modal.present();
-      }else{
-
+     }
+   
  
-      const modal = await this.modalController.create({
-        component:NewAppointmentPage,
-        swipeToClose: true,
-        cssClass: 'select-modal' ,
-        componentProps: { 
-          time: this.times[i],
-          day: this.day,
-          month: this.month-1,
-          year: this.year,
-          homeref: this
-        }
-      });
-      return await modal.present();
-    }
-    }else if(this.week[6]<this.week[0] && this.day<7){
-      const modal = await this.modalController.create({
-        component:NewAppointmentPage,
-        swipeToClose: true,
-        cssClass: 'select-modal' ,
-        componentProps: { 
-          time: this.times[i],
-          day: this.day,
-          month: this.month,
-          year: this.year,
-          homeref: this
-        }
-      });
-      return await modal.present();
-    }
-    else{
-      const modal = await this.modalController.create({
-        component:NewAppointmentPage,
-        swipeToClose: true,
-        cssClass: 'select-modal' ,
-        componentProps: { 
-          time: this.times[i],
-          day: this.day,
-          month: this.month,
-          year: this.year,
-          homeref: this
-        }
-      });
-      return await modal.present();
-    }
-  }
   }
   async updateBooking(id){ 
-    var appo = this.all_appointments_list.filter( x => x.id == id)[0]
+    var read_only= await this.storage.getreadPermission()
+    if(read_only){
+     this.presentToast("Sei in modalita 'Solo lettura'",'succ')
+    }else{
+      var appo = await this.all_appointments_list.filter( x => x.id == id)[0]
+      var time = this.times[appo.start_t]
+      var today= appo.day+ ' '+this.months[appo.month]+ ' ' +appo.year
+  this.ngZone.run(async ()=>{
     const modal = await this.modalController.create({
-    component:UpdateBookingPage,
-    swipeToClose: true,
-    cssClass: 'select-modal' ,
-    componentProps: { 
-     booking:appo,
-     homeref: this
+      component:UpdateBookingPage,
+      swipeToClose: false,
+      // cssClass: 'select-modal' ,
+      componentProps: { 
+       booking:appo,
+       service_txt: appo.details,
+       client_txt: appo.client_name,
+       today:today,
+       duration: this.time_duration[appo.end_t-appo.start_t-1],
+       time: time,
+       homeref: this
+      }
+    });
+    return await modal.present();
+  })
     }
-  });
-  return await modal.present();
+    
+      
+    
+  
+    
   }
   async presentMonth() {
     let modal = await this.modalController.create({
       component:MonthviewPage,
       swipeToClose: true,
       componentProps: { 
-        homeref: this
+        homeref: this,
       }
     });
     modal.onDidDismiss().then(() => {
@@ -343,9 +375,17 @@ this.updateBooking(ev.target.id)
       // icon: 'heart',
       role: 'destructive',
       handler:  () => {
-        this.deleteAppointment(lt_appo.id)
-        this.all_appointments_list = this.all_appointments_list.filter(x => x.id != lt_appo.id )
-
+       setTimeout(async () => {
+        var read_only= await this.storage.getreadPermission()
+        if(read_only){
+          this.presentToast("Sei in modalita 'Solo lettura'",'succ')
+         }else{
+         this.deleteAppointment(lt_appo.id)
+         this.all_appointments_list = this.all_appointments_list.filter(x => x.id != lt_appo.id )
+         }
+        
+       }, 50); 
+       
 
       }
     }, {
@@ -888,7 +928,7 @@ getAppoitments(){
     payed:payed
     }
     )
-    console.log(this.all_appointments_list)
+    
   }
 
   async presentClientActionSheet(){

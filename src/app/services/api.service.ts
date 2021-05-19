@@ -133,15 +133,59 @@ registerClientWithEmail(first_name, last_name, phone ,email?  ):Observable<any>{
  
   return this.http.post(BASE_URL+'store/clients/new/', data,{headers: this.newheader() })
 }
+
+updateClientStore(id,first_name, last_name, phone ,email?  ):Observable<any>{
+  var data
+  if(email && email!=''){
+    data={
+      "first_name": first_name,
+      "last_name": last_name,
+      "email": email,
+      "phone": phone,
+      'client_name': first_name+' '+last_name
+    }
+  }else{
+    data={
+      "first_name": first_name,
+      "last_name": last_name,
+      "phone": phone,
+      'client_name': first_name+' '+last_name,
+    }
+  }
+  
+    return this.http.put(BASE_URL+'store/clients/'+id+'/', data,{headers: this.newheader()})
+}
+
 setopenHours(data): Observable<any>{
   return this.http.post(BASE_URL+'closedhours/', data, {headers: this.newheader()})
 }
 deleteClientStore(id){
   return this.http.delete(BASE_URL+'store/clients/'+id+'/',  {headers: this.newheader()})
 }
-bookAppointment(start, end, day, month, year,name, phone, details, employee, service):Observable<any>{
+
+bookAppointment(start, end, day, month, year,name, phone, details, employee, service, client_id, adons, store_client):Observable<any>{
+  
   var week = this.getWeekNumber(new Date(year, month, day))
-  var data = {'new': true, 'start': start , 'end': end, 'day': day, 'week':week, 'month':month, 'year' : year, 'employee': employee,  'client_name' :name, 'phone':phone, 'details': details, 'service_n': service}
+  if(year==2021 && week==0 && day<4){
+    week=53
+  }
+ var data
+ if(client_id>1){
+  if(store_client){
+    data = {'new':true,'start': start , 'end': end, 'day': day, 'week':week, 'month':month, 'year' : year, 'employee': employee,  'client_name' :name, 'phone':phone, 'details': details, 'service_n': service, 'note': '','client':client_id,'adons':adons,'store_client':store_client}
+   }else{
+      
+      data = {'new':true,'start': start , 'end': end, 'day': day, 'week':week, 'month':month, 'year' : year, 'employee': employee,  'client_name' :name, 'phone':phone, 'details': details, 'service_n': service, 'note': '','client':client_id, 'adons':adons}
+   }
+
+}else{
+  if(store_client){
+    data = {'new':true,'start': start , 'end': end, 'day': day, 'week':week, 'month':month, 'year' : year, 'employee': employee,  'client_name' :name, 'phone':phone, 'details': details, 'service_n': service, 'note': '', 'adons':adons,'store_client':store_client}
+   }else{
+      
+      data = {'new':true,'start': start , 'end': end, 'day': day, 'week':week, 'month':month, 'year' : year, 'employee': employee,  'client_name' :name, 'phone':phone, 'details': details, 'service_n': service, 'note': '',  'adons':adons}
+   }
+}
     return this.http.post(BASE_URL+'bookings/', data,{headers: this.newheader()})
 }
 inviteCLient(client):Observable<any>{
@@ -176,12 +220,18 @@ getAppointmentsExternal(week):Observable<any>{
   }
   throw throwError("error");    
 }
-updateAppointment(id, start, end, day, month, year,name, phone, details, employee, service,note):Observable<any>{
+
+updateAppointment(id, start, end, day, month, year,name, phone, details, employee, service, note,  client_id, store_client, payed?):Observable<any>{
   var week = this.getWeekNumber(new Date(year, month, day))
-  var data = {'new':true,'start': start , 'end': end, 'day': day, 'week':week, 'month':month, 'year' : year, 'employee': employee,  'client_name' :name, 'details': details, 'service_n': service, 'phone':phone,'note':note}
+  var data
+  if(payed){
+    data = {'new':true,'start': start , 'end': end, 'day': day, 'week':week, 'month':month, 'year' : year, 'employee': employee,  'client_name' :name, 'details': details, 'service_n': service,'phone':phone, 'note':note, 'client_id':client_id,'store_client':store_client, 'payed':payed}
+  }else{
+    data = {'new':true,'start': start , 'end': end, 'day': day, 'week':week, 'month':month, 'year' : year, 'employee': employee,  'client_name' :name, 'details': details, 'service_n': service,'phone':phone, 'note':note, 'client_id':client_id,'store_client':store_client}
+  }
+  
   return this.http.put(BASE_URL+'bookings/'+id+'/', data, {headers: this.newheader()})
 }
-
 deleteAppointment(id):Observable<any>{
   return this.http.delete(BASE_URL+'bookings/'+id+'/',  {headers: this.newheader()})
 }

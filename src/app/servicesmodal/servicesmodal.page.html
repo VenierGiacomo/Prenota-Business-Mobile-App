@@ -1,0 +1,25 @@
+<ion-header class="ion-no-border bar-header">
+  <ion-toolbar style=" background: transparent !important; border:none !important;">
+      <ion-icon slot="end" name="close-outline"  (click)='closeModal()'></ion-icon>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content  scrollY=false>
+  
+<h1>Seleziona un servizio</h1>
+
+<div style="overflow: auto  !important; display:block;height: calc(100vh - 140px); padding-bottom: 50px;">
+<div class="service" *ngFor='let service of services' (click)='selectService(service)'>
+  <span>
+  <h2>{{service.name}} </h2>
+  <h4>{{durations[service.duration]}}</h4>
+</span>
+<!-- <span> -->
+  <div class="color" [style.background-color]='colors_list[service.color]'></div>
+  <h2>{{service.price/100}}€</h2>
+<!-- </span> -->
+</div>
+</div>
+
+</ion-content>

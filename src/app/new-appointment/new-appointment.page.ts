@@ -1,35 +1,44 @@
 import { Component, OnInit, Input, NgZone } from '@angular/core';
-import { ModalController, PickerController, Platform, ToastController } from '@ionic/angular';
-import { PickerOptions } from '@ionic/core';
+import { ActionSheetController, ModalController, PickerController, Platform, ToastController } from '@ionic/angular';
 import { StorageService } from '../services/storage.service';
 import { ApiService } from '../services/api.service';
 import { NativeApiService } from '../services/nativeapi.service';
 import { AlertController } from '@ionic/angular';
 import { PickDatePage } from '../pick-date/pick-date.page';
+import { ServicesmodalPage } from '../servicesmodal/servicesmodal.page';
+import { SelectclientmodalPage } from '../selectclientmodal/selectclientmodal.page';
+import { Plugins } from '@capacitor/core';
+
+
+
+const { Keyboard } = Plugins;
 @Component({
   selector: 'app-new-appointment',
   templateUrl: './new-appointment.page.html',
   styleUrls: ['./new-appointment.page.scss'],
 })
 export class NewAppointmentPage implements OnInit {
-  duration= '5 min'
-  year
-  month
-  day
+  duration= "1 ora"
+  @Input() year :any=''
+  @Input() month :any=''
+  @Input() day:any=''
   services:any =[]
-  today
-
+  @Input() today:any='Seleziona una data'
+  service_txt ='Seleziona un servizio '
+  client_txt='Seleziona un cliente'
   phone
   desc = ''
   @Input() homeref
   @Input() time ='09:00'
   client_name=''
+  client:any={'id':false,'client':1 }
   minutes = ['00','15','30','45']
   hours = ['01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24']
   service:any = {name:"Seleziona"}
   quarter_displ = true
   five_displ =false
-  actual_times = 1
+  actual_times  =1
+  keyboard_visible=false
   days= [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]
   months=['Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno','Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre']
   years=[2020,2021,2022,2023,2024,2025]
@@ -38,10 +47,13 @@ export class NewAppointmentPage implements OnInit {
   half_list = [ "07:00",  "07:30", "08:00", "08:30",  "09:00",  "09:30",  "10:00",  "10:30",  "11:00", "11:30",  "12:00",  "12:30", "13:00",  "13:30", "14:00",  "14:30", "15:00", "15:15", "15:30", "16:00", "16:30", "17:00",  "17:30", "18:00", "18:30", "19:00", "19:30", "20:00", "20:30", "21:00", "21:30", "22:00", "22:30", "23:00", "23:30", "24:00"]
   time_duration: string[] = ["5 min","10 min","15 min","20 min","25 min", "30 min","35 min", "40 min", "45 min", "50 min", "55 min", "1 ora","1 ora e 5 min", "1 ora e 10 min", "1 ora e 15 min","1 ora e 20 min", "1 ora e 25 min","1 ora e 30 min","1 ora e 35 min","1 ora e 40 min","1 ora e 45 min","1 ora e 50 min","1 ora e 55 min","2 ore"];
   // time_duration: string[] = ["5 min","10 min","15 min","20 min","25 min", "30 min","35 min", "40 min", "45 min", "50 min", "55 min", "1 ora","1 ora e 5 min", "1 ora e 10 min", "1 ora e 15 min","1 ora e 20 min", "1 ora e 25 min","1 ora e 30 min","1 ora e 35 min","1 ora e 40 min","1 ora e 45 min","1 ora e 50 min","1 ora e 55 min","2 ore"];
-  constructor(private ngZone: NgZone,private toastController: ToastController, public alertController: AlertController, private plt: Platform, private apiNative: NativeApiService, public modalController: ModalController,private pickerController: PickerController, private storage: StorageService, private api: ApiService) {}
+  constructor(private actionSheetController: ActionSheetController, private ngZone: NgZone,private toastController: ToastController, private alertController: AlertController, private plt: Platform, private apiNative: NativeApiService, private modalController: ModalController, private storage: StorageService, private api: ApiService) {
 
+    
+  }
+  
   async ngOnInit() {
-    this.ngZone.run(async  () => {
+    
     var store_info = await this.storage.getstore()
     if(store_info.custom_size){
 
@@ -54,85 +66,41 @@ export class NewAppointmentPage implements OnInit {
     if(this.five_displ){
       this.actual_times = 2
     }else{
-      this.actual_times = 1
+      this.actual_times =1
     }
   }else{
     this.actual_times = 0
   }
-    this.today= `${this.day} ${this.months[this.month]} ${this.year}`
-      this.services = await this.storage.getServices()
-      this.services.push({
-        color: 1,
-        duration: 6,
-        duration_book: 6,
-        id: -1,
-        max_n: 1,
-        name: "Personalizza",
-        price: 0,
-        sex: 3,
-        })
-        this.service.id =-1
-      })
-  }
-  async presentAlert() {
-    const alert = await this.alertController.create({
-      cssClass: 'my',
-      header: 'Cellulare',
-      subHeader: 'Non inserire il prefisso (+39)',
-      message: 'Aggiungi il numero di telefono senza prefisso.\n\n Ad esempio 3312233645',
-      buttons: ['OK']
-    });
+setTimeout(async ()=>{
+  this.services = await this.storage.getServices()
+  this.services.push({
+    color: 1,
+    duration: 6,
+    duration_book: 6,
+    id: "-1",
+    max_n: 1,
+    name: "Personalizza",
+    price: 0,
+    sex: 3,
+    })
+},400)
+Keyboard.addListener('keyboardWillShow',(res)=>{
+  this.ngZone.run(()=>{
+    this.keyboard_visible=true
+  })
 
-    await alert.present();
+  })
+  Keyboard.addListener('keyboardDidHide',()=>{
+  this.ngZone.run(()=>{
+    this.keyboard_visible=false
+  })
+  })
+
   }
 
-  async showPicker() {
-    let options: PickerOptions = {
-      buttons: [
-        {
-          text: "Cancel",
-          role: 'cancel'
-        },
-        {
-          text:'Ok',
-          handler:(value:any) => {
-            this.duration= value.duration.value
-          }
-        }
-      ],
-      columns:[{
-        name:'duration',
-        options:this.getColumnOptions()
-      }]
-    };
 
-    let picker = await this.pickerController.create(options);
-    picker.present()
-  }
-  async selectService() {
-    let options: PickerOptions = {
-      buttons: [
-        {
-          text: "Cancel",
-          role: 'cancel'
-        },
-        {
-          text:'Ok',
-          handler:(value:any) => {
-            this.service= value.service.value
-          }
-        }
-      ],
-      columns:[{
-        name:'service',
-        options:this.getServiceOptions()
-      }]
-    };
-   
-    let picker = await this.pickerController.create(options);
-    picker.present()
-  }
-  async showDatePicker() {
+
+async showDatePicker() {
     let modal = await this.modalController.create({
       component:PickDatePage,
       swipeToClose: true,
@@ -152,100 +120,96 @@ export class NewAppointmentPage implements OnInit {
    
   });
     return await modal.present();
-    // let options: PickerOptions = {
-    //   buttons: [
-    //     {
-    //       text: "Chiudi",
-    //       role: 'cancel'
-    //     },
-    //     {
-    //       text:'Ok',
-    //       handler:(value:any) => {
-    //         this.today= `${value.day.text} ${value.month.text} ${value.year.text}`
-    //         this.day = value.day.text
-    //         this.month = this.months.indexOf(value.month.text)
-    //         this.year = value.year.text
+}
 
-    //       }
-    //     }
-    //   ],
-    //   columns:[{
-    //     name:'day',
-    //     selectedIndex: Math.max(this.day-1, 0),
-    //     options:this.getOptionsArrray(this.days)
-    //   },
-    //   {
-    //     name:'month',
-    //     selectedIndex: Math.max(this.month,0),
-    //     options:this.getOptionsArrray(this.months)
-    //   },
-    //   {
-    //     name:'year',
-    //     selectedIndex: this.years.indexOf(this.year),
-    //     options:this.getOptionsArrray(this.years)
-    //   }]
-    // };
+async choseCLient(){
+  var buttons:Array<any>= [{
+    text: 'Nuovo Cliente',
+    // icon: 'share',
+    handler: () => {
+     this.client_txt='Nuovo cliente'
+     this.client={'id':false,'client':1 }
+    }
+  }, {
+    text: 'Cliente esistente',
+    // icon: 'caret-forward-circle',
+    handler: () => {
+      setTimeout(() => {
+       this.selectClinetModal()
+      }, 100);
+   
+    }
+  },  {
+    text: 'Indietro',
+    // icon: 'close',
+    role: 'cancel',
+  }]
+  const actionSheet = await this.actionSheetController.create({
+    header: "Seleziona Client",
+    
+    buttons: buttons
+  });
+  await actionSheet.present();
+}
 
-    // let picker = await this.pickerController.create(options);
-    // picker.present()
-  }
-  // async showTimePicker(){
-  //   let options: PickerOptions = {
-  //     buttons: [
-  //       {
-  //         text: "Chiudi",
-  //         role: 'cancel'
-  //       },
-  //       {
-  //         text:'Ok',
-  //         handler:(value:any) => {
-  //           this.time = `${value.hour.text}:${value.minute.text}`
-  //         }
-  //       }
-  //     ],
-  //     columns:[{
-  //       name:'hour',
-  //       selectedIndex: 9,
-  //       options:this.getOptionsArrray(this.hours)
-  //     },
-  //     {
-  //       name:'minute',
-  //       selectedIndex: 0,
-  //       options:this.getOptionsArrray(this.minutes)
-  //     }]
-  //   };
+async closeShop(){
+  var buttons:Array<any>= [{
+    text: "Chiudi un' ora",
+    // icon: 'share',
+    handler: () => {
+      this.newAppointment(1)
+    }
+  }, {
+    text: "Chiudi tutto il giorno",
+    // icon: 'caret-forward-circle',
+    handler: () => {
+      this.newAppointment(2)
+   
+    }
+  },  {
+    text: 'Indietro',
+    // icon: 'close',
+    role: 'cancel',
+  }]
+  const actionSheet = await this.actionSheetController.create({
+    header: "Vuoi chiudere?",
+    
+    buttons: buttons
+  });
+  await actionSheet.present();
+}
 
-  //   let picker = await this.pickerController.create(options);
-  //   picker.present()
-  // }
+ async selectServiceModal(){
 
-  getColumnOptions(){
-    let options = [];
-    this.time_duration.forEach(x => {
-      options.push({text:x,value:x});
+    let modal = await this.modalController.create({
+      component:ServicesmodalPage,
+      swipeToClose: true,
+      componentProps:{
+        homeref: this,
+      }
     });
-    return options;
+   return await modal.present();
   }
-  getServiceOptions(){
-    let options = [];
-    this.services.forEach(x => {
-      options.push({text:x.name,value:x});
+async selectClinetModal(){
+
+    let modal = await this.modalController.create({
+      component:SelectclientmodalPage,
+      swipeToClose: true,
+      componentProps:{
+        homeref: this,
+      }
     });
-    options.push({text: "Personalizza", value:{id: -1, name: 'Personalizza'}})
-    return options;
-  }
-  getOptionsArrray(array){
-    let options = [];
-    array.forEach(x => {
-      options.push({text:x,value:x});
-    });
-    return options;
+   return await modal.present();
   }
 
-  async closeModal(){
+async closeModal(){
+    if(this.plt.is('hybrid')){
+    Keyboard.removeAllListeners() 
+    }
     await this.modalController.dismiss();
-  }
-  async newAppointment(type){
+}
+
+async newAppointment(type){
     if(this.service.name == "Seleziona" && type==0){
       this.presentToast('Seleziona un serivizio','warn')
         return
@@ -262,7 +226,7 @@ export class NewAppointmentPage implements OnInit {
          details = this.desc
         }else{
          service= this.services.filter( x => x.id == this.service) 
-         end = star + service[0].duration
+         end = star + this.time_duration.indexOf(this.duration)  +1
          details = service[0].name
         }
       }else{
@@ -289,71 +253,36 @@ export class NewAppointmentPage implements OnInit {
          this.client_name='~'
        }
        if (this.plt.is('hybrid')) {
-       
-         this.apiNative.bookAppointment(star, end, this.day, this.month, this.year, this.client_name, this.phone, details, employee, this.service).then(
+        // this.api.bookAppointment( start, end, day, month, year, client_name, this.phone, details, employee, service, this.client_id, adons, this.client.id).subscribe()
+         this.apiNative.bookAppointment(star, end, this.day, this.month, this.year, this.client_name, this.phone, details, employee, this.service, this.client.client,[],this.client.id).then(
            (res:any) => {
             this.presentToast('Appuntamento registrato','succ')
             var appo ={id:res.id, star_t:star, end_t:end, details:details, client_name:this.client_name, employee:employee, service_n:this.service, day:this.day, week:res.week, month:this.month, year:this.year,phone:this.phone,note:''}
              this.homeref.drawAppointment(res.id, star, end, details, this.client_name, employee, this.service, this.day, 0, this.month, this.year,this.phone,'',false)
             
              
-             var week = this.getWeekNumber(new Date(this.year,this.month,this.day))
-             var app = { client: 1,
-              client_name: this.client_name,
-              day: this.day,
-              details: details,
-              employee: employee,
-              end: end,
-              id: res.id,
-              month: this.month,
-              note: null,
-              phone: this.phone,
-              service_n:  this.service,
-              shop: 0,
-              start: star,
-              start_t: res.start_t,
-              end_t: res.end_t,
-              store_name: "",
-              store_phone: "",
-              week: week,
-              year: this.year}
-              this.homeref.all_appointments_list.push(app)
+             
+             
+              this.homeref.all_appointments_list.push(res)
            
            }).catch(
              err =>     this.presentToast("C'è stato un errore durante il salvataggio",'warn')) 
        }
        else{
-         this.api.bookAppointment(star, end, this.day, this.month, this.year, this.client_name, this.phone, details, employee, this.service).subscribe(
+         this.api.bookAppointment(star, end, this.day, this.month, this.year, this.client_name, this.phone, details, employee, this.service,this.client.client,[],this.client.id).subscribe(
            data =>{
             this.presentToast('Appuntamento registrato','succ')
              this.homeref.drawAppointment(data.id, star, end, details, this.client_name, employee, this.service, this.day, 0, this.month, this.year,this.phone,'',false)          
-             var week = this.getWeekNumber(new Date(this.year,this.month,this.day))
-           var app = { client: 1,
-             client_name: this.client_name,
-             day: this.day,
-             details: details,
-             employee: employee,
-             end: end,
-             id: data.id,
-             month: this.month,
-             note: null,
-             phone: this.phone,
-             service_n:  this.service,
-             shop: 0,
-             start: star,
-             start_t: data.start_t,
-             end_t: data.end_t,
-             store_name: "",
-             store_phone: "",
-             week: week,
-             year: this.year}
-             this.homeref.all_appointments_list.push(app)
+          
+          
+             this.homeref.all_appointments_list.push(data)
            },
            err =>{console.log(err)})
        }  
      }
          
   }
+
 
 parseJwt = (token) => {
 try {

@@ -20,10 +20,29 @@ async getServices(){
 async  setStore(store){
   await this.storage.set('shop_data',store)
 }
+async  setreadOnly(bool){
+  await this.storage.set('read_only',bool)
+}
+async  getreadPermission(){
+  var perm = await this.storage.get('read_only');
+  return perm
+}
 
+async setEmail(email){
+  this.storage.set('email',email)
+}
+async getEmail(){
+  var email = await this.storage.get('email');
+  return email
+}
 async getstore(){
     var store = await this.storage.get('shop_data');
     return store
+}
+async getCLients(){
+  var clients = await  this.storage.get('client_list')
+  return clients
+ 
 }
 
 async addClient(new_client){

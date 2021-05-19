@@ -20,6 +20,8 @@ import { PopovercallComponent } from './popovercall/popovercall.component';
 import { AuthguardService } from './services/authguard.service';
 import { OneSignal } from '@ionic-native/onesignal/ngx';
 import { Badge } from '@ionic-native/badge/ngx';
+import { SMS } from '@ionic-native/sms/ngx';
+import { FormsModule } from '@angular/forms';
 @Injectable()
 export class MyHammerConfig extends HammerGestureConfig {
     buildHammer(element: HTMLElement): any {
@@ -35,9 +37,11 @@ export class MyHammerConfig extends HammerGestureConfig {
   imports: [
     BrowserModule,
     CommonModule,
+    FormsModule,
     BrowserAnimationsModule,
     IonicStorageModule.forRoot(),
-    IonicModule.forRoot(),
+    IonicModule.forRoot({
+      mode: 'ios'}),
     AppRoutingModule,
     HttpClientModule,
     HammerModule
@@ -46,6 +50,7 @@ export class MyHammerConfig extends HammerGestureConfig {
     StatusBar,
     OneSignal,
     HTTP,
+    SMS,
     Badge,
     SplashScreen,
     {provide: HAMMER_GESTURE_CONFIG, useClass: MyHammerConfig },

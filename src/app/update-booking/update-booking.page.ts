@@ -1,11 +1,18 @@
 import { Component, OnInit, Input, NgZone } from '@angular/core';
-import { ModalController, PickerController, AlertController, Platform } from '@ionic/angular';
-import { PickerOptions } from '@ionic/core';
+import { ModalController, PickerController, AlertController, Platform, ActionSheetController } from '@ionic/angular';
+
 import { StorageService } from '../services/storage.service';
 import { ApiService } from '../services/api.service';
-import Notiflix from "notiflix";
+
 import { NativeApiService } from '../services/nativeapi.service';
 import { PickDatePage } from '../pick-date/pick-date.page';
+import { ServicesmodalPage } from '../servicesmodal/servicesmodal.page';
+import { SelectclientmodalPage } from '../selectclientmodal/selectclientmodal.page';
+import { Plugins } from '@capacitor/core';
+import { ChangeDetectorRef } from '@angular/core';
+
+
+const { Keyboard } = Plugins;
 @Component({
   selector: 'app-update-booking',
   templateUrl: './update-booking.page.html',
@@ -14,16 +21,15 @@ import { PickDatePage } from '../pick-date/pick-date.page';
 export class UpdateBookingPage implements OnInit {
   @Input() booking
   @Input() homeref
-  @Input() popref
   desc=''
   client_name=''
   phone=''
-  duration=''
-  today=''
+  @Input()duration
+  @Input()today
   day
   month
-  time
-  splittedtime
+  @Input()time
+  
   year
   minutes = ['00','15','30','45']
   hours = ['01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24']
@@ -35,11 +41,15 @@ export class UpdateBookingPage implements OnInit {
   half_list = [ "07:00",  "07:30", "08:00", "08:30",  "09:00",  "09:30",  "10:00",  "10:30",  "11:00", "11:30",  "12:00",  "12:30", "13:00",  "13:30", "14:00",  "14:30", "15:00", "15:15", "15:30", "16:00", "16:30", "17:00",  "17:30", "18:00", "18:30", "19:00", "19:30", "20:00", "20:30", "21:00", "21:30", "22:00", "22:30", "23:00", "23:30", "24:00"]
   time_duration: string[] = ["5 min","10 min","15 min","20 min","25 min", "30 min","35 min", "40 min", "45 min", "50 min", "55 min", "1 ora","1 ora e 5 min", "1 ora e 10 min", "1 ora e 15 min","1 ora e 20 min", "1 ora e 25 min","1 ora e 30 min","1 ora e 35 min","1 ora e 40 min","1 ora e 45 min","1 ora e 50 min","1 ora e 55 min","2 ore","2 ore e 5 min", "2 ore e 10 min", "2 ore e 15 min","2 ore e 20 min", "2 ore e 25 min","2 ore e 30 min","2 ore e 35 min","2 ore e 40 min","2 ore e 45 min","2 ore e 50 min","2 ore e 55 min","3 ore","3 ore e 5 min", "3 ore e 10 min", "3 ore e 15 min","3 ore e 20 min", "3 ore e 25 min","3 ore e 30 min","3 ore e 35 min","3 ore e 40 min","3 ore e 45 min","3 ore e 50 min","3 ore e 55 min"];
   services:any =[]
-  service= 3125
+  service:any = {name:"Seleziona"}
   quarter_displ
   five_displ
-  actual_times
-  constructor(private ngZone:NgZone,private apiNative: NativeApiService,private plt: Platform,public alertController: AlertController,public modalController: ModalController, private pickerController: PickerController, private storage: StorageService,private api: ApiService) {this.service=-1; }
+  actual_times=1
+  @Input() client:any={'id':false,'client':1 }
+  @Input() service_txt:any='Seleziona servizio'
+  @Input() client_txt:any='Seleziona un cliente'
+  keyboard_visible=false
+  constructor(private cdr: ChangeDetectorRef,private actionSheetController: ActionSheetController,private ngZone:NgZone,private apiNative: NativeApiService,private plt: Platform,private alertController: AlertController,private modalController: ModalController, private pickerController: PickerController, private storage: StorageService,private api: ApiService) {}
 
 async ngOnInit() {
   this.ngZone.run(async  () => {
@@ -60,33 +70,45 @@ if(this.quarter_displ){
 }else{
   this.actual_times = 0
 }
-  this.services = await this.storage.getServices()
-      this.services.push({
-        color: 1,
-        duration: 6,
-        duration_book: 6,
-        id: "-1",
-        max_n: 1,
-        name: "Personalizza",
-        price: 0,
-        sex: 3,
-        })
-        this.service=this.booking.service_n
-    setTimeout(() => {
-    this.desc=this.booking.details
-    var dur = this.time_duration[this.booking.end-this.booking.start-1]
-  
-    this.duration = `${dur}`
-    this.client_name= this.booking.client_name
-    this.phone= this.booking.phone
-    this.today= `${this.booking.day} ${this.months[this.booking.month]} ${this.booking.year}`
-    this.day = this.booking.day
-    this.month = this.booking.month
-    this.year = this.booking.year
-    this.time = this.times[this.booking.start_t]
-    this.splittedtime = this.time.split(':')
-    }, 200);
   })
+setTimeout(async () => {
+
+  var booking = this.booking
+  this.service=booking.service_n  
+  this.client={'id':booking.store_client,'client':booking.client}
+  this.desc=booking.details
+  this.client_name= booking.client_name
+
+  this.phone= booking.phone
+
+  this.day = booking.day
+  this.month = booking.month
+  this.year = booking.year
+
+  Keyboard.addListener('keyboardWillShow',(res)=>{
+  this.ngZone.run(()=>{
+    this.keyboard_visible=true
+  })
+
+  })
+  Keyboard.addListener('keyboardDidHide',()=>{
+  this.ngZone.run(()=>{
+    this.keyboard_visible=false
+  })
+  })
+  this.services = await this.storage.getServices()
+  this.services.push({
+  color: 1,
+  duration: 6,
+  duration_book: 6,
+  id: "-1",
+  max_n: 1,
+  name: "Personalizza",
+  price: 0,
+  sex: 3,
+  })
+  
+},400)
   }
 
   async presentAlert() {
@@ -98,29 +120,11 @@ if(this.quarter_displ){
       buttons: ['OK']
     });
   }
-  async selectService() {
-    let options: PickerOptions = {
-      buttons: [
-        {
-          text: "Cancel",
-          role: 'cancel'
-        },
-        {
-          text:'Ok',
-          handler:(value:any) => {
-            this.service= value.service.value
-          }
-        }
-      ],
-      columns:[{
-        name:'service',
-        options:this.getServiceOptions()
-      }]
-    };
-   
-    let picker = await this.pickerController.create(options);
-    picker.present()
+  detect(){
+
+    console.log('hit')
   }
+  
   async showDatePicker() {
     let modal = await this.modalController.create({
       component:PickDatePage,
@@ -159,7 +163,7 @@ if(this.quarter_displ){
         end = start + 12
         details = this.desc
       }else{
-        end = start + service.duration_book
+        end = start + this.time_duration.indexOf(this.duration)+1
         details = service.name    
       }
         
@@ -168,7 +172,7 @@ if(this.quarter_displ){
       this.client_name='~'
     }
     if (this.plt.is('hybrid')) {
-      this.apiNative.updateAppointment(this.booking.id, start, end, this.day, this.month, this.year,this.client_name,this.phone,details, this.booking.employee,service.id,'').then(
+      this.apiNative.updateAppointment(this.booking.id, start, end, this.day, this.month, this.year,this.client_name,this.phone,details, this.booking.employee,service.id,'',this.client.client,this.client.id).then(
          (res) => {
           this.homeref.clearAppointment(this.booking.id, res.start_t, res.end_t, this.day, this.month, this.year,this.client_name,this.phone,details, this.booking.employee,service.id.toString(), this.booking.client,this.booking.note,this.booking.shop, this.booking.store_name,this.booking.store_phone,res.payed )
           this.homeref.drawAppointment(this.booking.id, res.start_t, res.end_t, details, this.client_name, this.booking.employee,service.id.toString(), this.day, 0, this.month, this.year,this.phone,res.payed)
@@ -184,7 +188,7 @@ if(this.quarter_displ){
       
     }
     else{
-      this.api.updateAppointment(this.booking.id, start, end, this.day, this.month, this.year,this.client_name,this.phone,details, this.booking.employee,service.id,'').subscribe(
+      this.api.updateAppointment(this.booking.id, start, end, this.day, this.month, this.year,this.client_name,this.phone,details, this.booking.employee,service.id,'',this.client.client,this.client.id).subscribe(
          (data) =>{
           this.homeref.clearAppointment(this.booking.id, data.start_t, data.end_t, this.day, this.month, this.year,this.client_name,this.phone,details, this.booking.employee,service.id.toString(), this.booking.client,this.booking.note,this.booking.shop, this.booking.store_name,this.booking.store_phone,res.payed)
           this.homeref.drawAppointment(this.booking.id, data.start_t, data.end_t, details, this.client_name, this.booking.employee, service.id.toString(), this.day, 0, this.month, this.year,this.phone,res.payed)
@@ -200,82 +204,108 @@ if(this.quarter_displ){
      
 }
 
-  getServiceOptions(){
-    let options = [];
-    this.services.forEach(x => {
-      options.push({text:x.name,value:x});
-    });
-    options.push({text: "Personalizza", value:{id: -1, name: 'Personalizza'}})
-    return options;
-  }
-  getOptionsArrray(array){
-    let options = [];
-    array.forEach(x => {
-      options.push({text:x,value:x});
-    });
-    return options;
-  }
-  async showTimePicker(){
-    let options: PickerOptions = {
-      buttons: [
-        {
-          text: "Chiudi",
-          role: 'cancel'
-        },
-        {
-          text:'Ok',
-          handler:(value:any) => {
-            this.time = `${value.hour.text}:${value.minute.text}`
-          }
-        }
-      ],
-      columns:[{
-        name:'hour',
-        selectedIndex: this.hours.indexOf(this.splittedtime[0]),
-        options:this.getOptionsArrray(this.hours)
-      },
-      {
-        name:'minute',
-        selectedIndex: this.minutes.indexOf(this.splittedtime[1]),
-        options:this.getOptionsArrray(this.minutes)
-      }]
-    };
+  async selectServiceModal(){
 
-    let picker = await this.pickerController.create(options);
-    picker.present()
-  }
-  async showPicker() {
-    let options: PickerOptions = {
-      buttons: [
-        {
-          text: "Cancel",
-          role: 'cancel'
-        },
-        {
-          text:'Ok',
-          handler:(value:any) => {
-            this.duration= value.duration.value
-          }
-        }
-      ],
-      columns:[{
-        name:'duration',
-        options:this.getColumnOptions()
-      }]
-    };
-
-    let picker = await this.pickerController.create(options);
-    picker.present()
-  }
-  getColumnOptions(){
-    let options = [];
-    this.time_duration.forEach(x => {
-      options.push({text:x,value:x});
+    let modal = await this.modalController.create({
+      component:ServicesmodalPage,
+      swipeToClose: true,
+      componentProps:{
+        homeref: this,
+      }
     });
-    return options;
+   return await modal.present();
   }
+  async selectClinetModal(){
+
+    let modal = await this.modalController.create({
+      component:SelectclientmodalPage,
+      swipeToClose: true,
+      componentProps:{
+        homeref: this,
+      }
+    });
+   return await modal.present();
+  }
+  async choseCLient(){
+    var buttons:Array<any>= [{
+      text: 'Nuovo Cliente',
+      // icon: 'share',
+      handler: () => {
+       this.client_txt='Nuovo cliente'
+       this.client={'id':false,'client':1 }
+      }
+    }, {
+      text: 'Cliente esistente',
+      // icon: 'caret-forward-circle',
+      handler: () => {
+        setTimeout(() => {
+         this.selectClinetModal()
+        }, 100);
+     
+      }
+    },  {
+      text: 'Indietro',
+      // icon: 'close',
+      role: 'cancel',
+    }]
+    const actionSheet = await this.actionSheetController.create({
+      header: "Seleziona un cliente",
+      
+      buttons: buttons
+    });
+    await actionSheet.present();
+  }
+  async confirmDelete(){
+    var buttons:Array<any>= [ {
+      text: 'Cancella appuntamento',
+      role: 'destructive',
+      // icon: 'caret-forward-circle',
+      handler: () => {
+        setTimeout(() => {
+         this.deleteAppointment()
+        }, 100);
+     
+      }
+    },  {
+      text: 'Indietro',
+      // icon: 'close',
+      role: 'cancel',
+    }]
+    const actionSheet = await this.actionSheetController.create({
+      // header: "Vuoi cancellare l'appuntamento?",
+      
+      buttons: buttons
+    });
+    await actionSheet.present();
+  }
+
+  async deleteAppointment(){
+    var paras = document.getElementById(this.booking.id);
+    paras.parentNode.removeChild(paras);
+    if (this.plt.is('hybrid')) {
+      this.apiNative.deleteAppointment(this.booking.id).then(
+        async (res)  => {
+          await this.closeModal()
+          this.homeref.presentToast('Appuntamento cancellato','succ')
+         }
+        ).catch(
+          err => console.log(err)) 
+    }
+    else{
+      this.api.deleteAppointment(this.booking.id).subscribe(
+        async  (res)=> {
+          await this.closeModal()
+          this.homeref.presentToast('Appuntamento cancellato','succ')
+        },err =>{
+          console.log(err)
+         })
+    }
+  }
+
   async closeModal(){
-   
+    // if(this.plt.is('hybrid')){
+    //   Keyboard.removeAllListeners() 
+    //   }
     await this.modalController.dismiss();
   
   }

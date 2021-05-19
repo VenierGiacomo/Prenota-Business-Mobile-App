@@ -1,0 +1,90 @@
+h1{
+    // font-family: 'Comfortaa Bold' ;
+    margin: 0px 0px;
+    font-size: 24px;
+    line-height: 50px;
+    text-align: left;
+    padding-left: 10px;
+    padding-bottom: 20px;
+    color:#343a40;
+    font-weight: 700;
+    
+}
+ion-header{
+    border: none !important;
+        // height: 50px;
+        
+    }
+   
+    .bar-header {
+        border: 0px !important;
+        margin-top: 0px !important;
+        border-bottom-color: transparent !important;
+        background-image: none !important;
+        border-bottom: none !important;
+    }
+    
+    
+        ion-content{
+            --padding-top:20px;
+            background-image: url(./../../assets/Waves-multiple.svg) !important;
+            background-repeat: no-repeat;
+            background-size: cover;
+            // height: 100vh;
+            overflow: hidden;
+        }
+
+
+
+ion-header{
+    background: #343a40;
+     --background: #343a40;
+      color:#343a40;
+      font-family: 'Comfortaa Bold';
+      border: none !important;
+  }
+  ion-tab-bar{
+    --background: #343a40;
+  }  ion-icon{
+    margin-right:10px;
+    font-size: 32px;
+    color: #343a40;
+}
+
+.service{
+// height: 70px;
+padding: 20px 10px;
+display: grid;
+border-bottom: 1px solid #ddd;
+overflow: hidden;
+grid-template-columns: 12fr 1fr 2fr;
+align-items: center;
+h2{
+    display: inline-block;
+    font-size: 13px;
+    line-height: 20px;
+    color:#343a40;
+    margin: 0px;
+    font-weight:600;
+    padding-right: 10px;
+    // white-space: nowrap;
+    // overflow: hidden;
+    // text-overflow: ellipsis;
+    // max-width: 60vw;
+
+}
+h4{
+   
+    display: inline-block;
+    font-size: 11px;
+    line-height: 20px;
+    color:#7a8692;
+    margin: 0px;
+}
+.color{
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+}
+}

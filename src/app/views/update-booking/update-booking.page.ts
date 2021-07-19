@@ -1,13 +1,13 @@
 import { Component, OnInit, Input, NgZone } from '@angular/core';
 import { ModalController, PickerController, AlertController, Platform, ActionSheetController } from '@ionic/angular';
 
-import { StorageService } from '../services/storage.service';
-import { ApiService } from '../services/api.service';
+import { StorageService } from '../../services/storage.service';
+import { ApiService } from '../../services/api.service';
 
-import { NativeApiService } from '../services/nativeapi.service';
-import { PickDatePage } from '../pick-date/pick-date.page';
-import { ServicesmodalPage } from '../servicesmodal/servicesmodal.page';
-import { SelectclientmodalPage } from '../selectclientmodal/selectclientmodal.page';
+import { NativeApiService } from '../../services/nativeapi.service';
+import { PickDatePage } from '../../modals/pick-date/pick-date.page';
+import { ServicesmodalPage } from '../../modals/servicesmodal/servicesmodal.page';
+import { SelectclientmodalPage } from '../../modals/selectclientmodal/selectclientmodal.page';
 import { Plugins } from '@capacitor/core';
 import { ChangeDetectorRef } from '@angular/core';
 

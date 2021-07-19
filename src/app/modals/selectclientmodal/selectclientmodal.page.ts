@@ -1,8 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ModalController, Platform, ToastController } from '@ionic/angular';
-import { ApiService } from '../services/api.service';
-import { NativeApiService } from '../services/nativeapi.service';
-import { StorageService } from '../services/storage.service';
+import { ApiService } from '../../services/api.service';
+import { NativeApiService } from '../../services/nativeapi.service';
+import { StorageService } from '../../services/storage.service';
 
 @Component({
   selector: 'app-selectclientmodal',

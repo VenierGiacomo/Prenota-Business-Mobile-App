@@ -1,11 +1,11 @@
 import { Component, OnInit, Input  } from '@angular/core';
 import { ModalController, NavController, Platform, ToastController } from '@ionic/angular';
-import { ApiService } from '../services/api.service';
+import { ApiService } from '../../services/api.service';
 
-import { NativeApiService } from '../services/nativeapi.service';
+import { NativeApiService } from '../../services/nativeapi.service';
 import { Plugins } from '@capacitor/core';
 
-import { StorageService } from '../services/storage.service';
+import { StorageService } from '../../services/storage.service';
 
 const { Browser } = Plugins;
 

@@ -19,7 +19,8 @@
   <ion-virtual-scroll [items]="clients_to_show" approxItemHeight="30px">
     <ion-item *virtualItem="let client" (click)='selectClient(client)' >
       <ion-icon name="person-circle-outline"></ion-icon>
-      <ion-label>{{client.client_name}}</ion-label>
+      <ion-label *ngIf='client.client>1'><b >{{client.client_name}}</b> </ion-label>
+      <ion-label *ngIf='client.client==1' style="color: #666; font-weight: 300;">{{client.client_name}}</ion-label>
     </ion-item>
 
 </ion-virtual-scroll>

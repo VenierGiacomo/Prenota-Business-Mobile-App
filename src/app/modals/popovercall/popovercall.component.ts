@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { PopoverController, ModalController } from '@ionic/angular';
-import { ApiService } from '../services/api.service';
-import { UpdateBookingPage } from '../update-booking/update-booking.page';
+import { ApiService } from '../../services/api.service';
+import { UpdateBookingPage } from '../../views/update-booking/update-booking.page';
 
 @Component({
   selector: 'app-popovercall',

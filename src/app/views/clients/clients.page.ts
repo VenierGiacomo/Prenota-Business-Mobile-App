@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActionSheetController, ModalController, Platform, ToastController } from '@ionic/angular';
-import { InvitaModalPage } from '../invita-modal/invita-modal.page';
-import { ApiService } from '../services/api.service';
-import { NativeApiService } from '../services/nativeapi.service';
+import { InvitaModalPage } from '../../modals/invita-modal/invita-modal.page';
+import { ApiService } from '../../services/api.service';
+import { NativeApiService } from '../../services/nativeapi.service';
 import QRCode from 'qrcode';
-import { RegisterClientPage } from '../register-client/register-client.page';
-import { StorageService } from '../services/storage.service';
+import { RegisterClientPage } from '../../modals/register-client/register-client.page';
+import { StorageService } from '../../services/storage.service';
 @Component({
   selector: 'app-clients',
   templateUrl: './clients.page.html',

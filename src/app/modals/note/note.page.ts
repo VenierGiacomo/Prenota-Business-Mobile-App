@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ModalController, Platform } from '@ionic/angular';
-import { ApiService } from '../services/api.service';
-import { NativeApiService } from '../services/nativeapi.service';
+import { ApiService } from '../../services/api.service';
+import { NativeApiService } from '../../services/nativeapi.service';
 
 @Component({
   selector: 'app-note',

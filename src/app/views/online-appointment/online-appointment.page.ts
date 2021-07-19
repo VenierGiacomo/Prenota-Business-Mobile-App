@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Platform } from '@ionic/angular';
-import { ApiService } from '../services/api.service';
-import { NativeApiService } from '../services/nativeapi.service';
-import { StorageService } from '../services/storage.service';
+import { ApiService } from '../../services/api.service';
+import { NativeApiService } from '../../services/nativeapi.service';
+import { StorageService } from '../../services/storage.service';
 
 @Component({
   selector: 'app-online-appointment',

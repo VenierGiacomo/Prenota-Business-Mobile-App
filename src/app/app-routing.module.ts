@@ -10,7 +10,7 @@ const routes: Routes = [
   },
   {
     path: 'calendar',
-    loadChildren: () => import('./folder/folder.module').then( m => m.FolderPageModule), 
+    loadChildren: () => import('./views/folder/folder.module').then( m => m.FolderPageModule), 
      canActivate: [AuthguardService]
   },
   // {
@@ -20,19 +20,19 @@ const routes: Routes = [
   // },
   {
     path: 'new-appointment',
-    loadChildren: () => import('./new-appointment/new-appointment.module').then( m => m.NewAppointmentPageModule),
+    loadChildren: () => import('./views/new-appointment/new-appointment.module').then( m => m.NewAppointmentPageModule),
   },
   {
     path: 'login',
-    loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
+    loadChildren: () => import('./views/login/login.module').then( m => m.LoginPageModule)
   },
   {
     path: 'monthview',
-    loadChildren: () => import('./monthview/monthview.module').then( m => m.MonthviewPageModule),
+    loadChildren: () => import('./views/monthview/monthview.module').then( m => m.MonthviewPageModule),
   },
   {
     path: 'update-booking',
-    loadChildren: () => import('./update-booking/update-booking.module').then( m => m.UpdateBookingPageModule)
+    loadChildren: () => import('./views/update-booking/update-booking.module').then( m => m.UpdateBookingPageModule)
   },
   // {
   //   path: 'notifications',
@@ -44,36 +44,41 @@ const routes: Routes = [
   // },
   {
     path: 'pick-date',
-    loadChildren: () => import('./pick-date/pick-date.module').then( m => m.PickDatePageModule)
+    loadChildren: () => import('./modals/pick-date/pick-date.module').then( m => m.PickDatePageModule)
   },
   {
     path: 'clients',
-    loadChildren: () => import('./clients/clients.module').then( m => m.ClientsPageModule)
+    loadChildren: () => import('./views/clients/clients.module').then( m => m.ClientsPageModule)
   },
   {
     path: 'invita-modal',
-    loadChildren: () => import('./invita-modal/invita-modal.module').then( m => m.InvitaModalPageModule)
+    loadChildren: () => import('./modals/invita-modal/invita-modal.module').then( m => m.InvitaModalPageModule)
   },
   {
     path: 'register-client',
-    loadChildren: () => import('./register-client/register-client.module').then( m => m.RegisterClientPageModule)
+    loadChildren: () => import('./modals/register-client/register-client.module').then( m => m.RegisterClientPageModule)
   },
   {
     path: 'online-appointment',
-    loadChildren: () => import('./online-appointment/online-appointment.module').then( m => m.OnlineAppointmentPageModule)
+    loadChildren: () => import('./views/online-appointment/online-appointment.module').then( m => m.OnlineAppointmentPageModule)
   },
   {
     path: 'note',
-    loadChildren: () => import('./note/note.module').then( m => m.NotePageModule)
+    loadChildren: () => import('./modals/note/note.module').then( m => m.NotePageModule)
   },
 
   {
     path: 'servicesmodal',
-    loadChildren: () => import('./servicesmodal/servicesmodal.module').then( m => m.ServicesmodalPageModule)
+    loadChildren: () => import('./modals/servicesmodal/servicesmodal.module').then( m => m.ServicesmodalPageModule)
   },
   {
     path: 'selectclientmodal',
-    loadChildren: () => import('./selectclientmodal/selectclientmodal.module').then( m => m.SelectclientmodalPageModule)
+    loadChildren: () => import('./modals/selectclientmodal/selectclientmodal.module').then( m => m.SelectclientmodalPageModule)
+  },
+  {
+    path: '**',
+    loadChildren: () => import('./views/folder/folder.module').then( m => m.FolderPageModule), 
+    canActivate: [AuthguardService]
   }
 ];
 

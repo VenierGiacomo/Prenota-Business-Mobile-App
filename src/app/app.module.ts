@@ -16,7 +16,7 @@ import 'hammerjs'
 import { HammerGestureConfig, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 import { HammerModule } from '@angular/platform-browser';
 import * as Hammer from 'hammerjs';
-import { PopovercallComponent } from './popovercall/popovercall.component';
+import { PopovercallComponent } from './modals/popovercall/popovercall.component';
 import { AuthguardService } from './services/authguard.service';
 import { OneSignal } from '@ionic-native/onesignal/ngx';
 import { Badge } from '@ionic-native/badge/ngx';

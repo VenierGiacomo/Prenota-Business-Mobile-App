@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from '../services/api.service';
+import { ApiService } from '../../services/api.service';
 import { NavController, Platform, ToastController } from '@ionic/angular';
-import { NativeApiService } from '../services/nativeapi.service';
+import { NativeApiService } from '../../services/nativeapi.service';
 import Notiflix from "notiflix";
 import { Plugins } from '@capacitor/core';
 
-import { StorageService } from '../services/storage.service';
+import { StorageService } from '../../services/storage.service';
 
 const { Browser } = Plugins;
 @Component({

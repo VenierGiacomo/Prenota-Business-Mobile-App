@@ -2,19 +2,19 @@ import { Component, OnInit, ChangeDetectorRef, ViewChild, ElementRef, NgZone } f
 import { ActivatedRoute, Router } from '@angular/router';
 import { ModalController, Platform, NavController, ActionSheetController, ToastController } from '@ionic/angular';
 import { NewAppointmentPage } from '../new-appointment/new-appointment.page';
-import { ApiService } from '../services/api.service';
+import { ApiService } from '../../services/api.service';
 import { PopoverController } from '@ionic/angular';
-import { PopovercallComponent } from '../popovercall/popovercall.component';
-import { StorageService } from '../services/storage.service';
-import { NativeApiService } from '../services/nativeapi.service';
+import { PopovercallComponent } from '../../modals/popovercall/popovercall.component';
+import { StorageService } from '../../services/storage.service';
+import { NativeApiService } from '../../services/nativeapi.service';
 import { MonthviewPage } from '../monthview/monthview.page';
 // import Notiflix from "notiflix";
 import { IonContent } from '@ionic/angular';
 import { OneSignal } from '@ionic-native/onesignal/ngx';
 import { Badge } from '@ionic-native/badge/ngx';
-import { AppComponent } from '../app.component'
+import { AppComponent } from '../../app.component'
 import { UpdateBookingPage } from '../update-booking/update-booking.page';
-import { NotePage } from '../note/note.page';
+import { NotePage } from '../../modals/note/note.page';
 
 
 

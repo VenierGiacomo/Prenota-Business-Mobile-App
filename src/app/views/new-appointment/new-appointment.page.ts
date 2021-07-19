@@ -1,12 +1,12 @@
 import { Component, OnInit, Input, NgZone } from '@angular/core';
 import { ActionSheetController, ModalController, PickerController, Platform, ToastController } from '@ionic/angular';
-import { StorageService } from '../services/storage.service';
-import { ApiService } from '../services/api.service';
-import { NativeApiService } from '../services/nativeapi.service';
+import { StorageService } from '../../services/storage.service';
+import { ApiService } from '../../services/api.service';
+import { NativeApiService } from '../../services/nativeapi.service';
 import { AlertController } from '@ionic/angular';
-import { PickDatePage } from '../pick-date/pick-date.page';
-import { ServicesmodalPage } from '../servicesmodal/servicesmodal.page';
-import { SelectclientmodalPage } from '../selectclientmodal/selectclientmodal.page';
+import { PickDatePage } from '../../modals/pick-date/pick-date.page';
+import { ServicesmodalPage } from '../../modals/servicesmodal/servicesmodal.page';
+import { SelectclientmodalPage } from '../../modals/selectclientmodal/selectclientmodal.page';
 import { Plugins } from '@capacitor/core';
 
 

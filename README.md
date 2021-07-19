@@ -1,11 +1,13 @@
 
+
+
+
+
 # Prenota - Online booking and payments for local services
 
-## Mobile User App (Ionic + Capacitor)
+## Mobile Business App (Ionic + Capacitor)
 
-https://user-images.githubusercontent.com/86734894/126119937-b3e5fc76-87b6-4f98-8876-8f49f9888dba.MOV
-
-
+https://user-images.githubusercontent.com/86734894/126125470-e4c534a7-a572-4c4c-a087-4e28c693080a.MOV
 
 - A complete 2 minutes overview of the project with English comentary can be found [here](https://www.youtube.com/watch?v=mReddWSSp-A).
 - Live website: [prenota.cc](https://prenota.cc)
@@ -16,14 +18,13 @@ https://user-images.githubusercontent.com/86734894/126119937-b3e5fc76-87b6-4f98-
 ## Brief repository summary  
 This repository is the Mobile Application (iOS & Android) part of the project.   
 This app was built with Ionic + Capacitor.  
-**Native API**: Local Notifications, Push Notifications, In-app Browser, Camera, QR-CODE Scanner.  
-It implamentes native payments gateaways like [Apple Pay](https://www.apple.com/apple-pay/) and [Google Pay](https://pay.google.com/) + all Credit Cards.  
+**Native API**: Local Notifications, Push Notifications, Camera, QR-CODE Scanner.
 The CSS in mainly customed made using SCSS.
 
 ## Links to the other parts of the project:
-- [User facing mobile App]()
+- [User facing mobile App](https://github.com/VenierGiacomo/Prenota-User-Mobile-App/)
 - [Django Backend for the Apps](https://github.com/VenierGiacomo/Prenota-Backend-API/)
-- [Business facing mobile App]()
+- [Progessive Web Application](https://github.com/VenierGiacomo/Prenota-PWA)
 
 
 ## About the project  
